@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
+// TODO: move to other files
+.sidenav {
+  @apply flex flex-col font-bold text-sm capitalize text-gray-800;
+}
+.sidenav__items {
+  @apply p-3 cursor-pointer rounded-md;
+
+  > a {
+    @apply inline-flex items-center;
+  }
+}
+
+.sidenav__items:hover {
+  @apply text-green-700;
+}
+
+.sidenav__items.active {
+  @apply bg-gray-200;
+  @apply text-green-700;
+}
+
 @tailwind utilities;
