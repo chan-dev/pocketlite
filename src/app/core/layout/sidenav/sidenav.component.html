@@ -13,7 +13,7 @@
           *ngIf="!mediaQuery.matches"
         >
           <div
-            class="flex justify-between items-center border-b border-gray-200 h-12 py-1 px-3"
+            class="center-between border-b border-gray-200 h-12 py-1 px-3"
             *ngIf="!mediaQuery.matches"
           >
             <button class="inline-flex" (click)="toggleSidenav($event)">
@@ -88,9 +88,7 @@
       <div class="sidenav" *ngIf="isChildNav">
         <!-- top section -->
         <section class="sidenav__header top-section w-64 space-y-3 text-sm">
-          <div
-            class="flex justify-between items-center border-b border-gray-200 h-12 py-1 px-3"
-          >
+          <div class="center-between border-b border-gray-200 h-12 py-1 px-3">
             <button class="inline-flex" (click)="closeChildNav()">
               <mat-icon>arrow_back</mat-icon>
             </button>

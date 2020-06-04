@@ -22,3 +22,20 @@
 }
 
 @tailwind utilities;
+
+// TODO: move to own file
+.center-between {
+  @apply flex items-center justify-between;
+}
+
+.center-within {
+  @apply flex items-center justify-center;
+}
+
+.inline-center-between {
+  @apply inline-flex items-center justify-between;
+}
+
+.inline-center-within {
+  @apply inline-flex items-center justify-center;
+}
