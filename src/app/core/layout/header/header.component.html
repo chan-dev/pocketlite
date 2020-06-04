@@ -3,7 +3,11 @@
     <!-- logo -->
     <div class="flex items-center h-12 py-1">
       <!-- header toggle button -->
-      <button class="md:hidden inline-flex mr-2" (click)="toggleSidenav()">
+      <button
+        data-cy="menu-toggle"
+        class="md:hidden inline-flex mr-2"
+        (click)="toggleSidenav()"
+      >
         <mat-icon>menu</mat-icon>
       </button>
       <h1 class="inline-flex items-center">

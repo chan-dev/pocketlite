@@ -1,6 +1,7 @@
 <mat-sidenav-container [hasBackdrop]="false">
   <!-- TODO: "open" on md (768px) on tailwind size -->
   <mat-sidenav
+    data-cy="sidenav"
     [fixedInViewport]="!mediaQuery.matches"
     [mode]="mediaQuery.matches ? 'side' : 'over'"
     [opened]="mediaQuery.matches"
@@ -9,6 +10,7 @@
       <div class="sidenav" *ngIf="!isChildNav">
         <!-- top section -->
         <section
+          data-cy="sidenav__header"
           class="sidenav__header top-section w-64 space-y-3 text-sm"
           *ngIf="!mediaQuery.matches"
         >
