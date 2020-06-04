@@ -1,0 +1,54 @@
+<header class="border-b border-gray-200 text-gray-700 md:px-5">
+  <div class="flex justify-between items-center md:max-w-full max-w-xs mx-auto">
+    <!-- logo -->
+    <div class="flex items-center h-12 py-1">
+      <!-- header toggle button -->
+      <button class="md:hidden inline-flex mr-2" (click)="toggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <h1 class="inline-flex items-center">
+        <mat-icon class="text-red-600">bookmarks</mat-icon>
+        <span class="ml-1 text-xl">pocket</span>
+      </h1>
+    </div>
+
+    <div class="header__actions flex items-center">
+      <ul class="flex space-x-1 mr-1">
+        <li class="cursor-pointer inline-flex">
+          <button
+            class="inline-flex"
+            matTooltipPosition="below"
+            matTooltip="search"
+          >
+            <mat-icon class="hover:text-gray-900">search</mat-icon>
+          </button>
+        </li>
+        <li class="cursor-pointer inline-flex">
+          <button
+            class="inline-flex"
+            matTooltipPosition="below"
+            matTooltip="add"
+          >
+            <mat-icon class="hover:text-gray-900">add</mat-icon>
+          </button>
+        </li>
+        <li class="cursor-pointer inline-flex">
+          <button
+            class="inline-flex"
+            matTooltipPosition="below"
+            matTooltip="edit"
+          >
+            <mat-icon class="hover:text-gray-900">edit</mat-icon>
+          </button>
+        </li>
+      </ul>
+      <div class="account-menu">
+        <img
+          class="rounded-full w-6 h-6 cursor-pointer"
+          src="/assets/avatar.png"
+          alt="avatar"
+        />
+      </div>
+    </div>
+  </div>
+</header>
