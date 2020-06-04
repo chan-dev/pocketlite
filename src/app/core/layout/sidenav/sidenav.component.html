@@ -6,7 +6,7 @@
     [opened]="mediaQuery.matches"
   >
     <div class="h-full border border-gray-200 md:border-t-0">
-      <div class="sidenav">
+      <div class="sidenav" *ngIf="!isChildNav">
         <!-- top section -->
         <section
           class="sidenav__header top-section w-64 space-y-3 text-sm"
@@ -63,7 +63,7 @@
                 </a>
               </li>
               <li class="sidenav__items">
-                <a href="#">
+                <a href="#" (click)="openChildNav()">
                   <mat-icon class="mr-1">tags</mat-icon>
                   tags
                 </a>
@@ -85,14 +85,14 @@
         </section>
       </div>
 
-      <div class="sidenav" *ngIf="false">
+      <div class="sidenav" *ngIf="isChildNav">
         <!-- top section -->
         <section class="sidenav__header top-section w-64 space-y-3 text-sm">
           <div
             class="flex justify-between items-center border-b border-gray-200 h-12 py-1 px-3"
           >
-            <button class="inline-flex" (click)="toggleSidenav($event)">
-              <mat-icon>keyboard_arrow_left</mat-icon>
+            <button class="inline-flex" (click)="closeChildNav()">
+              <mat-icon>arrow_back</mat-icon>
             </button>
             <div class="flex-1 text-center font-normal">Tags</div>
           </div>

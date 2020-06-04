@@ -49,6 +49,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
   private queryListener;
 
   mediaQuery: MediaQueryList;
+  isChildNav = false;
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -80,5 +81,13 @@ export class SidenavComponent implements OnInit, OnDestroy {
   toggleSidenav(event) {
     event.stopPropagation();
     this.sidenav.close();
+  }
+
+  openChildNav() {
+    this.isChildNav = true;
+  }
+
+  closeChildNav() {
+    this.isChildNav = false;
   }
 }
