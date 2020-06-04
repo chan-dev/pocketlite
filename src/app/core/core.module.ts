@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { MaterialModule } from '../shared/material.module';
 
@@ -10,8 +11,18 @@ import { SidenavComponent } from './layout/sidenav/sidenav.component';
 import { TagsComponent } from './layout/tags/tags.component';
 
 @NgModule({
-  declarations: [MainLayoutComponent, HeaderComponent, SidenavComponent, TagsComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, MaterialModule],
+  declarations: [
+    MainLayoutComponent,
+    HeaderComponent,
+    SidenavComponent,
+    TagsComponent,
+  ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    MaterialModule,
+    ReactiveFormsModule,
+  ],
   exports: [MainLayoutComponent],
 })
 export class CoreModule {}
