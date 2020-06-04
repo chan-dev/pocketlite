@@ -97,7 +97,9 @@
         </section>
 
         <section class="sidenav__body">
-          <ul class="tags space-y-2 ml-3 py-2 text-gray-700 font-normal">
+          <ul
+            class="normal-case tags space-y-2 ml-3 py-2 text-gray-700 font-normal"
+          >
             <li *ngFor="let tag of tags">
               <app-tags class="w-full" [name]="tag"></app-tags>
             </li>
