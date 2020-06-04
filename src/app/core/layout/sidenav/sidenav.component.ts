@@ -51,6 +51,8 @@ export class SidenavComponent implements OnInit, OnDestroy {
   mediaQuery: MediaQueryList;
   isChildNav = false;
 
+  tags = ['#angular', '#vue', '#react'];
+
   constructor(
     private cd: ChangeDetectorRef,
     private media: MediaMatcher,

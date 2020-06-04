@@ -100,32 +100,8 @@
 
         <section class="sidenav__body">
           <ul class="tags space-y-2 ml-3 py-2 text-gray-700 font-normal">
-            <li
-              class="h-6 inline-flex w-full items-center justify-between group hover:text-green-700"
-            >
-              <a href="#">#angular</a>
-              <div class="action hidden group-hover:block">
-                <mat-icon class="cursor-pointer">create</mat-icon>
-                <!-- <mat-icon class="text-red-600 cursor-pointer">delete</mat-icon> -->
-              </div>
-            </li>
-            <li
-              class="h-6 inline-flex w-full items-center justify-between group hover:text-green-700"
-            >
-              <a href="#">#react</a>
-              <div class="action hidden group-hover:block">
-                <mat-icon class="cursor-pointer">create</mat-icon>
-                <!-- <mat-icon class="text-red-600 cursor-pointer">delete</mat-icon> -->
-              </div>
-            </li>
-            <li
-              class="h-6 inline-flex w-full items-center justify-between group hover:text-green-700"
-            >
-              <a href="#">#vue</a>
-              <div class="action hidden group-hover:block">
-                <mat-icon class="cursor-pointer">create</mat-icon>
-                <!-- <mat-icon class="text-red-600 cursor-pointer">delete</mat-icon> -->
-              </div>
+            <li *ngFor="let tag of tags">
+              <app-tags class="w-full" [name]="tag"></app-tags>
             </li>
           </ul>
         </section>
