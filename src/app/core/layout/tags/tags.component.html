@@ -1,15 +1,23 @@
 <div class="tag h-6 center-between group hover:text-green-700 cursor-pointer">
-  <div *ngIf="!isEditing" class="w-full">
+  <div data-cy="tag-show-view" *ngIf="!isEditing" class="w-full">
     <div class="p-2 center-between w-full edit-tag">
       <a href="#">{{ tag.name }}</a>
       <!-- TODO: convert to button tag mat-button? -->
-      <div class="action hidden group-hover:block">
-        <mat-icon class="cursor-pointer" (click)="openEdit()">create</mat-icon>
+      <div data-cy="tag-edit-button" class="action hidden group-hover:block">
+        <mat-icon class="cursor-pointer" (click)="openEdit(tagEditInput)"
+          >create</mat-icon
+        >
       </div>
     </div>
   </div>
 
-  <div *ngIf="isEditing" class="w-full">
+  <div
+    data-cy="tag-edit-view"
+    [hidden]="!isEditing"
+    class="w-full"
+    cdkMonitorSubtreeFocus
+    (cdkFocusChange)="blur($event)"
+  >
     <div class="p-2 bg-gray-200 center-between edit-tag">
       <input
         class="bg-gray-200 flex-1 focus:outline-none"
@@ -17,13 +25,17 @@
         [formControl]="tagControl"
         name="tag"
         aria-label="tag name"
+        #tagEditInput
       />
       <!-- TODO: convert to button tag -->
-      <mat-icon
-        class="flex-none text-red-600 cursor-pointer"
-        (click)="closeEdit()"
-        >delete</mat-icon
-      >
+      <!-- <div data-cy="tag-delete-button"> -->
+      <button data-cy="tag-delete-button">
+        <mat-icon
+          class="flex-none text-red-600 cursor-pointer"
+          (click)="closeEdit()"
+          >delete</mat-icon
+        >
+      </button>
     </div>
   </div>
 </div>
