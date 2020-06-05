@@ -7,6 +7,8 @@ import {
 } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
+import { Tag } from '../../types/tag';
+
 @Component({
   selector: 'app-tags',
   templateUrl: './tags.component.html',
@@ -14,7 +16,7 @@ import { FormControl, Validators } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TagsComponent implements OnInit {
-  @Input() name: string;
+  @Input() tag: Tag;
 
   isEditing = false;
   tagControl = new FormControl('', Validators.required);
@@ -22,7 +24,7 @@ export class TagsComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.tagControl.setValue(this.name);
+    this.tagControl.setValue(this.tag.name);
   }
 
   openEdit() {

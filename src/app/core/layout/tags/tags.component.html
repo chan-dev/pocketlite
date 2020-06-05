@@ -1,7 +1,7 @@
 <div class="tag h-6 center-between group hover:text-green-700 cursor-pointer">
   <div *ngIf="!isEditing" class="w-full">
     <div class="p-2 center-between w-full edit-tag">
-      <a href="#">{{ name }}</a>
+      <a href="#">{{ tag.name }}</a>
       <!-- TODO: convert to button tag mat-button? -->
       <div class="action hidden group-hover:block">
         <mat-icon class="cursor-pointer" (click)="openEdit()">create</mat-icon>
