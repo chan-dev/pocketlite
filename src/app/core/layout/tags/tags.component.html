@@ -11,13 +11,7 @@
     </div>
   </div>
 
-  <div
-    data-cy="tag-edit-view"
-    [hidden]="!isEditing"
-    class="w-full"
-    cdkMonitorSubtreeFocus
-    (cdkFocusChange)="blur($event)"
-  >
+  <div data-cy="tag-edit-view" [hidden]="!isEditing" class="w-full">
     <div class="p-2 bg-gray-200 center-between edit-tag">
       <input
         class="bg-gray-200 flex-1 focus:outline-none"
@@ -25,6 +19,7 @@
         [formControl]="tagControl"
         name="tag"
         aria-label="tag name"
+        (blur)="closeEdit()"
         #tagEditInput
       />
       <!-- TODO: convert to button tag -->

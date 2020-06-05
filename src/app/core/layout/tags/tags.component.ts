@@ -41,11 +41,4 @@ export class TagsComponent implements OnInit {
   closeEdit() {
     this.isEditing = false;
   }
-
-  blur(event) {
-    // 'null' means the element is blurred
-    if (event === null) {
-      this.closeEdit();
-    }
-  }
 }
