@@ -1,0 +1,10 @@
+<div class="tags-list">
+  <ul
+    data-cy="tags-list"
+    class="normal-case tags space-y-2 ml-3 py-2 text-gray-700 font-normal"
+  >
+    <li *ngFor="let tag of tags$ | async as tags; trackBy: tagsTrackByFn">
+      <app-tags class="w-full" [tag]="tag"></app-tags>
+    </li>
+  </ul>
+</div>

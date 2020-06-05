@@ -10,6 +10,7 @@ import { MainLayoutComponent } from './layout/main-layout/main-layout.component'
 import { HeaderComponent } from './layout/header/header.component';
 import { SidenavComponent } from './layout/sidenav/sidenav.component';
 import { TagsComponent } from './layout/tags/tags.component';
+import { TagsListComponent } from './layout/tags/tags-list.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { TagsComponent } from './layout/tags/tags.component';
     HeaderComponent,
     SidenavComponent,
     TagsComponent,
+    TagsListComponent,
   ],
   imports: [
     BrowserModule,

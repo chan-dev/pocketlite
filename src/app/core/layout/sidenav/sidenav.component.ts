@@ -8,11 +8,9 @@ import {
 } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MatSidenav } from '@angular/material/sidenav';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { SidenavService } from '../../services/sidenav.service';
-import { TagsService } from '../../services/tags.service';
-import { Tag } from '../../types/tag';
 
 @Component({
   selector: 'app-sidenav',
@@ -53,20 +51,15 @@ export class SidenavComponent implements OnInit, OnDestroy {
   mediaQuery: MediaQueryList;
   isChildNav = false;
 
-  tags$: Observable<Tag[]>;
-
   constructor(
     private cd: ChangeDetectorRef,
     private media: MediaMatcher,
-    private sidenavService: SidenavService,
-    private tagsService: TagsService
+    private sidenavService: SidenavService
   ) {
     // NOTE: same with tailwind (md) media query class
     this.mediaQuery = this.media.matchMedia('(min-width: 768px)');
     this.queryListener = () => this.cd.detectChanges();
     this.mediaQuery.addEventListener('change', this.queryListener);
-
-    this.tags$ = this.tagsService.fetchAll();
   }
 
   ngOnInit() {
@@ -96,9 +89,5 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
   closeChildNav() {
     this.isChildNav = false;
-  }
-
-  tagsTrackByFn(_: any, tag: Tag) {
-    return tag.id;
   }
 }
