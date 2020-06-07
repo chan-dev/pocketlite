@@ -1,16 +1,16 @@
 <mat-sidenav-container [hasBackdrop]="false">
   <!-- TODO: "open" on md (768px) on tailwind size -->
   <mat-sidenav
-    data-cy="sidenav"
+    data-test="sidenav"
     [fixedInViewport]="!mediaQuery.matches"
     [mode]="mediaQuery.matches ? 'side' : 'over'"
     [opened]="mediaQuery.matches"
   >
     <div class="h-full border border-gray-200 md:border-t-0">
-      <div data-cy="sidenav-parent-view" class="sidenav" *ngIf="!isChildNav">
+      <div data-test="sidenav-parent-view" class="sidenav" *ngIf="!isChildNav">
         <!-- top section -->
         <section
-          data-cy="sidenav__header"
+          data-test="sidenav__header"
           class="sidenav__header top-section w-64 space-y-3 text-sm"
           *ngIf="!mediaQuery.matches"
         >
@@ -65,7 +65,11 @@
                 </a>
               </li>
               <li class="sidenav__items">
-                <a data-cy="tags-menu-button" href="#" (click)="openChildNav()">
+                <a
+                  data-test="tags-menu-button"
+                  href="#"
+                  (click)="openChildNav()"
+                >
                   <mat-icon class="mr-1">tags</mat-icon>
                   tags
                 </a>
@@ -87,7 +91,7 @@
         </section>
       </div>
 
-      <div data-cy="sidenav-child-view" class="sidenav" *ngIf="isChildNav">
+      <div data-test="sidenav-child-view" class="sidenav" *ngIf="isChildNav">
         <!-- top section -->
         <section class="sidenav__header top-section w-64 space-y-3 text-sm">
           <div class="center-between border-b border-gray-200 h-12 py-1 px-3">
