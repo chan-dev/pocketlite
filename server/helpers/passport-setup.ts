@@ -8,19 +8,21 @@ export default (): void => {
       {
         clientID: config.oauth2.google.clientId,
         clientSecret: config.oauth2.google.clientSecret,
-        callbackURL: '/auth/google/callback',
+        callbackURL: '/api/auth/google/callback',
       },
       (accessToken, refreshToken, profile, done) => {
+        // TODO: use findOrCreate
         return done('', profile);
       }
     )
   );
 
+  // TODO: remove both methods since we'll be using JWT
   passport.serializeUser((user, done) => {
-    done('', user);
+    done(null, user);
   });
 
   passport.deserializeUser((user, done) => {
-    done('', user);
+    done(null, user);
   });
 };
