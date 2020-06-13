@@ -37,7 +37,9 @@ router.get(
 
     // send a cookie to the client
     // TODO: how does path work here?i
-    res.cookie(config.jwt.cookieName, token);
+    res.cookie(config.jwt.cookieName, token, {
+      httpOnly: true,
+    });
     res.redirect(redirectUrl);
   }
 );
