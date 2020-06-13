@@ -35,8 +35,6 @@ router.get(
       secretKey
     );
 
-    // send a cookie to the client
-    // TODO: how does path work here?i
     res.cookie(config.jwt.cookieName, token, {
       httpOnly: true,
     });
@@ -46,7 +44,11 @@ router.get(
 
 router.get('/logout', (req: Request, res: Response) => {
   req.logout();
-  // res.cookie(config.session.cookieName, { expires: Date.now() });
+  // NOTE: in order to clear cookie, the cookie must have the same configuration
+  // as when you set the cookie
+  res.clearCookie(config.jwt.cookieName, {
+    httpOnly: true,
+  });
   res.redirect(config.redirectUrl);
 });
 
