@@ -6,7 +6,7 @@ import cors from 'cors';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 
 import config from './config/keys';
-import passportSetup from './helpers/passport-setup';
+import googleOauth2Setup from './strategies/google-oauth';
 import authRoutes from './routes/auth';
 import { handleError, AppError } from './helpers/error-handler';
 
@@ -43,7 +43,7 @@ app.use(
   })
 );
 
-passportSetup();
+googleOauth2Setup();
 
 // app.use(express.static(path.join(__dirname, '../client/dist/pocketlite')));
 
