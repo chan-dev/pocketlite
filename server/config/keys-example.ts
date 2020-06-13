@@ -1,4 +1,3 @@
-// Fill up with your configuration
 export default {
   port: 3000,
   oauth2: {
@@ -8,6 +7,16 @@ export default {
     },
   },
   session: {
-    cookieKey: 'choose_a_hard_to_guess_key',
+    cookieKey: '',
+    cookieName: '',
   },
+  jwt: {
+    secretKey: '',
+    cookieName: '',
+  },
+  mongoose: {
+    dbUrl: '',
+  },
+  redirectUrl: '',
+  allowedDomain: '',
 };
