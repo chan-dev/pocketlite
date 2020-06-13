@@ -3,10 +3,10 @@ import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 
 import config from './config/keys';
 import googleOauth2Setup from './strategies/google-oauth';
+import jwtSetup from './strategies/jwt';
 import authRoutes from './routes/auth';
 import { handleError, AppError } from './helpers/error-handler';
 
@@ -44,35 +44,9 @@ app.use(
 );
 
 googleOauth2Setup();
+jwtSetup();
 
 // app.use(express.static(path.join(__dirname, '../client/dist/pocketlite')));
-
-// TODO: move jwt logic to another file
-const cookieExtractor = function (req: Request) {
-  let token = null;
-  const cookieName = config.jwt.cookieName;
-  if (req && req.cookies) {
-    token = req.cookies[cookieName];
-  }
-  return token;
-};
-
-const opts = {
-  // we validate using the jwt from the cookie
-  // no need to attach Authorization header for each client
-  jwtFromRequest: cookieExtractor,
-  secretOrKey: config.jwt.secretKey,
-  passReqToCallback: true,
-};
-passport.use(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  new JwtStrategy(opts, function (req: Request, jwt_payload: any, done: any) {
-    console.log({
-      jwt_payload,
-    });
-    done('', jwt_payload);
-  })
-);
 
 app.use('/api/auth', authRoutes);
 
