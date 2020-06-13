@@ -1,5 +1,4 @@
 import express, { Response, Request, NextFunction } from 'express';
-import cookieSession from 'cookie-session';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import mongoose from 'mongoose';
@@ -25,23 +24,6 @@ mongoose.connect(config.mongoose.dbUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-
-// store a cookieSession on the client
-// https://stackoverflow.com/a/49889569/9732932
-// this middleware is basically for saving the entire session state
-// inside the cookie in the CLIENT
-// TODO: we don't need this one, just for testing we'll include this
-app.use(
-  cookieSession({
-    // httpOnly: true
-    name: config.session.cookieName,
-    maxAge: 24 * 60 * 60 * 1000,
-    keys: [config.session.cookieKey],
-    httpOnly: false, // TODO: set to true after testing
-    // secure: true,
-    // sameSite: "strict"
-  })
-);
 
 // populate req.cookies
 app.use(cookieParser());
