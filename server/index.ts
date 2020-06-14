@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import csurf from 'csurf';
 
 import config from './config/keys';
 import googleOauth2Setup from './strategies/google-oauth';
@@ -32,6 +33,14 @@ app.use(cookieParser());
 app.use(passport.initialize());
 // TODO: remove this since we'll use JWT
 app.use(passport.session());
+// TODO: use only it as route middleware?
+// https://medium.com/@d.silvas/how-to-implement-csrf-protection-on-a-jwt-based-app-node-csurf-angular-bb90af2a9efd
+app.use(
+  csurf({
+    cookie: true,
+  })
+);
+
 app.use(
   cors({
     // TODO: update this one

@@ -14,6 +14,9 @@ export default {
     secretKey: '',
     cookieName: '',
   },
+  csurf: {
+    cookieName: '',
+  },
   mongoose: {
     dbUrl: '',
   },

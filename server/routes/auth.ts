@@ -38,6 +38,7 @@ router.get(
     res.cookie(config.jwt.cookieName, token, {
       httpOnly: true,
     });
+    res.cookie(config.csurf.cookieName, req.csrfToken());
     res.redirect(redirectUrl);
   }
 );
@@ -49,6 +50,7 @@ router.get('/logout', (req: Request, res: Response) => {
   res.clearCookie(config.jwt.cookieName, {
     httpOnly: true,
   });
+  res.clearCookie(config.csurf.cookieName);
   res.redirect(config.redirectUrl);
 });
 
