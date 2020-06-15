@@ -35,10 +35,14 @@ router.get(
       secretKey
     );
 
+    const dayInMs = 24 * 60 * 60 * 1000;
     res.cookie(config.jwt.cookieName, token, {
       httpOnly: true,
+      maxAge: dayInMs,
     });
-    res.cookie(config.csurf.cookieName, req.csrfToken());
+    res.cookie(config.csurf.cookieName, req.csrfToken(), {
+      maxAge: dayInMs,
+    });
     res.redirect(redirectUrl);
   }
 );
@@ -49,8 +53,11 @@ router.get('/logout', (req: Request, res: Response) => {
   // as when you set the cookie
   res.clearCookie(config.jwt.cookieName, {
     httpOnly: true,
+    maxAge: 0,
   });
-  res.clearCookie(config.csurf.cookieName);
+  res.clearCookie(config.csurf.cookieName, {
+    maxAge: 0,
+  });
   res.redirect(config.redirectUrl);
 });
 
