@@ -17,6 +17,7 @@ router.get(
   '/google/callback',
   passport.authenticate('google', {
     failureRedirect: '/api/auth/error',
+
     // TODO: is required?
     // successRedirect: config.redirectUrl,
   }),
@@ -30,7 +31,7 @@ router.get(
 
     const token = jwt.sign(
       {
-        userId: req.user,
+        user: req.user,
       },
       secretKey
     );
