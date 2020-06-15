@@ -3,7 +3,7 @@ import passport from 'passport';
 
 import config from '../config/keys';
 import User from '../models/user';
-import { AppError } from '../helpers/error-handler';
+import { ApiError } from '../helpers/error-handler';
 
 export default (): void => {
   passport.use(
@@ -37,9 +37,8 @@ export default (): void => {
         } catch (err) {
           // TODO: improve error here
           // use appropriate code and error message
-          done(new AppError(500, err.message), null);
+          done(ApiError.internalServerError('Unexpected Error'), null);
         }
-        return done('', profile);
       }
     )
   );

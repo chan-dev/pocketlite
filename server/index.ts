@@ -9,7 +9,7 @@ import config from './config/keys';
 import googleOauth2Setup from './strategies/google-oauth';
 import jwtSetup from './strategies/jwt';
 import authRoutes from './routes/auth';
-import { handleError, AppError } from './helpers/error-handler';
+import { handleError, ApiError } from './helpers/error-handler';
 
 const app = express();
 const db = mongoose.connection;
