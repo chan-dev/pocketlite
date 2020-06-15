@@ -76,7 +76,7 @@ app.get(
 //   res.sendFile(path.join(__dirname, '../client/dist/pocketlite/index.html'));
 // });
 
-app.use((err: AppError, req: Request, res: Response, next: NextFunction) => {
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   if (app.get('env') === 'development') {
     console.error(err.stack);
   }

@@ -8,11 +8,15 @@ export class AppError extends Error {
   }
 }
 
-export function handleError(error: AppError, res: Response): Response<JSON> {
-  const { statusCode, message } = error;
+export function handleError(
+  error: Error | AppError,
+  res: Response
+): Response<JSON> {
+  // This is to check for any uncaught exception
+  const statusCode = 'statusCode' in error ? error.statusCode : 500;
 
   return res.json({
     statusCode,
-    message,
+    message: error.message,
   });
 }
