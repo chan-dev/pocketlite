@@ -64,14 +64,14 @@ router.get('/logout', (req: Request, res: Response) => {
 
 // TODO: request this on client
 router.get(
-  '/token',
+  '/user',
   passport.authenticate('jwt', { session: false }),
   (req: Request, res: Response) => {
     console.log('we still access this route');
     return res.json({
       error: false,
       message: 'Token fetched',
-      user: req.user,
+      data: req.user,
     });
   }
 );
