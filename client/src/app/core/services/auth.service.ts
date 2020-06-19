@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { tap, catchError, map, shareReplay } from 'rxjs/operators';
 import { Observable, of, throwError } from 'rxjs';
 
@@ -15,23 +19,35 @@ interface UserApiResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  currentUser$: Observable<User | null> = this.http
-    .get<UserApiResponse>('http://localhost:3000/api/auth/user', {
-      withCredentials: true,
-    })
-    .pipe(
-      map(resp => resp.data.user),
-      catchError((err: HttpErrorResponse) => {
-        console.log({ err });
-        return err.status === 401 ? of(null) : throwError(err);
-      }),
-      shareReplay(1)
-    );
+  currentUser$: Observable<User | null> = this.fetchCurrentUser();
 
   constructor(private http: HttpClient) {}
 
   login() {
     const url = '/api/auth/google';
     return this.http.get(url).pipe(tap(result => console.log({ result })));
+  }
+
+  private fetchCurrentUser() {
+    // BUG: we have to disable caching because there's a bug
+    // that caches requests when we press the back button while
+    // login on google
+    const headers = new HttpHeaders()
+      .set('Cache-Control', 'no-cache')
+      .append('Pragma', 'no-cache');
+
+    return this.http
+      .get<UserApiResponse>('http://localhost:3000/api/auth/user', {
+        withCredentials: true,
+        headers,
+      })
+      .pipe(
+        map(resp => resp.data.user),
+        catchError((err: HttpErrorResponse) => {
+          console.log({ err });
+          return err.status === 401 ? of(null) : throwError(err);
+        }),
+        shareReplay(1)
+      );
   }
 }
