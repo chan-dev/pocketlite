@@ -1,8 +1,9 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
 
 import config from '../config/keys';
+import { ApiError } from '../helpers/error-handler';
 
 const router = express.Router();
 
@@ -65,7 +66,7 @@ router.get('/logout', (req: Request, res: Response) => {
 // TODO: request this on client
 router.get(
   '/user',
-  passport.authenticate('jwt', { session: false }),
+  passport.authenticate('jwt', { session: false, failWithError: true }),
   (req: Request, res: Response) => {
     console.log('we still access this route');
     return res.json({
@@ -73,6 +74,10 @@ router.get(
       message: 'Token fetched',
       data: req.user,
     });
+  },
+  // error handler with failWithError enabled
+  (err: Error, req: Request, res: Response, next: NextFunction) => {
+    return next(ApiError.unauthenticated('Jwt authentication error'));
   }
 );
 
