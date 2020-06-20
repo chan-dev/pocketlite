@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './core/auth/guards/auth.guard';
 import { GuestGuard } from './core/auth/guards/guest.guard';
 import { MainLayoutComponent } from './core/layout/main-layout/main-layout.component';
+import { NotFoundComponent } from './core/layout/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -19,11 +20,10 @@ const routes: Routes = [
       import('./core/auth/auth.module').then(m => m.AuthModule),
     canLoad: [GuestGuard],
   },
-  // TODO: create a not found component
-  // {
-  //   path: '**',
-  //   component: NotFoundComponent
-  // }
+  {
+    path: '**',
+    component: NotFoundComponent,
+  },
 ];
 
 @NgModule({

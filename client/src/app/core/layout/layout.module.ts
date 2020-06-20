@@ -11,6 +11,7 @@ import { HeaderComponent } from './header/header.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { TagsComponent } from './tags/tags.component';
 import { TagsListComponent } from './tags/tags-list.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { TagsListComponent } from './tags/tags-list.component';
     SidenavComponent,
     TagsComponent,
     TagsListComponent,
+    NotFoundComponent,
   ],
   imports: [
     CommonModule,
