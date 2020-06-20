@@ -4,7 +4,7 @@ describe('Sidenav', () => {
   context('on smaller screens', () => {
     beforeEach(() => {
       cy.viewport('iphone-5');
-      cy.visit('/');
+      cy.bypassAuthGuardAndVisit();
     });
 
     it('is hidden on smaller screens', () => {
@@ -28,7 +28,7 @@ describe('Sidenav', () => {
   context('on bigger screens', () => {
     beforeEach(() => {
       cy.viewport('ipad-2');
-      cy.visit('/');
+      cy.bypassAuthGuardAndVisit();
     });
 
     it('is visible on larger screens', () => {

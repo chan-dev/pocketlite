@@ -5,7 +5,7 @@ describe('Tags', () => {
     cy.viewport('ipad-2');
     cy.server();
     cy.route('/api/tags', 'fixture:tags');
-    cy.visit('/');
+    cy.bypassAuthGuardAndVisit();
     cy.dataTest('tags-menu-button').click();
   });
 
