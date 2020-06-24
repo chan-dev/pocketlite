@@ -33,11 +33,11 @@ export class GuestGuard implements CanActivate, CanLoad {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  canLoad(route: Route): Observable<boolean> | Promise<boolean> | boolean {
+  canLoad(): Observable<boolean> | Promise<boolean> | boolean {
     return this.isGuest$;
   }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  canActivate() {
     return this.isGuest$;
   }
 }
