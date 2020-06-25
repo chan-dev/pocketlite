@@ -7,7 +7,7 @@ import {
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
-import { User } from '../../types/user';
+import { User } from '@models/user.model';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from '../../services/auth.service';
 

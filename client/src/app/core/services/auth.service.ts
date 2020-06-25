@@ -7,7 +7,7 @@ import {
 import { tap, catchError, map, shareReplay } from 'rxjs/operators';
 import { Observable, of, throwError } from 'rxjs';
 
-import { User } from '../types/user';
+import { User } from '@models/user.model';
 
 interface UserApiResponse {
   error: boolean;

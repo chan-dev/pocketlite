@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
-import { Tag } from '../../types/tag';
+import { Tag } from '@models/tag.model';
 
 @Component({
   selector: 'app-tags',

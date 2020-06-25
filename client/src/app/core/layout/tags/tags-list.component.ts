@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { TagsService } from '../../services/tags.service';
-import { Tag } from '../../types/tag';
+import { Tag } from '@models/tag.model';
 
 @Component({
   selector: 'app-tags-list',

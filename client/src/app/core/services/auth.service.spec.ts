@@ -10,7 +10,7 @@ import {
 } from '@angular/common/http/testing';
 
 import { AuthService } from './auth.service';
-import { User } from '../types/user';
+import { User } from '@models/user.model';
 
 describe('AuthService', () => {
   let service: AuthService;

@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@models/*": ["./models/*"]
+    },
     "target": "es2015",
     "module": "commonjs",
     "rootDir": "./server",
