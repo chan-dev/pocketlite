@@ -24,6 +24,7 @@ const PORT = process.env.PORT || 3000;
 mongoose.connect(config.mongoose.dbUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useCreateIndex: true,
 });
 
 // populate req.cookies
