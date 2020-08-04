@@ -14,13 +14,17 @@ import { AuthService } from '../../services/auth.service';
 describe('GuestGuard', () => {
   let guard: GuestGuard;
   let httpMock: HttpTestingController;
+  let router: Router;
 
-  const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
+  const routerSpy = {
+    navigateByUrl: jasmine.createSpy('testRouter'),
+  };
+
   const redirectUrl = '/';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
+      imports: [HttpClientTestingModule],
       providers: [
         GuestGuard,
         AuthService,
@@ -31,7 +35,20 @@ describe('GuestGuard', () => {
       ],
     });
     guard = TestBed.inject(GuestGuard);
+    router = TestBed.inject(Router);
     httpMock = TestBed.inject(HttpTestingController);
+
+    // TODO: document in notion
+
+    // NOTE: this is important to clear cache so
+    // each test won't share a state
+    routerSpy.navigateByUrl.calls.reset();
+  });
+
+  afterEach(() => {
+    guard = null;
+    router = null;
+    httpMock.verify();
   });
 
   it('should be created', () => {
@@ -43,14 +60,12 @@ describe('GuestGuard', () => {
       currentUser$: of<User | null>(null),
     };
 
-    const localGuard = new GuestGuard(
-      fakeAuthService as AuthService,
-      routerSpy as Router
-    );
+    const localGuard = new GuestGuard(fakeAuthService as AuthService, router);
 
     localGuard.canActivate().subscribe(isGuest => {
+      console.log({ testingGuest: isGuest });
       expect(isGuest).toBe(true);
-      expect(routerSpy.navigateByUrl).not.toHaveBeenCalled();
+      expect(router.navigateByUrl).not.toHaveBeenCalled();
     });
   });
 
@@ -67,16 +82,13 @@ describe('GuestGuard', () => {
     const fakeAuthService = {
       currentUser$: of<User | null>(user),
     };
-    const localGuard = new GuestGuard(
-      fakeAuthService as AuthService,
-      routerSpy as Router
-    );
+    const localGuard = new GuestGuard(fakeAuthService as AuthService, router);
 
     localGuard.canActivate().subscribe(isGuest => {
       console.log({ isGuest });
       expect(isGuest).toBe(false);
-      expect(routerSpy.navigateByUrl).toHaveBeenCalled();
-      expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('/');
+      expect(router.navigateByUrl).toHaveBeenCalled();
+      expect(router.navigateByUrl).toHaveBeenCalledWith('/');
     });
   });
 
@@ -85,8 +97,8 @@ describe('GuestGuard', () => {
 
     guard.canActivate().subscribe(isGuest => {
       expect(isGuest).toBe(false);
-      expect(routerSpy.navigateByUrl).toHaveBeenCalled();
-      expect(routerSpy.navigateByUrl).toHaveBeenCalledWith(redirectUrl);
+      expect(router.navigateByUrl).toHaveBeenCalled();
+      expect(router.navigateByUrl).toHaveBeenCalledWith(redirectUrl);
     });
 
     // Response from API

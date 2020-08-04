@@ -1,5 +1,4 @@
 import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import {
   HttpClientTestingModule,
   HttpTestingController,
@@ -14,13 +13,17 @@ import { AuthService } from '../../services/auth.service';
 describe('AuthGuard', () => {
   let guard: AuthGuard;
   let httpMock: HttpTestingController;
+  let router: Router;
 
-  const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
+  const routerSpy = {
+    navigateByUrl: jasmine.createSpy('testRouter'),
+  };
+
   const redirectUrl = '/auth/login';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
+      imports: [HttpClientTestingModule],
       providers: [
         AuthGuard,
         AuthService,
@@ -32,6 +35,11 @@ describe('AuthGuard', () => {
     });
     guard = TestBed.inject(AuthGuard);
     httpMock = TestBed.inject(HttpTestingController);
+    router = TestBed.inject(Router);
+
+    // NOTE: this is important to clear cache so
+    // each test won't share a state
+    routerSpy.navigateByUrl.calls.reset();
   });
 
   it('should be created', () => {
@@ -51,14 +59,11 @@ describe('AuthGuard', () => {
     const fakeAuthService = {
       currentUser$: of<User | null>(user),
     };
-    const localGuard = new AuthGuard(
-      fakeAuthService as AuthService,
-      routerSpy as Router
-    );
+    const localGuard = new AuthGuard(fakeAuthService as AuthService, router);
 
     localGuard.canActivate().subscribe(isLoggedIn => {
       expect(isLoggedIn).toBe(true);
-      expect(routerSpy.navigateByUrl).not.toHaveBeenCalled();
+      expect(router.navigateByUrl).not.toHaveBeenCalled();
     });
   });
 
@@ -67,10 +72,7 @@ describe('AuthGuard', () => {
       currentUser$: of<User | null>(null),
     };
 
-    const localGuard = new AuthGuard(
-      fakeAuthService as AuthService,
-      routerSpy as Router
-    );
+    const localGuard = new AuthGuard(fakeAuthService as AuthService, router);
 
     localGuard.canActivate().subscribe(isLoggedIn => {
       expect(isLoggedIn).toBe(false);
