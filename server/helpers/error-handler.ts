@@ -7,7 +7,7 @@ export class ApiError extends Error {
   static RESOURCE_NOT_FOUND = 404;
   static INTERNAL_SERVER_ERROR = 500;
 
-  constructor(public statusCode: string | number, public message: string) {
+  constructor(public statusCode: number, public message: string) {
     super();
     this.statusCode = statusCode;
     this.message = message;
@@ -41,7 +41,7 @@ export function handleError(
   // This is to check for any uncaught exception
   const statusCode = 'statusCode' in error ? error.statusCode : 500;
 
-  return res.json({
+  return res.status(statusCode).json({
     statusCode,
     message: error.message,
   });
