@@ -76,7 +76,8 @@
             "customWebpackConfig": {
               "path": "extra-webpack.config.js"
             },
-            "browserTarget": "pocketlite:build"
+            "browserTarget": "pocketlite:build",
+            "proxyConfig": "src/proxy.conf.json"
           },
           "configurations": {
             "production": {
