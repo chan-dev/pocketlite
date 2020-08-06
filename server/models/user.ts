@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { User } from '@models/user.model';
 
 const userSchema = new mongoose.Schema({
   googleId: {
@@ -23,4 +24,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model('User', userSchema);
+type UserModel = User & mongoose.Document;
+
+export default mongoose.model<UserModel>('User', userSchema);
