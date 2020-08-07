@@ -1,6 +1,6 @@
 @tailwind base;
 @tailwind components;
-// TODO: move to other files
+
 .sidenav {
   @apply flex flex-col font-bold text-sm capitalize text-gray-800;
 }
@@ -23,7 +23,6 @@
 
 @tailwind utilities;
 
-// TODO: move to own file
 .center-between {
   @apply flex items-center justify-between;
 }
