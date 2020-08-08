@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { MaterialModule } from 'src/app/shared/material.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { HeaderComponent } from './header/header.component';
@@ -27,6 +28,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
     RouterModule,
     ReactiveFormsModule,
     HttpClientModule,
+    SharedModule,
     MaterialModule,
   ],
 })
