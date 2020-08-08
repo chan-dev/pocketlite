@@ -15,17 +15,19 @@
           *ngIf="!mediaQuery.matches"
         >
           <div
-            class="center-between border-b border-gray-200 h-12 py-1 px-3"
+            class="border-b border-gray-200 py-3 px-3"
             *ngIf="!mediaQuery.matches"
           >
-            <button class="inline-flex" (click)="toggleSidenav($event)">
-              <mat-icon>keyboard_arrow_left</mat-icon>
-            </button>
-            <button
-              class="text-sm py-1 px-3 capitalize hover:bg-green-900 bg-green-800 text-white font-bold p-1 rounded"
-            >
-              Upgrade
-            </button>
+            <div class="h-12 center-between">
+              <button class="inline-flex" (click)="toggleSidenav($event)">
+                <mat-icon>keyboard_arrow_left</mat-icon>
+              </button>
+              <button
+                class="text-sm py-1 px-3 capitalize hover:bg-green-900 bg-green-800 text-white font-bold p-1 rounded"
+              >
+                Upgrade
+              </button>
+            </div>
           </div>
         </section>
 
@@ -94,11 +96,13 @@
       <div data-test="sidenav-child-view" class="sidenav" *ngIf="isChildNav">
         <!-- top section -->
         <section class="sidenav__header top-section w-64 space-y-3 text-sm">
-          <div class="center-between border-b border-gray-200 h-12 py-1 px-3">
-            <button class="inline-flex" (click)="closeChildNav()">
-              <mat-icon>arrow_back</mat-icon>
-            </button>
-            <div class="flex-1 text-center font-normal">Tags</div>
+          <div class="border-b border-gray-200 py-3 px-3">
+            <div class="h-12 center-between">
+              <button class="inline-flex" (click)="closeChildNav()">
+                <mat-icon>arrow_back</mat-icon>
+              </button>
+              <div class="flex-1 text-center font-normal">Tags</div>
+            </div>
           </div>
         </section>
 
