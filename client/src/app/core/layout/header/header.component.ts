@@ -9,11 +9,34 @@ import { SidenavService } from '../../services/sidenav.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent implements OnInit {
+  searchboxVisible = false;
+  addLinkFormVisible = false;
+
   constructor(private sidenavService: SidenavService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // TODO: create a HTTP request to retrieve jwt cookies
+  }
 
   toggleSidenav() {
     this.sidenavService.toggle();
   }
+
+  showSearchBox() {
+    this.searchboxVisible = true;
+  }
+
+  showAddLinkForm() {
+    this.addLinkFormVisible = true;
+  }
+
+  cancelSearch() {
+    this.searchboxVisible = false;
+  }
+
+  cancelAddLink() {
+    this.addLinkFormVisible = false;
+  }
+
+  searchBookmarks(event) {}
 }

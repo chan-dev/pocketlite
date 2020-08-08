@@ -1,0 +1,31 @@
+<div data-test="search-box" class="search-box px-2">
+  <div class="flex -mx-2">
+    <div class="px-2 flex-1">
+      <input
+        appAutoFocus
+        type="text"
+        class="search-box__input h-full w-full outline-none border px-2 text-gray-900"
+        placeholder="Search"
+        #searchTerm
+        (keyup.enter)="search.emit(searchTerm.value)"
+      />
+    </div>
+    <div class="px-2">
+      <div class="search-box__action inline-flex items-center space-x-2">
+        <button
+          type="button"
+          class="search-box__cancel hover:bg-gray-200 bg-transparent border rounded-md px-4 py-2 text-gray-900 font-bold"
+          (click)="cancel.emit()"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="search-box__done hover:bg-blue-700 bg-blue-600 rounded-md px-4 py-2 text-white font-bold"
+        >
+          Search
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

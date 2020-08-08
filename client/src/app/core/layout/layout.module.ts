@@ -13,6 +13,8 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { TagsComponent } from './tags/tags.component';
 import { TagsListComponent } from './tags/tags-list.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { SearchBoxComponent } from './search-box/search-box.component';
+import { AddLinkFormComponent } from './add-link-form/add-link-form.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
     TagsComponent,
     TagsListComponent,
     NotFoundComponent,
+    SearchBoxComponent,
+    AddLinkFormComponent,
   ],
   imports: [
     CommonModule,

@@ -15,23 +15,39 @@
         <span class="ml-1 text-xl">pocket</span>
       </h1>
     </div>
+    <div class="search-box-container flex-1" *ngIf="searchboxVisible">
+      <app-search-box
+        (search)="searchBookmarks($event)"
+        (cancel)="cancelSearch()"
+      ></app-search-box>
+    </div>
+    <div class="search-box-container flex-1" *ngIf="addLinkFormVisible">
+      <app-add-link-form (cancel)="cancelAddLink()"></app-add-link-form>
+    </div>
 
-    <div class="header__actions flex items-center">
+    <div
+      class="header__actions flex items-center"
+      *ngIf="!searchboxVisible && !addLinkFormVisible"
+    >
       <ul class="flex space-x-1 mr-1">
         <li class="cursor-pointer inline-flex">
           <button
-            class="inline-flex"
+            data-test="search-btn"
+            class="search-btn inline-flex"
             matTooltipPosition="below"
             matTooltip="search"
+            (click)="showSearchBox()"
           >
             <mat-icon class="hover:text-gray-900">search</mat-icon>
           </button>
         </li>
         <li class="cursor-pointer inline-flex">
           <button
-            class="inline-flex"
+            data-test="add-link-btn"
+            class="add-link-btn inline-flex"
             matTooltipPosition="below"
             matTooltip="add"
+            (click)="showAddLinkForm()"
           >
             <mat-icon class="hover:text-gray-900">add</mat-icon>
           </button>
