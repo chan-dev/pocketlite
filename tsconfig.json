@@ -4,13 +4,13 @@
     "paths": {
       "@models/*": ["./models/*"]
     },
-    "target": "es2015",
+    "target": "es2018",
     "module": "commonjs",
-    "rootDir": "./server",
+    "rootDir": ".",
     "outDir": "./build",
     "esModuleInterop": true,
     "strict": true,
-    "typeRoots": ["node_modules/@types"]
+    "typeRoots": ["node_modules/@types"],
   },
-  "exclude": ["node_modules/"]
+  "exclude": ["node_modules/", "client/**/*"]
 }
