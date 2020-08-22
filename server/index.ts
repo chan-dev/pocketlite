@@ -6,16 +6,19 @@ import cors from 'cors';
 import csurf from 'csurf';
 
 import config from './config/keys';
+import { handleError, ApiError } from './helpers/error-handler';
 import googleOauth2Setup from './strategies/google-oauth';
 import jwtSetup from './strategies/jwt';
 import authRoutes from './routes/auth';
-import { handleError, ApiError } from './helpers/error-handler';
 
 const app = express();
 const db = mongoose.connection;
 
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function () {
+db.on('error', () => {
+  console.error('connection error:');
+  process.exit(1);
+});
+db.once('open', () => {
   console.log('db has been connected');
 });
 
@@ -77,11 +80,16 @@ app.get(
 //   res.sendFile(path.join(__dirname, '../client/dist/pocketlite/index.html'));
 // });
 
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
+  next(ApiError.resourceNotFound('Resource Not Found'));
+});
+
+app.use((err: ApiError, req: Request, res: Response, next: NextFunction) => {
   if (app.get('env') === 'development') {
     console.error(err.stack);
   }
-  handleError(err, res);
+
+  return handleError(err, res);
 });
 
 app.listen(PORT, () => {
