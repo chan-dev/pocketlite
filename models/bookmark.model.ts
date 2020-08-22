@@ -4,10 +4,13 @@ export interface Bookmark {
   id: string;
   title: string;
   description: string;
-  image: string;
-  author: string;
-  type: string;
+  image: string | null;
+  /* author: string; */
+  type: string | null;
   url: string;
+  canonicalUrl: string;
+  followsRedirect: boolean;
   user_id: string;
-  tags: Tag[];
+  contentInMarkdown: string;
+  tags?: Tag[];
 }

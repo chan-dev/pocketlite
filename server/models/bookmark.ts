@@ -12,19 +12,30 @@ const bookSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    required: true,
+    default: '',
   },
-  author: {
-    type: String,
-    required: true,
-  },
+  /* author: { */
+  /*   type: String, */
+  /*   // required: true, */
+  /* }, */
   type: {
     type: String,
-    require: true,
+    default: '',
   },
   url: {
     type: String,
     require: true,
+  },
+  canonicalUrl: {
+    type: String,
+    default: '',
+  },
+  followsRedirect: {
+    type: Boolean,
+  },
+  contentInMarkdown: {
+    type: String,
+    default: '',
   },
   tags: [
     {
