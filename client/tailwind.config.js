@@ -7,4 +7,7 @@ module.exports = {
     display: ['responsive', 'hover', 'focus', 'group-hover'],
   },
   plugins: [],
+  future: {
+    removeDeprecatedGapUtilities: true,
+  },
 };
