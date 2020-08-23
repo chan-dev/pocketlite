@@ -1,4 +1,2 @@
-build
-node_modules
-server/config/keys.ts
 tasks.md
+notes.md
