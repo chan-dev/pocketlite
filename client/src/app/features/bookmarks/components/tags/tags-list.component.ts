@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { TagsService } from '../../../../core/services/tags.service';
+import { TagsService } from '../../services/tags.service';
 import { Tag } from '@models/tag.model';
 
 @Component({
