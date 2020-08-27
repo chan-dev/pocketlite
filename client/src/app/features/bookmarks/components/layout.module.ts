@@ -4,8 +4,8 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
-import { MaterialModule } from 'src/app/shared/material.module';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { MaterialModule } from '../../../shared/material.module';
+import { SharedModule } from '../../../shared/shared.module';
 
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { HeaderComponent } from './header/header.component';
@@ -34,6 +34,16 @@ import { AddLinkFormComponent } from './add-link-form/add-link-form.component';
     HttpClientModule,
     SharedModule,
     MaterialModule,
+  ],
+  exports: [
+    MainLayoutComponent,
+    HeaderComponent,
+    SidenavComponent,
+    TagsComponent,
+    TagsListComponent,
+    NotFoundComponent,
+    SearchBoxComponent,
+    AddLinkFormComponent,
   ],
 })
 export class LayoutModule {}

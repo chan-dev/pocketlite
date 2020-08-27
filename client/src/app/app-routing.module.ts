@@ -3,16 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from './core/auth/guards/auth.guard';
 import { GuestGuard } from './core/auth/guards/guest.guard';
-import { MainLayoutComponent } from './core/layout/main-layout/main-layout.component';
-import { NotFoundComponent } from './core/layout/not-found/not-found.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: MainLayoutComponent,
     pathMatch: 'full',
-    canActivate: [AuthGuard],
-    // children: []
+    redirectTo: '/bookmarks',
   },
   {
     path: 'auth',
@@ -21,9 +17,17 @@ const routes: Routes = [
     canLoad: [GuestGuard],
   },
   {
-    path: '**',
-    component: NotFoundComponent,
+    path: 'bookmarks',
+    loadChildren: () =>
+      import('./features/bookmarks/bookmarks.module').then(
+        m => m.BookmarksModule
+      ),
+    canActivate: [AuthGuard],
   },
+  /* { */
+  /*   path: '**', */
+  /*   component: NotFoundComponent, */
+  /* }, */
 ];
 
 @NgModule({

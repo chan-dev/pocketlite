@@ -5,8 +5,6 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
 
-import { LayoutModule } from './layout/layout.module';
-
 @NgModule({
   declarations: [],
   imports: [
@@ -21,7 +19,6 @@ import { LayoutModule } from './layout/layout.module';
       cookieName: 'XSRF-TOKEN',
       headerName: 'X-XSRF-TOKEN',
     }),
-    LayoutModule,
   ],
   exports: [],
 })

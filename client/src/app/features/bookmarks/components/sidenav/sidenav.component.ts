@@ -10,7 +10,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Subscription } from 'rxjs';
 
-import { SidenavService } from '../../services/sidenav.service';
+import { SidenavService } from '../../../../core/services/sidenav.service';
 
 @Component({
   selector: 'app-sidenav',
