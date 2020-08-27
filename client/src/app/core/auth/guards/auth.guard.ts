@@ -9,7 +9,7 @@ import {
 import { map, catchError, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../services/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {

@@ -4,7 +4,7 @@ import { CanActivate, Router, CanLoad } from '@angular/router';
 import { map, catchError } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../services/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class GuestGuard implements CanActivate, CanLoad {

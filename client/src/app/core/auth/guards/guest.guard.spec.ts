@@ -9,7 +9,7 @@ import { of } from 'rxjs';
 
 import { User } from '@models/user.model';
 import { GuestGuard } from './guest.guard';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../services/auth.service';
 
 describe('GuestGuard', () => {
   let guard: GuestGuard;

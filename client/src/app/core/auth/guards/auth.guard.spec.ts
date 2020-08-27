@@ -8,7 +8,7 @@ import { of } from 'rxjs';
 
 import { User } from '@models/user.model';
 import { AuthGuard } from './auth.guard';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../services/auth.service';
 
 describe('AuthGuard', () => {
   let guard: AuthGuard;
