@@ -1,9 +1,9 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
-  selector: 'app-main-layout',
-  templateUrl: './main-layout.component.html',
+  selector: 'app-bookmarks-page',
+  templateUrl: './bookmarks-page.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MainLayoutComponent {}
+export class BookmarksPageComponent {}

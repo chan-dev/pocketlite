@@ -8,7 +8,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { BookmarksRoutingModule } from './bookmarks-routing.module';
 
-import { MainLayoutComponent } from './components/main-layout/main-layout.component';
+import { BookmarksPageComponent } from './containers/bookmarks-page/bookmarks-page.component';
 import { HeaderComponent } from './components/header/header.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { TagsComponent } from './components/tags/tags.component';
@@ -18,7 +18,7 @@ import { AddLinkFormComponent } from './components/add-link-form/add-link-form.c
 
 @NgModule({
   declarations: [
-    MainLayoutComponent,
+    BookmarksPageComponent,
     HeaderComponent,
     SidenavComponent,
     TagsComponent,

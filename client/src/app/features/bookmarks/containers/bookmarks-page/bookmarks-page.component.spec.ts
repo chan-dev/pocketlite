@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MainLayoutComponent } from './main-layout.component';
+import { BookmarksPageComponent } from './bookmarks-page.component';
 
 describe('MainLayoutComponent', () => {
-  let component: MainLayoutComponent;
-  let fixture: ComponentFixture<MainLayoutComponent>;
+  let component: BookmarksPageComponent;
+  let fixture: ComponentFixture<BookmarksPageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [MainLayoutComponent],
+      declarations: [BookmarksPageComponent],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MainLayoutComponent);
+    fixture = TestBed.createComponent(BookmarksPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
