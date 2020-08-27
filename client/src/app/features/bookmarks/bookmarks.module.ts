@@ -13,7 +13,6 @@ import { HeaderComponent } from './components/header/header.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { TagsComponent } from './components/tags/tags.component';
 import { TagsListComponent } from './components/tags/tags-list.component';
-import { NotFoundComponent } from './components/not-found/not-found.component';
 import { SearchBoxComponent } from './components/search-box/search-box.component';
 import { AddLinkFormComponent } from './components/add-link-form/add-link-form.component';
 
@@ -24,7 +23,6 @@ import { AddLinkFormComponent } from './components/add-link-form/add-link-form.c
     SidenavComponent,
     TagsComponent,
     TagsListComponent,
-    NotFoundComponent,
     SearchBoxComponent,
     AddLinkFormComponent,
   ],

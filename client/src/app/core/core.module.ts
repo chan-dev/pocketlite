@@ -5,8 +5,10 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
 
+import { NotFoundComponent } from './components/not-found/not-found.component';
+
 @NgModule({
-  declarations: [],
+  declarations: [NotFoundComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

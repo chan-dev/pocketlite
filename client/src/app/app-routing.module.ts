@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from './core/auth/guards/auth.guard';
 import { GuestGuard } from './core/auth/guards/guest.guard';
+import { NotFoundComponent } from './core/components/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -24,10 +25,10 @@ const routes: Routes = [
       ),
     canActivate: [AuthGuard],
   },
-  /* { */
-  /*   path: '**', */
-  /*   component: NotFoundComponent, */
-  /* }, */
+  {
+    path: '**',
+    component: NotFoundComponent,
+  },
 ];
 
 @NgModule({
