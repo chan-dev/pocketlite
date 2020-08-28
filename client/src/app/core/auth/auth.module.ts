@@ -10,7 +10,7 @@ import { MaterialModule } from 'src/app/shared/material.module';
 import { AuthRoutingModule } from './auth-routing.module';
 
 import { authReducer, AuthEffects } from './state';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './components/login/login.component';
 import { CallbackComponent } from './components/callback/callback.component';
 
 @NgModule({
