@@ -20,6 +20,6 @@ export default {
   mongoose: {
     dbUrl: '',
   },
-  redirectUrl: '',
-  allowedDomain: '',
+  redirectUrl: 'client_url/auth/callback', // client url where the server will redirect to once authenticated
+  allowedDomain: 'client_url',
 };
