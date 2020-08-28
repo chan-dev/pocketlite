@@ -6,6 +6,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
 
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+
+import { AuthModule } from './auth/auth.module';
+
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [NotFoundComponent],
@@ -21,7 +28,21 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
       cookieName: 'XSRF-TOKEN',
       headerName: 'X-XSRF-TOKEN',
     }),
+    // we don't have state available upfront
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([]),
+    StoreDevtoolsModule.instrument({
+      name: 'PocketLite',
+      logOnly: environment.production,
+    }),
+    AuthModule,
   ],
-  exports: [],
+  exports: [
+    AuthModule,
+    // BrowserModule,
+    // BrowserAnimationsModule,
+    // RouterModule,
+    // ReactiveFormsModule,
+  ],
 })
 export class CoreModule {}

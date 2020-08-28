@@ -3,14 +3,18 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 import { MaterialModule } from 'src/app/shared/material.module';
-
-import { LoginComponent } from './login/login.component';
 import { AuthRoutingModule } from './auth-routing.module';
 
+import { authReducer, AuthEffects } from './state';
+import { LoginComponent } from './login/login.component';
+import { CallbackComponent } from './components/callback/callback.component';
+
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [LoginComponent, CallbackComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -18,6 +22,8 @@ import { AuthRoutingModule } from './auth-routing.module';
     HttpClientModule,
     MaterialModule,
     AuthRoutingModule,
+    StoreModule.forFeature('auth', authReducer),
+    EffectsModule.forFeature([AuthEffects]),
   ],
 })
 export class AuthModule {}

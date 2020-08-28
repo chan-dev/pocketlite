@@ -19,11 +19,15 @@ interface UserApiResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  successRedirectUrl = '/';
+  failureRedirectUrl = '/auth/login';
+
   currentUser$: Observable<User | null> = this.fetchCurrentUser();
 
   constructor(private http: HttpClient) {}
 
   login() {
+    // oauth2 login
     const url = '/api/auth/google';
     return this.http.get(url).pipe(tap(result => console.log({ result })));
   }
@@ -47,6 +51,7 @@ export class AuthService {
           console.log({ err });
           return err.status === 401 ? of(null) : throwError(err);
         }),
+        // TODO: should we remove this since only AuthEffect will use this
         shareReplay(1)
       );
   }

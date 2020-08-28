@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
 import { CanActivate, Router, CanLoad } from '@angular/router';
-import { map, catchError } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { map, catchError, take } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 
-import { AuthService } from '../services/auth.service';
+import * as fromAuth from '@app/core/auth/state';
 
 @Injectable({ providedIn: 'root' })
 export class GuestGuard implements CanActivate, CanLoad {
   private redirectUrl = '/';
-  private isGuest$ = this.authService.currentUser$.pipe(
-    map(user => !!user),
+  // private isLoggedIn$: Observable<boolean>;
+  private isLoggedIn$ = this.store.select(fromAuth.selectIsLoggedIn);
+
+  private isGuest$ = this.isLoggedIn$.pipe(
+    take(1),
     map(isLoggedIn => {
       if (isLoggedIn) {
         this.router.navigateByUrl(this.redirectUrl);
@@ -18,19 +21,19 @@ export class GuestGuard implements CanActivate, CanLoad {
       }
       return true;
     }),
-    catchError((err: HttpErrorResponse) => {
+    catchError(() => {
       this.router.navigateByUrl(this.redirectUrl);
       return of(false);
     })
   );
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private store: Store, private router: Router) {}
 
   canLoad(): Observable<boolean> | Promise<boolean> | boolean {
     return this.isGuest$;
   }
 
-  canActivate() {
+  canActivate(): Observable<boolean> {
     return this.isGuest$;
   }
 }

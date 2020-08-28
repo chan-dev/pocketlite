@@ -1,24 +1,22 @@
 import { Injectable } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  RouterStateSnapshot,
-  Router,
-} from '@angular/router';
-import { map, catchError, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { CanActivate, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { map, catchError, take } from 'rxjs/operators';
+import { of, Observable } from 'rxjs';
 
-import { AuthService } from '../services/auth.service';
+import * as fromAuth from '@app/core/auth/state';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
   private redirectUrl = '/auth/login';
-  constructor(private authService: AuthService, private router: Router) {}
+  private isLoggedIn$: Observable<boolean>;
+  constructor(private store: Store, private router: Router) {
+    this.isLoggedIn$ = this.store.select(fromAuth.selectIsLoggedIn);
+  }
 
   canActivate() {
-    return this.authService.currentUser$.pipe(
-      map(user => !!user),
+    return this.isLoggedIn$.pipe(
+      take(1),
       map(isLoggedIn => {
         if (!isLoggedIn) {
           this.router.navigateByUrl(this.redirectUrl);
@@ -26,7 +24,7 @@ export class AuthGuard implements CanActivate {
         }
         return true;
       }),
-      catchError((err: HttpErrorResponse) => {
+      catchError(() => {
         this.router.navigateByUrl(this.redirectUrl);
         return of(false);
       })
