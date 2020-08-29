@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<mat-dialog-content class="mat-typography">
+  {{ data.message }}
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button
+    class="hover:bg-gray-200 border-gray-200 p-1 rounded"
+    mat-button
+    mat-dialog-close
+    (click)="cancel()"
+  >
+    {{ data.cancelText }}
+  </button>
+  <button
+    class="hover:bg-red-600 bg-red-500 ml-2 p-1 rounded text-white"
+    mat-button
+    [mat-dialog-close]="true"
+    cdkFocusInitial
+    (click)="confirm()"
+  >
+    {{ data.confirmText }}
+  </button>
+</mat-dialog-actions>

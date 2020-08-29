@@ -12,6 +12,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { localStorageSync } from 'ngrx-store-localstorage';
 
 import { AuthModule } from './auth/auth.module';
+import { ConfirmDialogModule } from '@app/shared/confirm-dialog/confirm-dialog.module';
 
 import { environment } from 'src/environments/environment';
 
@@ -51,9 +52,11 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
       logOnly: environment.production,
     }),
     AuthModule,
+    ConfirmDialogModule,
   ],
   exports: [
     AuthModule,
+    ConfirmDialogModule,
     // BrowserModule,
     // BrowserAnimationsModule,
     // RouterModule,
