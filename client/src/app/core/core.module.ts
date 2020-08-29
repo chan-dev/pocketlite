@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
@@ -13,10 +13,13 @@ import { localStorageSync } from 'ngrx-store-localstorage';
 
 import { AuthModule } from './auth/auth.module';
 import { ConfirmDialogModule } from '@app/shared/confirm-dialog/confirm-dialog.module';
+import { ErrorModule } from '@app/core/error/error.module';
 
 import { environment } from 'src/environments/environment';
 
 import { reducers } from './core.state';
+import { RollbarService, rollbarFactory } from './rollbar';
+import { AppErrorHandlerService } from './error/app-error-handler.service';
 import { CustomSerializer } from './helpers/custom-serializer';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
@@ -53,14 +56,26 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     }),
     AuthModule,
     ConfirmDialogModule,
+    ErrorModule,
   ],
   exports: [
     AuthModule,
     ConfirmDialogModule,
+    ErrorModule,
     // BrowserModule,
     // BrowserAnimationsModule,
     // RouterModule,
     // ReactiveFormsModule,
+  ],
+  providers: [
+    {
+      provide: ErrorHandler,
+      useClass: AppErrorHandlerService,
+    },
+    {
+      provide: RollbarService,
+      useFactory: rollbarFactory,
+    },
   ],
 })
 export class CoreModule {}
