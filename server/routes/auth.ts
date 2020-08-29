@@ -49,7 +49,7 @@ router.get(
   }
 );
 
-router.get('/logout', (req: Request, res: Response) => {
+router.post('/logout', (req: Request, res: Response) => {
   req.logout();
   // NOTE: in order to clear cookie, the cookie must have the same configuration
   // as when you set the cookie
@@ -60,7 +60,10 @@ router.get('/logout', (req: Request, res: Response) => {
   res.clearCookie(config.csurf.cookieName, {
     maxAge: 0,
   });
-  res.redirect(config.redirectUrl);
+  // TODO: make sure the json response are consistent
+  return res.json({
+    message: 'Logout success',
+  });
 });
 
 // TODO: request this on client
@@ -69,6 +72,12 @@ router.get(
   passport.authenticate('jwt', { session: false, failWithError: true }),
   (req: Request, res: Response) => {
     console.log('we still access this route');
+    // NOTE: we no longer need to acquire the cookie
+    // on frontend since it's automatically passed in request
+    // and in the backend, the cookie-parser with extract the jwt
+    console.log({
+      tokenInCookie: req.cookies['jwt'],
+    });
     return res.json({
       error: false,
       message: 'Token fetched',
@@ -77,15 +86,18 @@ router.get(
   },
   // error handler with failWithError enabled
   (err: Error, req: Request, res: Response, next: NextFunction) => {
-    return next(ApiError.unauthenticated('Jwt authentication error'));
+    next(ApiError.unauthenticated('Jwt authentication error'));
   }
 );
 
 router.get('/error', (req: Request, res: Response) => {
-  res.status(401).json({
-    error: true,
-    message: 'login failed',
-  });
+  /* res.status(401).json({ */
+  /*   error: true, */
+  /*   message: 'login failed', */
+  /* }); */
+  // TODO: should we call next(error) here or just throw
+  // since this is just an synchronous one
+  throw ApiError.unauthenticated('Login failed');
 });
 
 export default router;
