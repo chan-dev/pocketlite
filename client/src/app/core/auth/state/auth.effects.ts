@@ -6,6 +6,7 @@ import { EMPTY, of } from 'rxjs';
 import { tap, exhaustMap, map, catchError } from 'rxjs/operators';
 
 import { AuthService } from '../services/auth.service';
+import { ConfirmDialogService } from '@app/shared/confirm-dialog/confirm-dialog.service';
 import * as authActions from './auth.actions';
 
 @Injectable({
@@ -71,6 +72,28 @@ export class AuthEffects {
   logout$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(authActions.logout),
+      exhaustMap(() => {
+        this.confirmDialogService.open({
+          title: 'Confirm Logout',
+          message: 'Are you sure you want to logout?',
+          cancelText: 'Cancel',
+          confirmText: 'Logout',
+        });
+
+        return this.confirmDialogService.confirmed().pipe(
+          map(confirm => {
+            return confirm
+              ? authActions.logoutConfirm()
+              : authActions.logoutCancel();
+          })
+        );
+      })
+    );
+  });
+
+  logoutConfirm$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(authActions.logoutConfirm),
       exhaustMap(() =>
         this.authService.logout().pipe(
           map(() => authActions.logoutSuccess()),
@@ -107,6 +130,7 @@ export class AuthEffects {
     private router: Router,
     private store: Store<any>,
     private actions$: Actions,
-    private authService: AuthService
+    private authService: AuthService,
+    private confirmDialogService: ConfirmDialogService
   ) {}
 }

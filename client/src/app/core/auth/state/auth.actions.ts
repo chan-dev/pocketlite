@@ -14,6 +14,12 @@ export const loginFailure = createAction(
 );
 
 export const logout = createAction('[Header] Logout');
+export const logoutConfirm = createAction(
+  '[ConfirmDialogComponent] Logout Confirm'
+);
+export const logoutCancel = createAction(
+  '[ConfirmDialogComponent] Logout Cancel'
+);
 export const logoutSuccess = createAction('[Auth API] Logout Success');
 export const logoutFailure = createAction(
   '[Auth API] Logout Failure',
