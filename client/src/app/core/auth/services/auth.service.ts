@@ -19,9 +19,6 @@ interface UserApiResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  successRedirectUrl = '/';
-  failureRedirectUrl = '/auth/login';
-
   currentUser$: Observable<User | null> = this.fetchCurrentUser();
 
   constructor(private http: HttpClient) {}
@@ -54,5 +51,10 @@ export class AuthService {
         // TODO: should we remove this since only AuthEffect will use this
         shareReplay(1)
       );
+  }
+
+  logout() {
+    // will be redirected by proxy to localhost:3000/api/auth/logout
+    return this.http.post('/api/auth/logout', {});
   }
 }

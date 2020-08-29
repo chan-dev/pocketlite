@@ -12,6 +12,16 @@ import * as authActions from './auth.actions';
   providedIn: 'root',
 })
 export class AuthEffects {
+  private redirects = {
+    login: {
+      success: '/',
+      failure: '/auth/login',
+    },
+    logout: {
+      success: '/auth/login',
+      failure: '/',
+    },
+  };
   login$ = createEffect(
     () => {
       return this.actions$.pipe(
@@ -38,7 +48,7 @@ export class AuthEffects {
     () => {
       return this.actions$.pipe(
         ofType(authActions.loginSuccess),
-        tap(() => this.router.navigate([this.authService.successRedirectUrl]))
+        tap(() => this.router.navigate([this.redirects.login.success]))
       );
     },
     { dispatch: false }
@@ -48,9 +58,9 @@ export class AuthEffects {
     () => {
       return this.actions$.pipe(
         ofType(authActions.loginFailure),
-        tap(err => {
-          console.error(err);
-          this.router.navigate([this.authService.failureRedirectUrl]);
+        tap(error => {
+          console.error(error);
+          this.router.navigate([this.redirects.login.failure]);
         })
       );
     },
@@ -58,6 +68,40 @@ export class AuthEffects {
   );
 
   // TODO: logout effects
+  logout$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(authActions.logout),
+      exhaustMap(() =>
+        this.authService.logout().pipe(
+          map(() => authActions.logoutSuccess()),
+          catchError(error => of(authActions.logoutFailure({ error })))
+        )
+      )
+    );
+  });
+
+  logoutSuccessRedirect$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(authActions.logoutSuccess),
+        tap(() => this.router.navigate([this.redirects.logout.success]))
+      );
+    },
+    { dispatch: false }
+  );
+
+  logoutFailureRedirect$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(authActions.logoutFailure),
+        tap(error => {
+          console.error(error);
+          this.router.navigate([this.redirects.logout.failure]);
+        })
+      );
+    },
+    { dispatch: false }
+  );
 
   constructor(
     private router: Router,

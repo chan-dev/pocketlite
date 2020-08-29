@@ -1,5 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Store } from '@ngrx/store';
 
+import * as fromAuth from '@app/core/auth/state';
 import { SidenavService } from '../../services/sidenav.service';
 
 @Component({
@@ -12,7 +14,7 @@ export class HeaderComponent implements OnInit {
   searchboxVisible = false;
   addLinkFormVisible = false;
 
-  constructor(private sidenavService: SidenavService) {}
+  constructor(private sidenavService: SidenavService, private store: Store) {}
 
   ngOnInit(): void {
     // TODO: create a HTTP request to retrieve jwt cookies
@@ -39,4 +41,9 @@ export class HeaderComponent implements OnInit {
   }
 
   searchBookmarks(event) {}
+
+  logout(event) {
+    // TODO: dispatch Logout action
+    this.store.dispatch(fromAuth.logout());
+  }
 }

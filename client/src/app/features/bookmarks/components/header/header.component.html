@@ -66,6 +66,7 @@
         </li>
         <!-- TODO: just for testing -->
         <li class="cursor-pointer inline-flex">
+          <!-- TODO: replace with button and attach a click handler for logout -->
           <a
             class="inline-flex"
             matTooltipPosition="below"
@@ -77,15 +78,15 @@
           <!-- <a href="/api/auth/google">Login</a> -->
         </li>
         <li class="cursor-pointer inline-flex">
-          <a
+          <button
             class="inline-flex"
             matTooltipPosition="below"
             matTooltip="logout"
-            href="http://localhost:3000/api/auth/logout"
+            type="button"
+            (click)="logout($event)"
           >
             <mat-icon class="hover:text-gray-900">logout</mat-icon>
-          </a>
-          <!-- <a href="/api/auth/google">Login</a> -->
+          </button>
         </li>
       </ul>
       <div class="account-menu">
