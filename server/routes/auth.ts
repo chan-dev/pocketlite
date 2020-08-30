@@ -30,12 +30,9 @@ router.get(
       redirectUrl,
     } = config;
 
-    const token = jwt.sign(
-      {
-        user: req.user,
-      },
-      secretKey
-    );
+    // NOTE: req.user here is Mongoose document w/c is extracted from
+    // the passport google's serializerUser done(null, user) callback
+    const token = jwt.sign((req.user as any).toJSON(), secretKey);
 
     const dayInMs = 24 * 60 * 60 * 1000;
     res.cookie(config.jwt.cookieName, token, {

@@ -48,6 +48,8 @@ export default (): void => {
     // we'll just depend on the JWT, so we pass the entire user data
     // if you use cookieSession, you need to pass just the id and use deserializeUser
     // to query the document in the database
+    //
+    // the value passed here will be set as the req.user w/c is a mongoose document
     done(null, user);
   });
 
