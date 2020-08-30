@@ -1,2 +1,6 @@
 tasks.md
 notes.md
+
+# Vscode REST Client extension files
+*.rest
+*.http
