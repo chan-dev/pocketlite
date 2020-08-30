@@ -45,3 +45,17 @@ const bookmarksReducer = createReducer(
 export function reducer(state: State | undefined, action: Action) {
   return bookmarksReducer(state, action);
 }
+
+// Selectors
+const {
+  selectIds,
+  selectEntities,
+  selectAll,
+  selectTotal,
+} = adapter.getSelectors();
+
+// selector aliases
+export const selectBookmarksIds = selectIds;
+export const selectBookmarksEntities = selectEntities;
+export const selectBookmarks = selectAll;
+export const selectBookmarksCount = selectTotal;

@@ -10,7 +10,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { BookmarksRoutingModule } from './bookmarks-routing.module';
 
-import { reducer, BookmarkEffects } from './state';
+import { reducers, BookmarkEffects } from './state';
 import { BookmarksPageComponent } from './containers/bookmarks-page/bookmarks-page.component';
 import { HeaderComponent } from './components/header/header.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
@@ -37,7 +37,7 @@ import { AddLinkFormComponent } from './components/add-link-form/add-link-form.c
     SharedModule,
     MaterialModule,
     BookmarksRoutingModule,
-    StoreModule.forFeature('bookmarks', reducer),
+    StoreModule.forFeature('bookmarks', reducers),
     EffectsModule.forFeature([BookmarkEffects]),
   ],
 })
