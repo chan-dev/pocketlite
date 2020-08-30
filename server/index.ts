@@ -14,6 +14,13 @@ import bookmarkRoutes from './routes/bookmarks';
 
 const app = express();
 const db = mongoose.connection;
+mongoose.set('toJSON', {
+  virtuals: true,
+  transform: (doc: any, converted: any) => {
+    delete converted._id;
+    delete converted.__v;
+  },
+});
 
 db.on('error', () => {
   console.error('connection error:');
