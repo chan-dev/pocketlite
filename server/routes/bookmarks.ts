@@ -3,19 +3,16 @@ import passport from 'passport';
 
 import Bookmark from '../models/bookmark';
 import { ApiError } from '../helpers/error-handler';
+import authJwt from '../middlewares/auth-jwt';
 
 const router = express.Router();
 
 router.get(
   '/',
-  passport.authenticate('jwt', { session: false, failWithError: true }),
+  authJwt,
   async (req: Request, res: Response) => {
-    const bookmarks = await Bookmark.find().exec();
+    const bookmarks = (res as any).paginatedResults;
     return res.json({ bookmarks });
-  },
-  (err: Error, req: Request, res: Response, next: NextFunction) => {
-    return next(ApiError.unauthenticated('Jwt authentication error'));
   }
 );
-
 export default router;
