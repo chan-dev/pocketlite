@@ -1,4 +1,5 @@
-import express, { Response, Request, NextFunction } from 'express';
+import path from 'path';
+import express from 'express';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import mongoose from 'mongoose';
@@ -6,11 +7,11 @@ import cors from 'cors';
 import csurf from 'csurf';
 
 import config from './config/keys';
-import { handleError, ApiError } from './helpers/error-handler';
 import googleOauth2Setup from './strategies/google-oauth';
 import jwtSetup from './strategies/jwt';
 import authRoutes from './routes/auth';
 import bookmarkRoutes from './routes/bookmarks';
+import * as error from './middlewares/error';
 
 const app = express();
 const db = mongoose.connection;
@@ -53,53 +54,33 @@ app.use(
   })
 );
 
-app.use(
-  cors({
-    // TODO: update this one
-    // frontend domain
-    origin: config.allowedDomain, // allow to server to accept request from different origin
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE, OPTIONS',
-    // Configures the Access-Control-Allow-Credentials CORS header.
-    credentials: true, // allow session cookie from browser to pass thru
-  })
-);
+const corsConfig = {
+  // TODO: update this one
+  // frontend domain
+  origin: config.allowedDomain, // allow to server to accept request from different origin
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  // Configures the Access-Control-Allow-Credentials CORS header.
+  credentials: true, // allow session cookie from browser to pass thru
+};
+/* app.options('*', cors(corsConfig)); */
+app.use(cors(corsConfig));
 
 googleOauth2Setup();
 jwtSetup();
 
-// app.use(express.static(path.join(__dirname, '../client/dist/pocketlite')));
-
 app.use('/api/auth', authRoutes);
 app.use('/api/bookmarks', bookmarkRoutes);
 
-app.get('/', (req: Request, res: Response, next) => {
-  res.send('node + typescript + eslint boilerplate');
-});
-
-app.get(
-  '/protected',
-  passport.authenticate('jwt', { session: false }),
-  (req: Request, res: Response) => {
-    console.log('access granted');
-  }
-);
+// app.get('/', express.static(path.join(__dirname, '../client/dist/pocketlite')));
 
 // defer everything else to client-side routing
 // app.get('*', (req, res) => {
 //   res.sendFile(path.join(__dirname, '../client/dist/pocketlite/index.html'));
 // });
+app.get('/', express.static(path.join(__dirname, '../client/dist/pocketlite')));
 
-app.use((req: Request, res: Response, next: NextFunction) => {
-  next(ApiError.resourceNotFound('Resource Not Found'));
-});
-
-app.use((err: ApiError, req: Request, res: Response, next: NextFunction) => {
-  if (app.get('env') === 'development') {
-    console.error(err.stack);
-  }
-
-  return handleError(err, res);
-});
+app.use(error.notFound);
+app.use(error.errorHandler);
 
 app.listen(PORT, () => {
   console.log(`App listening to server ${PORT}`);

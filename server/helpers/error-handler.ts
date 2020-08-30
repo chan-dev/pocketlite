@@ -41,8 +41,9 @@ export class ApiError extends Error {
 
 export function handleError(error: ApiError, res: Response): Response<JSON> {
   // This is to check for any uncaught exception
-  /* const statusCode = 'statusCode' in error ? error.statusCode : 500; */
-  const statusCode = error?.statusCode || 500;
+  // if it's NOT a custom error then use the statusCode for the response,
+  // otherwise, default to status 500
+  const statusCode = error?.statusCode || res.statusCode || 500;
 
   return res.status(statusCode).json({
     statusCode,
