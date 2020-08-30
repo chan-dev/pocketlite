@@ -10,6 +10,7 @@ import { handleError, ApiError } from './helpers/error-handler';
 import googleOauth2Setup from './strategies/google-oauth';
 import jwtSetup from './strategies/jwt';
 import authRoutes from './routes/auth';
+import bookmarkRoutes from './routes/bookmarks';
 
 const app = express();
 const db = mongoose.connection;
@@ -62,6 +63,7 @@ jwtSetup();
 // app.use(express.static(path.join(__dirname, '../client/dist/pocketlite')));
 
 app.use('/api/auth', authRoutes);
+app.use('/api/bookmarks', bookmarkRoutes);
 
 app.get('/', (req: Request, res: Response, next) => {
   res.send('node + typescript + eslint boilerplate');
