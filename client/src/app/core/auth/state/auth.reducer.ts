@@ -9,6 +9,7 @@ import {
 import { User } from '@models/user.model';
 import * as authActions from './auth.actions';
 
+// TODO: rename AuthState to just State
 export interface AuthState {
   currentUser: User | null;
   loading: boolean;
@@ -21,7 +22,7 @@ const initialState: AuthState = {
   error: null,
 };
 
-const reducer = createReducer(
+const authReducer = createReducer(
   initialState,
   on(authActions.login, state => ({ ...state, loading: true })),
   on(authActions.loginSuccess, (state, { currentUser }) => ({
@@ -45,8 +46,8 @@ const reducer = createReducer(
   }))
 );
 
-export function authReducer(state: AuthState | undefined, action: Action) {
-  return reducer(state, action);
+export function reducer(state: AuthState | undefined, action: Action) {
+  return authReducer(state, action);
 }
 
 // Selectors

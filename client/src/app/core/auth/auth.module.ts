@@ -9,7 +9,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { AuthRoutingModule } from './auth-routing.module';
 
-import { authReducer, AuthEffects } from './state';
+import { reducer, AuthEffects } from './state';
 import { LoginComponent } from './components/login/login.component';
 import { CallbackComponent } from './components/callback/callback.component';
 
@@ -22,7 +22,7 @@ import { CallbackComponent } from './components/callback/callback.component';
     HttpClientModule,
     MaterialModule,
     AuthRoutingModule,
-    StoreModule.forFeature('auth', authReducer),
+    StoreModule.forFeature('auth', reducer),
     EffectsModule.forFeature([AuthEffects]),
   ],
 })
