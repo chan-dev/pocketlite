@@ -24,6 +24,7 @@ export class AppErrorHandlerService extends ErrorHandler {
       // redirect to error component
     }
 
-    errorService.log(errorMessage);
+    errorService.log(error);
+    console.error(error);
   }
 }
