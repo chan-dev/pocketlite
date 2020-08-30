@@ -15,8 +15,14 @@ export const reducers: ActionReducerMap<BookmarksState> = {
   bookmarks: fromBookmarks.reducer,
 };
 
-export const selectBookmarksState = createFeatureSelector<fromBookmarks.State>(
-  'bookmarks'
+export const selectBookmarksFeatureState = createFeatureSelector<
+  BookmarksState
+>('bookmarks');
+
+// get the bookmarks slice out of the Feature BookmarksState
+export const selectBookmarksState = createSelector(
+  selectBookmarksFeatureState,
+  state => state.bookmarks
 );
 export const selectBookmarksIds = createSelector(
   selectBookmarksState,
@@ -45,3 +51,4 @@ export const selectBookmarksError = createSelector(
 );
 
 export * from './bookmarks.effects';
+export * from './bookmarks.actions';
