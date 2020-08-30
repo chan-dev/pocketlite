@@ -9,14 +9,6 @@ import { Observable, of, throwError } from 'rxjs';
 
 import { User } from '@models/user.model';
 
-interface UserApiResponse {
-  error: boolean;
-  message: string;
-  data?: {
-    user: User;
-  };
-}
-
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   currentUser$: Observable<User | null> = this.fetchCurrentUser();
@@ -38,12 +30,12 @@ export class AuthService {
       .append('Pragma', 'no-cache');
 
     return this.http
-      .get<UserApiResponse>('http://localhost:3000/api/auth/user', {
+      .get<{ user: User }>('http://localhost:3000/api/auth/user', {
         withCredentials: true,
         headers,
       })
       .pipe(
-        map(resp => resp.data.user),
+        map(resp => resp.user),
         catchError((err: HttpErrorResponse) => {
           console.log({ err });
           return err.status === 401 ? of(null) : throwError(err);

@@ -78,11 +78,7 @@ router.get(
     console.log({
       tokenInCookie: req.cookies['jwt'],
     });
-    return res.json({
-      error: false,
-      message: 'Token fetched',
-      data: req.user,
-    });
+    return res.json({ user: req.user });
   },
   // error handler with failWithError enabled
   (err: Error, req: Request, res: Response, next: NextFunction) => {
