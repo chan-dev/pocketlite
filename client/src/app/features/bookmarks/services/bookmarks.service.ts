@@ -12,7 +12,9 @@ export class BookmarksService {
 
   fetchBookmarks(page: number, limit: number) {
     return this.http
-      .get<{ bookmarks: Bookmark[] }>('/api/bookmarks')
+      .get<{ bookmarks: Bookmark[] }>(
+        `/api/bookmarks?page=${page}&limit=${limit}`
+      )
       .pipe(map(resp => resp.bookmarks));
   }
 }
