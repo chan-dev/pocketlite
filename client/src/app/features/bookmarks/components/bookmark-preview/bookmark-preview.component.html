@@ -1,22 +1,27 @@
-<div class="border-b">
-  <article>
-    <img
-      class="md:h-48 w-full max-h h-64 object-fit object-center rounded"
-      src="https://images.unsplash.com/photo-1552089123-2d26226fc2b7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1400&q=80"
-      alt="orange"
-    />
-    <header class="text-left antialiased mb-3">
-      <h1 class="text-xl mt-2 font-semibold">
-        {{ bookmark.title }}
-      </h1>
-      <div class="text-gray-600 text-md">toptotal.com 8min</div>
-    </header>
-    <p class="text-md text-gray-700">
-      {{ bookmark.description }}
-    </p>
-  </article>
-  <!-- action icon -->
-  <div class="action-buttons text-gray-700 text-right my-4">
-    <i class="fas fa-ellipsis-h"></i>
+<div class="bookmark-preview">
+  <div class="border-b">
+    <article>
+      <img
+        class="md:h-48 w-full max-h h-64 object-fit object-center rounded"
+        src="https://images.unsplash.com/photo-1552089123-2d26226fc2b7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1400&q=80"
+        alt="orange"
+      />
+      <header class="text-left antialiased mb-3">
+        <h1 class="truncate text-xl mt-2 font-semibold">
+          {{ bookmark.title }}
+        </h1>
+        <div class="text-gray-600 text-md">toptotal.com 8min</div>
+      </header>
+      <!-- NOTE: this is a tentative solution
+      we explicitly add a max-width here since whitespace: nowrap breaks
+      flexbox layout -->
+      <div class="max-w-xs text-md text-gray-700">
+        <p class="truncate">{{ bookmark.description }}</p>
+      </div>
+    </article>
+    <!-- action icon -->
+    <div class="action-buttons text-gray-700 text-right my-4">
+      <button><mat-icon>more_horiz</mat-icon></button>
+    </div>
   </div>
 </div>
