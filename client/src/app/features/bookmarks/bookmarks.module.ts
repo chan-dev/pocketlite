@@ -18,6 +18,8 @@ import { TagsComponent } from './components/tags/tags.component';
 import { TagsListComponent } from './components/tags/tags-list.component';
 import { SearchBoxComponent } from './components/search-box/search-box.component';
 import { AddLinkFormComponent } from './components/add-link-form/add-link-form.component';
+import { BookmarksListComponent } from './containers/bookmarks-list/bookmarks-list.component';
+import { BookmarkPreviewComponent } from './components/bookmark-preview/bookmark-preview.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import { AddLinkFormComponent } from './components/add-link-form/add-link-form.c
     TagsListComponent,
     SearchBoxComponent,
     AddLinkFormComponent,
+    BookmarksListComponent,
+    BookmarkPreviewComponent,
   ],
   imports: [
     CommonModule,

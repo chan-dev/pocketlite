@@ -1,0 +1,23 @@
+<!--
+* problems with border-bottom on child elements
+* border-bottom for bookmarks should only appear on 1-column display
+* border-bottom for each row must appear on 3-column display
+-->
+
+<section class="bookmarks text-gray-900">
+  <!--   this serves as our container and add spacing with padding -->
+  <div class="bookmark-list">
+    <h2 class="bookmark-list__title">My List</h2>
+    <!--     we need to cancel the margins set by the child elements by adding negative margin-->
+    <div class="flex flex-wrap flex-col md:flex-row -mx-4">
+      <!-- TODO: add empty message -->
+      <div
+        class="bookmark-preview"
+        *ngFor="let bookmark of bookmarks$ | async as bookmarks"
+      >
+        <app-bookmark-preview [bookmark]="bookmark"></app-bookmark-preview>
+      </div>
+      <!-- TODO: add loader -->
+    </div>
+  </div>
+</section>
