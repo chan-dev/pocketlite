@@ -56,8 +56,8 @@ export class SidenavComponent implements OnInit, OnDestroy {
     private media: MediaMatcher,
     private sidenavService: SidenavService
   ) {
-    // NOTE: same with tailwind (md) media query class
-    this.mediaQuery = this.media.matchMedia('(min-width: 768px)');
+    // NOTE: same with tailwind (xl) media query class
+    this.mediaQuery = this.media.matchMedia('(min-width: 1280px)');
     this.queryListener = () => this.cd.detectChanges();
     this.mediaQuery.addEventListener('change', this.queryListener);
   }

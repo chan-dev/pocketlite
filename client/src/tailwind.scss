@@ -26,7 +26,7 @@
 }
 
 .bookmark-list {
-  @apply max-w-sm mx-auto p-4;
+  @apply max-w-sm mx-auto py-4;
 
   @screen md {
     @apply max-w-full;

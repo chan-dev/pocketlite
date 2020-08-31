@@ -1,6 +1,6 @@
-<header class="border-b border-gray-200 text-gray-700 md:px-5 py-3">
+<header class="border-b border-gray-200 text-gray-700 px-5 py-3">
   <div
-    class="flex justify-between items-center h-12 md:max-w-full max-w-xs mx-auto"
+    class="flex justify-between items-center h-12 max-w-xs md:max-w-screen-md xl:max-w-full mx-auto"
   >
     <!-- logo -->
     <!-- with should be equal to the width of the mat-sidenav -->
@@ -8,14 +8,14 @@
       <!-- header toggle button -->
       <button
         data-test="menu-toggle"
-        class="md:hidden inline-flex mr-2"
+        class="xl:hidden inline-flex mr-2"
         (click)="toggleSidenav()"
       >
         <mat-icon>menu</mat-icon>
       </button>
       <h1 class="inline-flex items-center">
         <mat-icon class="text-red-600">bookmarks</mat-icon>
-        <span class="ml-1 text-xl">pocket</span>
+        <span class="md:block hidden ml-1 text-xl">pocket</span>
       </h1>
     </div>
     <div class="search-box-container flex-1" *ngIf="searchboxVisible">
@@ -41,7 +41,9 @@
             matTooltip="search"
             (click)="showSearchBox()"
           >
-            <mat-icon class="hover:text-gray-900">search</mat-icon>
+            <mat-icon class="w-8 h-8 text-3xl hover:text-gray-900"
+              >search</mat-icon
+            >
           </button>
         </li>
         <li class="cursor-pointer inline-flex">
@@ -52,7 +54,9 @@
             matTooltip="add"
             (click)="showAddLinkForm()"
           >
-            <mat-icon class="hover:text-gray-900">add</mat-icon>
+            <mat-icon class="w-8 h-8 text-3xl hover:text-gray-900"
+              >add</mat-icon
+            >
           </button>
         </li>
         <li class="cursor-pointer inline-flex">
@@ -61,7 +65,9 @@
             matTooltipPosition="below"
             matTooltip="edit"
           >
-            <mat-icon class="hover:text-gray-900">edit</mat-icon>
+            <mat-icon class="w-8 h-8 text-3xl hover:text-gray-900"
+              >edit</mat-icon
+            >
           </button>
         </li>
         <!-- TODO: just for testing -->
@@ -73,7 +79,9 @@
             matTooltip="login"
             href="http://localhost:3000/api/auth/google"
           >
-            <mat-icon class="hover:text-gray-900">login</mat-icon>
+            <mat-icon class="w-8 h-8 text-3xl hover:text-gray-900"
+              >login</mat-icon
+            >
           </a>
           <!-- <a href="/api/auth/google">Login</a> -->
         </li>
@@ -85,7 +93,9 @@
             type="button"
             (click)="logout($event)"
           >
-            <mat-icon class="hover:text-gray-900">logout</mat-icon>
+            <mat-icon class="w-8 h-8 text-3xl hover:text-gray-900"
+              >logout</mat-icon
+            >
           </button>
         </li>
       </ul>

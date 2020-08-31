@@ -110,9 +110,12 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <div class="md:max-w-full max-w-xs mx-auto">
-      <div class="flex">
-        <router-outlet></router-outlet>
+    <!-- NOTE: this should match with the header styles so they would always be aligned -->
+    <div class="px-5">
+      <div class="xl:max-w-full md:max-w-screen-md max-w-xs mx-auto">
+        <div class="flex">
+          <router-outlet></router-outlet>
+        </div>
       </div>
     </div>
   </mat-sidenav-content>
