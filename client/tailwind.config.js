@@ -1,7 +1,9 @@
 module.exports = {
+  important: true,
   purge: [],
   theme: {
-    extend: {},
+    extend: {
+    },
   },
   variants: {
     display: ['responsive', 'hover', 'focus', 'group-hover'],
