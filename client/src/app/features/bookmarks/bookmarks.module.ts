@@ -12,7 +12,7 @@ import { BookmarksRoutingModule } from './bookmarks-routing.module';
 
 import { reducers, BookmarkEffects } from './state';
 import { BookmarksPageComponent } from './containers/bookmarks-page/bookmarks-page.component';
-import { HeaderComponent } from './components/header/header.component';
+import { HeaderComponent } from './containers/header/header.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { TagsComponent } from './components/tags/tags.component';
 import { TagsListComponent } from './components/tags/tags-list.component';
