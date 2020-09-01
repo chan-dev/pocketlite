@@ -1,4 +1,8 @@
 @tailwind base;
+button:focus {
+  outline: none !important;
+}
+
 @tailwind components;
 
 .sidenav {
