@@ -41,6 +41,8 @@ mongoose.connect(config.mongoose.dbUrl, {
 });
 mongoose.set('debug', NODE_ENV === 'development');
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 // populate req.cookies
 app.use(cookieParser());
