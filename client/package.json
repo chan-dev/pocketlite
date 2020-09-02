@@ -35,6 +35,7 @@
     "rollbar": "^2.19.3",
     "rxjs": "~6.5.4",
     "tailwindcss": "^1.7.6",
+    "tailwindcss-truncate-multiline": "^1.0.3",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },
