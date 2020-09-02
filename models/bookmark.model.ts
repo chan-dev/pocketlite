@@ -8,6 +8,7 @@ export interface Bookmark {
   /* author: string; */
   type: string | null;
   url: string;
+  domain: string;
   canonicalUrl: string;
   followsRedirect: boolean;
   user_id: string;
