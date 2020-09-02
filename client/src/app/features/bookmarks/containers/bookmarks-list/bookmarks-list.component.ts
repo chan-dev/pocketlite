@@ -8,7 +8,13 @@ import * as fromBookmarks from '@app/features/bookmarks/state';
 @Component({
   selector: 'app-bookmarks-list',
   templateUrl: './bookmarks-list.component.html',
-  styles: [],
+  styles: [
+    `
+      :host {
+        max-width: 100%;
+      }
+    `,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookmarksListComponent implements OnInit {
