@@ -41,6 +41,23 @@ button:focus {
   @apply font-medium text-2xl;
 }
 
+.text-img {
+  @apply relative;
+  width: 140%;
+  height: 140%;
+
+  &__wrapper {
+    @apply absolute inset-0 bg-green-200 text-green-800;
+  }
+
+  &__text {
+    @apply absolute font-serif;
+    top: -22%;
+    right: 33%;
+    font-size: 22rem;
+  }
+}
+
 @tailwind utilities;
 
 .center-between {

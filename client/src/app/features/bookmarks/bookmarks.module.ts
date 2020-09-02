@@ -20,6 +20,7 @@ import { SearchBoxComponent } from './components/search-box/search-box.component
 import { AddLinkFormComponent } from './components/add-link-form/add-link-form.component';
 import { BookmarksListComponent } from './containers/bookmarks-list/bookmarks-list.component';
 import { BookmarkPreviewComponent } from './components/bookmark-preview/bookmark-preview.component';
+import { TextImgComponent } from './components/text-img/text-img.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { BookmarkPreviewComponent } from './components/bookmark-preview/bookmark
     AddLinkFormComponent,
     BookmarksListComponent,
     BookmarkPreviewComponent,
+    TextImgComponent,
   ],
   imports: [
     CommonModule,
