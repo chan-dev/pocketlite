@@ -24,10 +24,7 @@ export default (): void => {
   passport.use(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     new JwtStrategy(opts, function (req: Request, jwt_payload: any, done: any) {
-      console.log({
-        jwt_payload,
-      });
-      done('', jwt_payload);
+      return done('', jwt_payload);
     })
   );
 };
