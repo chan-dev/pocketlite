@@ -1,11 +1,21 @@
 import puppeteer from 'puppeteer-extra';
 import pluginStealth from 'puppeteer-extra-plugin-stealth';
-// @ts-ignore
-import { Readability } from '@mozilla/readability';
 import { JSDOM } from 'jsdom';
 import TurndownService from 'turndown';
+import DOMPurify from 'isomorphic-dompurify';
+// @ts-ignore
+import { Readability } from '@mozilla/readability';
+// @ts-ignore
+import * as turndownPluginGfm from 'turndown-plugin-gfm';
 
 import { Bookmark } from '@models/bookmark.model';
+
+const extractDomain = (uri: string) => {
+  if (!uri) {
+    return;
+  }
+  return new URL(uri).hostname.replace('www.', '');
+};
 
 /**
  * 1. first search for metadata related to images
@@ -148,27 +158,6 @@ const getDescription = async (page: any) => {
   return description;
 };
 
-const getDomainName = async (page: any, uri: string) => {
-  const domainName: string | null = await page.evaluate(() => {
-    const canonicalLink: HTMLLinkElement | null = document.querySelector(
-      'link[rel=canonical]'
-    );
-    if (canonicalLink?.href?.length) {
-      return canonicalLink.href;
-    }
-    const ogUrlMeta: HTMLMetaElement | null = document.querySelector(
-      'meta[property="og:url"]'
-    );
-    if (ogUrlMeta?.content?.length) {
-      return ogUrlMeta.content;
-    }
-    return null;
-  });
-  return domainName != null
-    ? new URL(domainName).hostname.replace('www.', '')
-    : new URL(uri).hostname.replace('www.', '');
-};
-
 const getOgType = async (page: any, uri: string) => {
   const type: string | null = await page.evaluate(() => {
     const ogType: HTMLMetaElement | null = document.querySelector(
@@ -253,17 +242,9 @@ const scrapeLink = async (
   });
   const article = new Readability(doc.window.document).parse();
 
-  const [
-    title,
-    description,
-    url,
-    image,
-    type,
-    canonicalUrl,
-  ] = await Promise.all([
+  const [title, description, image, type, canonicalUrl] = await Promise.all([
     getTitle(page),
     getDescription(page),
-    getDomainName(page, uri),
     getImg(page, uri),
     getOgType(page, uri),
     getCanonicalUrl(page, uri),
@@ -271,18 +252,19 @@ const scrapeLink = async (
 
   // TODO: convert to markdown
   const turndownService = new TurndownService();
+  turndownService.use(turndownPluginGfm.gfm);
 
   let contentInMarkdown = '';
-  // only do a markdown view if URL has a meta og:type
-  // TODO: if has status of 301, then don't convert to markdown
-  if (type?.length && type === 'article') {
-    contentInMarkdown = turndownService.turndown(article.content);
+  if (type === 'article' && (!followsRedirect || !canonicalUrl)) {
+    const cleanMarkup = DOMPurify.sanitize(article.content);
+    contentInMarkdown = turndownService.turndown(cleanMarkup);
   }
 
   const obj: Partial<Bookmark> = {
     title: title || '',
     description: description || '',
     url: uri || '',
+    domain: extractDomain(uri),
     canonicalUrl: canonicalUrl || '',
     image: image || '',
     contentInMarkdown,
