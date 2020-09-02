@@ -4,15 +4,15 @@ import { User } from '@models/user.model';
 const userSchema = new mongoose.Schema({
   googleId: {
     type: String,
-    required: true,
+    required: [true, 'googleId is required'],
   },
   displayName: {
     type: String,
-    required: true,
+    required: [true, 'displayName is required'],
   },
   email: {
     type: String,
-    required: true,
+    required: [true, 'email is required'],
     unique: true,
   },
   thumbnail: {
@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
   },
   provider: {
     type: String,
-    require: true,
+    require: [true, 'Provider is required'],
   },
 });
 

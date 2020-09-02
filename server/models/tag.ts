@@ -4,12 +4,12 @@ import { Tag } from '@models/tag.model';
 const tagSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, 'name is required'],
   },
   user_id: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
+    required: [true, 'user_id is required'],
   },
 });
 
