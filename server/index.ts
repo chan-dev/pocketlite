@@ -32,12 +32,15 @@ db.once('open', () => {
 });
 
 const PORT = process.env.PORT || 3000;
+const NODE_ENV = process.env.NODE_ENV || 'development';
 
 mongoose.connect(config.mongoose.dbUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
 });
+mongoose.set('debug', NODE_ENV === 'development');
+
 
 // populate req.cookies
 app.use(cookieParser());
@@ -83,5 +86,5 @@ app.use(error.notFound);
 app.use(error.errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`App listening to server ${PORT}`);
+  console.log(`App listening to server ${PORT} in ${NODE_ENV} mode`);
 });
