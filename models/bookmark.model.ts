@@ -14,4 +14,6 @@ export interface Bookmark {
   user_id: string;
   contentInMarkdown: string;
   tags?: Tag[];
+  created_at?: Date;
+  updated_at?: Date;
 }

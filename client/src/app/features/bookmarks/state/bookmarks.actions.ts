@@ -14,3 +14,15 @@ export const loadBookmarksFailure = createAction(
   '[Bookmarks API] Load Bookmarks Failure',
   props<{ error: string }>()
 );
+export const saveBookmark = createAction(
+  '[Header] Save Bookmark',
+  props<{ url: string }>()
+);
+export const saveBookmarkSuccess = createAction(
+  '[Bookmarks API] Save Bookmark Success',
+  props<{ bookmark: Bookmark }>()
+);
+export const saveBookmarkFailure = createAction(
+  '[Bookmarks API] Save Bookmark Failure',
+  props<{ error: string }>()
+);

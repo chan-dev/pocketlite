@@ -1,7 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 
+import { ToastrService } from 'ngx-toastr';
+
 import * as fromAuth from '@app/core/auth/state';
+import * as fromBookmarks from '@app/features/bookmarks/state';
 import { SidenavService } from '../../services/sidenav.service';
 
 @Component({
@@ -14,11 +18,13 @@ export class HeaderComponent implements OnInit {
   searchboxVisible = false;
   addLinkFormVisible = false;
 
-  constructor(private sidenavService: SidenavService, private store: Store) {}
+  constructor(
+    private sidenavService: SidenavService,
+    private store: Store,
+    private toastr: ToastrService
+  ) {}
 
-  ngOnInit(): void {
-    // TODO: create a HTTP request to retrieve jwt cookies
-  }
+  ngOnInit(): void {}
 
   toggleSidenav() {
     this.sidenavService.toggle();
@@ -33,11 +39,11 @@ export class HeaderComponent implements OnInit {
   }
 
   cancelSearch() {
-    this.searchboxVisible = false;
+    this.closeSearch();
   }
 
   cancelAddLink() {
-    this.addLinkFormVisible = false;
+    this.closeAddLink();
   }
 
   searchBookmarks(event) {}
@@ -45,5 +51,24 @@ export class HeaderComponent implements OnInit {
   logout(event) {
     // TODO: dispatch Logout action
     this.store.dispatch(fromAuth.logout());
+  }
+
+  saveUrl(url: FormControl) {
+    if (url.value.length) {
+      if (url.invalid) {
+        this.toastr.error('Url is invalid');
+      } else {
+        this.store.dispatch(fromBookmarks.saveBookmark({ url: url.value }));
+      }
+    }
+    this.closeAddLink();
+  }
+
+  private closeSearch() {
+    this.searchboxVisible = false;
+  }
+
+  private closeAddLink() {
+    this.addLinkFormVisible = false;
   }
 }

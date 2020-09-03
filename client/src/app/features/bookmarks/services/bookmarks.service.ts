@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Bookmark } from '@models/bookmark.model';
 import { map } from 'rxjs/operators';
@@ -16,5 +16,23 @@ export class BookmarksService {
         `/api/bookmarks?page=${page}&limit=${limit}`
       )
       .pipe(map(resp => resp.bookmarks));
+  }
+
+  saveBookmark(url: string) {
+    // TODO: create interceptor for this
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http
+      .post<{ bookmark: Bookmark }>(
+        '/api/bookmarks',
+        {
+          url,
+        },
+        {
+          headers,
+        }
+      )
+      .pipe(map(resp => resp.bookmark));
   }
 }

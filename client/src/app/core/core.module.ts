@@ -10,6 +10,7 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { localStorageSync } from 'ngrx-store-localstorage';
+import { ToastrModule } from 'ngx-toastr';
 
 import { AuthModule } from './auth/auth.module';
 import { ConfirmDialogModule } from '@app/shared/confirm-dialog/confirm-dialog.module';
@@ -57,6 +58,11 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     AuthModule,
     ConfirmDialogModule,
     ErrorModule,
+    ToastrModule.forRoot({
+      timeOut: 5000,
+      autoDismiss: false,
+      closeButton: true,
+    }),
   ],
   exports: [
     AuthModule,

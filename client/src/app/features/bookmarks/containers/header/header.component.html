@@ -25,7 +25,10 @@
       ></app-search-box>
     </div>
     <div class="search-box-container flex-1" *ngIf="addLinkFormVisible">
-      <app-add-link-form (cancel)="cancelAddLink()"></app-add-link-form>
+      <app-add-link-form
+        (save)="saveUrl($event)"
+        (cancel)="cancelAddLink()"
+      ></app-add-link-form>
     </div>
 
     <div

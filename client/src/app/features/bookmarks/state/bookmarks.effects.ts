@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
 import { createEffect, ofType, Actions } from '@ngrx/effects';
-import { EMPTY, of } from 'rxjs';
+import { of } from 'rxjs';
 import { tap, exhaustMap, map, catchError } from 'rxjs/operators';
 
-// import { AuthService } from '../services/auth.service';
-// import { ConfirmDialogService } from '@app/shared/confirm-dialog/confirm-dialog.service';
+import { ToastrService } from 'ngx-toastr';
+
 import * as bookmarkActions from './bookmarks.actions';
 import { BookmarksService } from '../services/bookmarks.service';
 
@@ -21,17 +19,62 @@ export class BookmarkEffects {
         this.bookmarksService.fetchBookmarks(page, limit).pipe(
           map(bookmarks => bookmarkActions.loadBookmarksSuccess({ bookmarks })),
           catchError(error =>
-            of(bookmarkActions.loadBookmarksFailure({ error }))
+            of(
+              bookmarkActions.loadBookmarksFailure({
+                error: error?.error?.message,
+              })
+            )
           )
         )
       )
     );
   });
 
+  saveBookmark$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(bookmarkActions.saveBookmark),
+      exhaustMap(({ url }) =>
+        this.bookmarksService.saveBookmark(url).pipe(
+          map(bookmark => bookmarkActions.saveBookmarkSuccess({ bookmark })),
+          catchError(error =>
+            of(
+              bookmarkActions.saveBookmarkFailure({
+                error: error?.error?.message,
+              })
+            )
+          )
+        )
+      )
+    );
+  });
+
+  saveBookmarkSuccess$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(bookmarkActions.saveBookmarkSuccess),
+        tap(_ => {
+          this.toastr.success('Bookmark has been saved');
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  saveBookmarkFailure$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(bookmarkActions.saveBookmarkFailure),
+        tap(error => {
+          this.toastr.error(error.error);
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
   constructor(
-    private router: Router,
-    private store: Store,
     private actions$: Actions,
-    private bookmarksService: BookmarksService
+    private bookmarksService: BookmarksService,
+    private toastr: ToastrService
   ) {}
 }
