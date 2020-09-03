@@ -41,7 +41,7 @@ router.post(
       const urlExists = await Bookmark.find({ url }).countDocuments();
 
       if (urlExists) {
-        return next(ApiError.invalidData('Duplicate url'));
+        return next(ApiError.duplicateData('url is already saved'));
       }
 
       const bookmark = await scrapeLink(url);
