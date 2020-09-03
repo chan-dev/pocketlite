@@ -10,7 +10,10 @@ export interface State extends EntityState<Bookmark> {
 }
 
 export function sortByCreateDate(a: Bookmark, b: Bookmark): number {
-  return +b.created_at - +a.created_at;
+  // NOTE: we have to use Date.parse here rather than other
+  // methods to convert because the strings are in the timestamp format
+  // w/c returns NaN on other methods
+  return Date.parse(b.created_at) - Date.parse(a.created_at);
 }
 
 export const adapter: EntityAdapter<Bookmark> = createEntityAdapter<Bookmark>({
