@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import passport from 'passport';
 
-import { ApiError } from '../helpers/error-handler';
+import { ApiError } from '../classes/error';
 
 const authJwt = (req: Request, res: Response, next: NextFunction) => {
   passport.authenticate('jwt', function (err, user, info) {

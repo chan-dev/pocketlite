@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import * as mongoose from 'mongoose';
 
-import { ApiError } from '../helpers/error-handler';
+import { ApiError } from '../classes/error';
 
 const paginatedResults = <T extends mongoose.Document>(
   model: mongoose.Model<T>
@@ -44,10 +44,24 @@ const paginatedResults = <T extends mongoose.Document>(
 
     const totalPages = Math.ceil(countDocuments / limit);
 
+    // TODO: should we throw an error or just return an empty array
+    if (page > totalPages) {
+      return next(
+        ApiError.invalidData(
+          'The provided `page` exceeded the total number of pages for current items'
+        )
+      );
+    }
+
     const startIndex = (page - 1) * limit;
     // const endIndex = page * limit;
 
-    const results = await model.find().skip(startIndex).limit(limit).exec();
+    const results = await model
+      .find()
+      .sort({ created_at: -1 })
+      .skip(startIndex)
+      .limit(limit)
+      .exec();
 
     (res as any).paginatedResults = results || [];
     next();

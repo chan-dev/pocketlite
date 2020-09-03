@@ -3,7 +3,7 @@ import passport from 'passport';
 
 import config from '../config/keys';
 import User from '../models/user';
-import { ApiError } from '../helpers/error-handler';
+import { ApiError } from '../classes/error';
 
 export default (): void => {
   passport.use(

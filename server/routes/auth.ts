@@ -3,7 +3,7 @@ import passport from 'passport';
 import jwt from 'jsonwebtoken';
 
 import config from '../config/keys';
-import { ApiError } from '../helpers/error-handler';
+import { ApiError } from '../classes/error';
 
 const router = express.Router();
 

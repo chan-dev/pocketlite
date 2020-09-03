@@ -85,6 +85,7 @@ app.use('/api/bookmarks', bookmarkRoutes);
 app.get('/', express.static(path.join(__dirname, '../client/dist/pocketlite')));
 
 app.use(error.notFound);
+app.use(error.transformUncaughtExceptions);
 app.use(error.errorHandler);
 
 app.listen(PORT, () => {

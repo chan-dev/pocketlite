@@ -5,7 +5,7 @@ import Bookmark from '../models/bookmark';
 import scrapeLink from '../helpers/link-scraper';
 import paginatedResults from '../middlewares/paginate';
 import authJwt from '../middlewares/auth-jwt';
-import { ApiError } from '../helpers/error-handler';
+import { ApiError } from '../classes/error';
 import { validateUrl } from '../helpers/validators';
 
 const router = express.Router();
