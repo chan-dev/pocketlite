@@ -56,7 +56,7 @@ export class HeaderComponent implements OnInit {
   saveUrl(url: FormControl) {
     if (url.value.length) {
       if (url.invalid) {
-        this.toastr.error('Url is invalid');
+        this.toastr.error('Please enter a valid url');
       } else {
         this.store.dispatch(fromBookmarks.saveBookmark({ url: url.value }));
       }
