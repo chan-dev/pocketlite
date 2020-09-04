@@ -4,7 +4,7 @@
     "baseUrl": "./",
     "paths": {
       "@app/*": ["./src/app/*"],
-      "@models/*": ["../models/*"],
+      "@models/*": ["../shared/models/*"]
     },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,

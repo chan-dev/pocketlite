@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@models/*": ["../models/*"]
+      "@models/*": ["../shared/models/*"]
     },
     "target": "es2018",
     "module": "commonjs",
