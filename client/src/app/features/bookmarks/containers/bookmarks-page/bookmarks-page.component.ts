@@ -1,4 +1,8 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+
+import * as fromBookmarks from '@app/features/bookmarks/state';
 
 @Component({
   selector: 'app-bookmarks-page',
@@ -7,5 +11,9 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookmarksPageComponent {
-  constructor() {}
+  loading$: Observable<boolean>;
+
+  constructor(private store: Store) {
+    this.loading$ = this.store.select(fromBookmarks.selectBookmarksLoading);
+  }
 }

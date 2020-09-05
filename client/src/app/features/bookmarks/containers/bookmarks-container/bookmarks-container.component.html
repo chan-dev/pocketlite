@@ -1,14 +1,9 @@
-<!--
-* problems with border-bottom on child elements
-* border-bottom for bookmarks should only appear on 1-column display
-* border-bottom for each row must appear on 3-column display
--->
 <section class="bookmarks text-gray-900">
   <!--   this serves as our container and add spacing with padding -->
   <div
     class="bookmark-list"
     infiniteScroll
-    [infiniteScrollDistance]="2"
+    [infiniteScrollDistance]="5"
     [infiniteScrollThrottle]="50"
     [infiniteScrollContainer]=""
     [scrollWindow]="false"
