@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
 import { ToastrService } from 'ngx-toastr';
 
@@ -18,11 +19,15 @@ export class HeaderComponent implements OnInit {
   searchboxVisible = false;
   addLinkFormVisible = false;
 
+  loading$: Observable<boolean>;
+
   constructor(
     private sidenavService: SidenavService,
     private store: Store,
     private toastr: ToastrService
-  ) {}
+  ) {
+    this.loading$ = this.store.select(fromBookmarks.selectBookmarksLoading);
+  }
 
   ngOnInit(): void {}
 
