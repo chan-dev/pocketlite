@@ -18,7 +18,7 @@ import { TagsComponent } from './components/tags/tags.component';
 import { TagsListComponent } from './components/tags/tags-list.component';
 import { SearchBoxComponent } from './components/search-box/search-box.component';
 import { AddLinkFormComponent } from './components/add-link-form/add-link-form.component';
-import { BookmarksListComponent } from './containers/bookmarks-list/bookmarks-list.component';
+import { BookmarksContainerComponent } from './containers/bookmarks-container/bookmarks-container.component';
 import { BookmarkPreviewComponent } from './components/bookmark-preview/bookmark-preview.component';
 import { TextImgComponent } from './components/text-img/text-img.component';
 
@@ -31,7 +31,7 @@ import { TextImgComponent } from './components/text-img/text-img.component';
     TagsListComponent,
     SearchBoxComponent,
     AddLinkFormComponent,
-    BookmarksListComponent,
+    BookmarksContainerComponent,
     BookmarkPreviewComponent,
     TextImgComponent,
   ],

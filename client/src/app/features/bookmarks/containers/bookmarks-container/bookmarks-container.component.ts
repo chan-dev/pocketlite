@@ -6,8 +6,8 @@ import { Bookmark } from '@models/bookmark.model';
 import * as fromBookmarks from '@app/features/bookmarks/state';
 
 @Component({
-  selector: 'app-bookmarks-list',
-  templateUrl: './bookmarks-list.component.html',
+  selector: 'app-bookmarks-container',
+  templateUrl: './bookmarks-container.component.html',
   styles: [
     `
       :host {
@@ -22,7 +22,7 @@ import * as fromBookmarks from '@app/features/bookmarks/state';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BookmarksListComponent implements OnInit {
+export class BookmarksContainerComponent implements OnInit {
   bookmarks$: Observable<Bookmark[]>;
 
   constructor(private store: Store) {

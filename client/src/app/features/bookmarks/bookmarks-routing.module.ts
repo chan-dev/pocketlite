@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { BookmarksPageComponent } from './containers/bookmarks-page/bookmarks-page.component';
-import { BookmarksListComponent } from './containers/bookmarks-list/bookmarks-list.component';
+import { BookmarksContainerComponent } from './containers/bookmarks-container/bookmarks-container.component';
 
 const routes: Routes = [
   {
@@ -11,7 +11,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: BookmarksListComponent,
+        component: BookmarksContainerComponent,
       },
     ],
   },
