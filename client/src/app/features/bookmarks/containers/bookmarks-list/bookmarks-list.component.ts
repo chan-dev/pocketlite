@@ -13,6 +13,11 @@ import * as fromBookmarks from '@app/features/bookmarks/state';
       :host {
         max-width: 100%;
       }
+
+      .bookmark-list {
+        height: 100vh;
+        overflow-y: auto;
+      }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,7 +27,17 @@ export class BookmarksListComponent implements OnInit {
 
   constructor(private store: Store) {
     this.bookmarks$ = this.store.select(fromBookmarks.selectBookmarks);
+    this.store.dispatch(
+      fromBookmarks.getBookmarkItems({
+        page: 1,
+        limit: 9,
+      })
+    );
   }
 
   ngOnInit() {}
+
+  onScroll() {
+    console.log('scrolling');
+  }
 }

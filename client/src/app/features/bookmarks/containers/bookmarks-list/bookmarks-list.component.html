@@ -5,7 +5,16 @@
 -->
 <section class="bookmarks text-gray-900">
   <!--   this serves as our container and add spacing with padding -->
-  <div class="bookmark-list">
+  <div
+    class="bookmark-list"
+    infiniteScroll
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50"
+    [infiniteScrollContainer]=""
+    [scrollWindow]="false"
+    [fromRoot]="false"
+    (scrolled)="onScroll()"
+  >
     <h2 class="bookmark-list__title">My List</h2>
     <!--     we need to cancel the margins set by the child elements by adding negative margin-->
     <div class="flex flex-wrap flex-col md:flex-row -mx-4">
