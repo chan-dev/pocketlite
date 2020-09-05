@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "export NODE_ENV=production && nodemon index.ts",
-    "dev": "export NODE_ENV=development && nodemon index.ts",
+    "start": "export NODE_ENV=production && nodemon -r tsconfig-paths/register index.ts",
+    "dev": "export NODE_ENV=development && nodemon -r tsconfig-paths/register index.ts",
     "build": "tsc -p ./",
     "lint": "eslint . --ext .ts",
     "csrf": "npx http-server -c-1 -d false -o /csrf-test"
@@ -32,6 +32,7 @@
     "eslint": "^7.6.0",
     "nodemon": "^2.0.4",
     "ts-node": "^8.10.2",
+    "tsconfig-paths": "^3.9.0",
     "typescript": "^3.9.7"
   },
   "dependencies": {

@@ -2,10 +2,12 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@models/*": ["../shared/models/*"]
+      "@models/*": ["../shared/models/*"],
+      "@constants/*": ["../shared/constants/*"]
     },
     "target": "es2018",
     "module": "commonjs",
+    "moduleResolution": "node",
     "rootDir": "../",
     "outDir": "./build",
     "esModuleInterop": true,
@@ -13,5 +15,6 @@
     "typeRoots": ["node_modules/@types"],
     "sourceMap": true
   },
+  "include": ["../shared/**/*"],
   "exclude": ["node_modules/", "../client/**/*"]
 }

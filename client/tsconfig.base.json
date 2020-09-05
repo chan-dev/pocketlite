@@ -1,10 +1,11 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
       "@app/*": ["./src/app/*"],
-      "@models/*": ["../shared/models/*"]
+      "@models/*": ["../shared/models/*"],
+      "@constants/*": ["../shared/constants/*"]
     },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
