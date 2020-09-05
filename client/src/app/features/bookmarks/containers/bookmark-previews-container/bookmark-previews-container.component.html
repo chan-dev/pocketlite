@@ -1,0 +1,8 @@
+<div class="flex flex-wrap flex-col md:flex-row -mx-4">
+  <ng-container *ngFor="let bookmark of bookmarks">
+    <app-bookmark-preview
+      class="md:w-1/3 w-full p-4 break-words"
+      [bookmark]="bookmark"
+    ></app-bookmark-preview>
+  </ng-container>
+</div>

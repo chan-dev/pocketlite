@@ -3,7 +3,7 @@ import { createAction, props } from '@ngrx/store';
 import { Bookmark } from '@models/bookmark.model';
 
 export const getBookmarkItems = createAction(
-  '[Bookmarks Page] Get Bookmark Items',
+  '[BookmarksContainerComponent] Get Bookmark Items',
   props<{ page: number; limit: number }>()
 );
 export const loadBookmarksSuccess = createAction(

@@ -16,16 +16,10 @@
     (scrolled)="onScroll()"
   >
     <h2 class="bookmark-list__title">My List</h2>
-    <!--     we need to cancel the margins set by the child elements by adding negative margin-->
-    <div class="flex flex-wrap flex-col md:flex-row -mx-4">
-      <!-- TODO: add empty message -->
-      <ng-container *ngFor="let bookmark of bookmarks$ | async as bookmarks">
-        <app-bookmark-preview
-          class="md:w-1/3 w-full p-4 break-words"
-          [bookmark]="bookmark"
-        ></app-bookmark-preview>
-      </ng-container>
-      <!-- TODO: add loader -->
-    </div>
+    <!-- TODO: add empty message -->
+    <!-- TODO: add loader -->
+    <app-bookmark-previews-container
+      [bookmarks]="bookmarks$ | async"
+    ></app-bookmark-previews-container>
   </div>
 </section>

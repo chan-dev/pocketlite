@@ -21,6 +21,7 @@ import { AddLinkFormComponent } from './components/add-link-form/add-link-form.c
 import { BookmarksContainerComponent } from './containers/bookmarks-container/bookmarks-container.component';
 import { BookmarkPreviewComponent } from './components/bookmark-preview/bookmark-preview.component';
 import { TextImgComponent } from './components/text-img/text-img.component';
+import { BookmarkPreviewsContainerComponent } from './containers/bookmark-previews-container/bookmark-previews-container.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { TextImgComponent } from './components/text-img/text-img.component';
     BookmarksContainerComponent,
     BookmarkPreviewComponent,
     TextImgComponent,
+    BookmarkPreviewsContainerComponent,
   ],
   imports: [
     CommonModule,

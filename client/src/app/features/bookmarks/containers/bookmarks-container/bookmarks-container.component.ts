@@ -23,21 +23,27 @@ import * as fromBookmarks from '@app/features/bookmarks/state';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookmarksContainerComponent implements OnInit {
+  private page = 1;
   bookmarks$: Observable<Bookmark[]>;
 
   constructor(private store: Store) {
     this.bookmarks$ = this.store.select(fromBookmarks.selectBookmarks);
-    this.store.dispatch(
-      fromBookmarks.getBookmarkItems({
-        page: 1,
-        limit: 9,
-      })
-    );
+    this.loadMore();
   }
 
   ngOnInit() {}
 
   onScroll() {
-    console.log('scrolling');
+    this.page += 1;
+    this.loadMore();
+  }
+
+  private loadMore() {
+    this.store.dispatch(
+      fromBookmarks.getBookmarkItems({
+        page: this.page,
+        limit: 9,
+      })
+    );
   }
 }
