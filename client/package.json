@@ -33,6 +33,7 @@
     "@ngrx/store-devtools": "^10.0.0",
     "ngrx-store-localstorage": "^9.0.0",
     "ngx-infinite-scroll": "^9.0.0",
+    "ngx-skeleton-loader": "^2.4.4",
     "ngx-toastr": "^13.0.0",
     "rollbar": "^2.19.3",
     "rxjs": "~6.5.4",

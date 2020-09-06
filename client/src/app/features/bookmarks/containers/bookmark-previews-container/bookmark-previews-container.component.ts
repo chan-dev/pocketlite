@@ -16,7 +16,14 @@ import { Bookmark } from '@models/bookmark.model';
 export class BookmarkPreviewsContainerComponent implements OnInit {
   @Input() bookmarks: Bookmark[];
 
+  placeholders = 9;
+
   constructor() {}
 
   ngOnInit() {}
+
+  generatePlaceholder(count: number) {
+    // create an iterable of keys then convert to array
+    return Array.from(Array(count).keys());
+  }
 }
