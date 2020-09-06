@@ -3,7 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
+import {
+  HttpClientModule,
+  HttpClientXsrfModule,
+  HTTP_INTERCEPTORS,
+} from '@angular/common/http';
 
 import { StoreModule, ActionReducer, MetaReducer } from '@ngrx/store';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
@@ -19,6 +23,7 @@ import { ErrorModule } from '@app/core/error/error.module';
 import { environment } from 'src/environments/environment';
 
 import { reducers } from './core.state';
+import { HttpRequestInterceptor } from './interceptors/http-request.interceptor';
 import { RollbarService, rollbarFactory } from './rollbar';
 import { AppErrorHandlerService } from './error/app-error-handler.service';
 import { CustomSerializer } from './helpers/custom-serializer';
@@ -45,7 +50,6 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
       cookieName: 'XSRF-TOKEN',
       headerName: 'X-XSRF-TOKEN',
     }),
-    // we don't have state available upfront
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreRouterConnectingModule.forRoot({
       serializer: CustomSerializer,
@@ -81,6 +85,11 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     {
       provide: RollbarService,
       useFactory: rollbarFactory,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpRequestInterceptor,
+      multi: true,
     },
   ],
 })

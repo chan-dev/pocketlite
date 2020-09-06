@@ -19,20 +19,8 @@ export class BookmarksService {
   }
 
   saveBookmark(url: string) {
-    // TODO: create interceptor for this
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
     return this.http
-      .post<{ bookmark: Bookmark }>(
-        '/api/bookmarks',
-        {
-          url,
-        },
-        {
-          headers,
-        }
-      )
+      .post<{ bookmark: Bookmark }>('/api/bookmarks', { url })
       .pipe(map(resp => resp.bookmark));
   }
 }
