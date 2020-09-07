@@ -23,4 +23,10 @@ export class BookmarksService {
       .post<{ bookmark: Bookmark }>('/api/bookmarks', { url })
       .pipe(map(resp => resp.bookmark));
   }
+
+  searchBookmarks(query: string) {
+    return this.http
+      .get<{ bookmarks: Bookmark[] }>(`/api/bookmarks/search?q=${query}`)
+      .pipe(map(resp => resp.bookmarks));
+  }
 }

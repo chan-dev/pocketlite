@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { BookmarksPageComponent } from './containers/bookmarks-page/bookmarks-page.component';
 import { BookmarksContainerComponent } from './containers/bookmarks-container/bookmarks-container.component';
+import { BookmarkSearchResultsContainerComponent } from './containers/bookmark-search-results-container/bookmark-search-results-container.component';
 
 const routes: Routes = [
   {
@@ -12,6 +13,10 @@ const routes: Routes = [
       {
         path: '',
         component: BookmarksContainerComponent,
+      },
+      {
+        path: 'search',
+        component: BookmarkSearchResultsContainerComponent,
       },
     ],
   },

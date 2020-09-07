@@ -10,7 +10,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { BookmarksRoutingModule } from './bookmarks-routing.module';
 
-import { reducers, BookmarkEffects } from './state';
+import { reducers, BookmarkEffects, SearchEffects } from './state';
 import { BookmarksPageComponent } from './containers/bookmarks-page/bookmarks-page.component';
 import { HeaderComponent } from './containers/header/header.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
@@ -22,6 +22,7 @@ import { BookmarksContainerComponent } from './containers/bookmarks-container/bo
 import { BookmarkPreviewComponent } from './components/bookmark-preview/bookmark-preview.component';
 import { TextImgComponent } from './components/text-img/text-img.component';
 import { BookmarkPreviewsContainerComponent } from './containers/bookmark-previews-container/bookmark-previews-container.component';
+import { BookmarkSearchResultsContainerComponent } from './containers/bookmark-search-results-container/bookmark-search-results-container.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { BookmarkPreviewsContainerComponent } from './containers/bookmark-previe
     BookmarkPreviewComponent,
     TextImgComponent,
     BookmarkPreviewsContainerComponent,
+    BookmarkSearchResultsContainerComponent,
   ],
   imports: [
     CommonModule,
@@ -46,7 +48,7 @@ import { BookmarkPreviewsContainerComponent } from './containers/bookmark-previe
     MaterialModule,
     BookmarksRoutingModule,
     StoreModule.forFeature('bookmarks', reducers),
-    EffectsModule.forFeature([BookmarkEffects]),
+    EffectsModule.forFeature([BookmarkEffects, SearchEffects]),
   ],
 })
 export class BookmarksModule {}

@@ -3,11 +3,11 @@
     <div class="xl:px-0 px-2 flex-1">
       <input
         appAutoFocus
+        [formControl]="query"
         type="text"
         class="search-box__input h-full w-full outline-none border px-2 text-gray-900"
         placeholder="Search"
-        #searchTerm
-        (keyup.enter)="search.emit(searchTerm.value)"
+        (keyup.enter)="searchBookmarks(query.value)"
       />
     </div>
     <div class="px-2">
@@ -22,6 +22,7 @@
         <button
           type="button"
           class="search-box__done hover:bg-blue-700 bg-blue-600 rounded-md px-4 py-2 text-white font-bold"
+          (click)="searchBookmarks(query.value)"
         >
           Search
         </button>

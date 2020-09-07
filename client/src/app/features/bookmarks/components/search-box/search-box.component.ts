@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-search-box',
@@ -6,10 +7,16 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
   styles: [],
 })
 export class SearchBoxComponent implements OnInit {
+  @Output() search = new EventEmitter<FormControl>();
   @Output() cancel = new EventEmitter<void>();
-  @Output() search = new EventEmitter<string>();
+
+  query: FormControl = new FormControl('');
 
   constructor() {}
 
   ngOnInit(): void {}
+
+  searchBookmarks(query) {
+    this.search.emit(this.query);
+  }
 }

@@ -1,11 +1,13 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { ToastrService } from 'ngx-toastr';
 
 import * as fromAuth from '@app/core/auth/state';
-import * as fromBookmarks from '@app/features/bookmarks/state';
+import * as fromBookmarks from '@app/features/bookmarks/state/bookmarks.actions';
+import * as fromSearch from '@app/features/bookmarks/state/search.actions';
 import { SidenavService } from '../../services/sidenav.service';
 
 @Component({
@@ -21,6 +23,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     private sidenavService: SidenavService,
     private store: Store,
+    private router: Router,
     private toastr: ToastrService
   ) {}
 
@@ -40,13 +43,18 @@ export class HeaderComponent implements OnInit {
 
   cancelSearch() {
     this.closeSearch();
+    this.router.navigate(['/']);
   }
 
   cancelAddLink() {
     this.closeAddLink();
   }
 
-  searchBookmarks(event) {}
+  searchBookmarks(query: FormControl) {
+    if (query.value.length) {
+      this.store.dispatch(fromSearch.searchBookmark({ query: query.value }));
+    }
+  }
 
   logout(event) {
     // TODO: dispatch Logout action
