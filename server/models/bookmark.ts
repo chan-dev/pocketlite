@@ -65,6 +65,7 @@ const bookSchema = new mongoose.Schema(
 );
 
 bookSchema.index({ created_at: 1, type: -1 });
+bookSchema.index({ title: 'text', description: 'text' });
 
 type BookmarkModel = Bookmark & mongoose.Document;
 

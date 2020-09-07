@@ -73,4 +73,33 @@ router.post(
     }
   }
 );
+
+router.get(
+  '/search',
+  authJwt,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const q = req.query.q || '';
+
+    // NOTE: we have to explicitly add a hashmap type here; otherwise, Typescript
+    // throws an error by making the implicit type {} w/c prevents us from
+    // adding properties dynamically
+    let query: { [key: string]: any } = {};
+
+    // NOTE: if q is empty, $text will return empty results
+    // so we better check for that condition
+    if (q.length) {
+      query['$text'] = {
+        $search: q,
+      };
+    }
+
+    try {
+      const bookmarks = await Bookmark.find(query).exec();
+      return res.json({ bookmarks });
+    } catch (err) {
+      next(ApiError.internalServerError('Searching failed unexpectedly'));
+    }
+  }
+);
+
 export default router;
