@@ -102,4 +102,20 @@ router.get(
   }
 );
 
+router.delete(
+  '/:id',
+  authJwt,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id;
+
+    try {
+      // TODO: replace with findOneAndDelete?
+      const bookmark = await Bookmark.deleteOne({ _id: id }).exec();
+      return res.json({ id });
+    } catch (err) {
+      next(ApiError.internalServerError('Delete failed unexpectedly'));
+    }
+  }
+);
+
 export default router;
