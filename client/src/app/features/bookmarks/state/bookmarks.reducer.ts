@@ -67,6 +67,27 @@ const bookmarksReducer = createReducer(
       error,
       loading: false,
     };
+  }),
+  on(bookmarkActions.deleteConfirm, state => {
+    return {
+      ...state,
+      loading: true,
+      error: null,
+    };
+  }),
+  on(bookmarkActions.deleteBookmarkSuccess, (state, { id }) => {
+    return adapter.removeOne(id, {
+      ...state,
+      loading: false,
+      error: null,
+    });
+  }),
+  on(bookmarkActions.deleteBookmarkFailure, (state, { error }) => {
+    return {
+      ...state,
+      error,
+      loading: false,
+    };
   })
 );
 

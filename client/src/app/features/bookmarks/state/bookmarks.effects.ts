@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 
 import * as bookmarkActions from './bookmarks.actions';
 import { BookmarksService } from '../services/bookmarks.service';
+import { ConfirmDialogService } from '@app/shared/confirm-dialog/confirm-dialog.service';
 
 @Injectable({
   providedIn: 'root',
@@ -72,9 +73,76 @@ export class BookmarkEffects {
     { dispatch: false }
   );
 
+  deleteBookmark$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(bookmarkActions.deleteBookmark),
+      exhaustMap(({ id }) => {
+        this.confirmDialogService.open({
+          title: 'Confirm Delete',
+          message: 'Are you sure you want to delete?',
+          cancelText: 'Cancel',
+          confirmText: 'Delete',
+        });
+
+        return this.confirmDialogService.confirmed().pipe(
+          map(confirm => {
+            return confirm
+              ? bookmarkActions.deleteConfirm({ id })
+              : bookmarkActions.deleteCancel();
+          })
+        );
+      })
+    );
+  });
+
+  deleteConfirm$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(bookmarkActions.deleteConfirm),
+      exhaustMap(({ id }) =>
+        this.bookmarksService.deleteBookmark(id).pipe(
+          map(bookmarkId =>
+            bookmarkActions.deleteBookmarkSuccess({ id: bookmarkId })
+          ),
+          catchError(error =>
+            of(
+              bookmarkActions.deleteBookmarkFailure({
+                error: error?.error?.message,
+              })
+            )
+          )
+        )
+      )
+    );
+  });
+
+  deleteBookmarkSuccess$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(bookmarkActions.deleteBookmarkSuccess),
+        tap(_ => {
+          this.toastr.success('Bookmark has been deleted');
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  deleteBookmarkFailure$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(bookmarkActions.deleteBookmarkFailure),
+        tap(error => {
+          this.toastr.error(error.error);
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
   constructor(
     private actions$: Actions,
     private bookmarksService: BookmarksService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private confirmDialogService: ConfirmDialogService
   ) {}
 }

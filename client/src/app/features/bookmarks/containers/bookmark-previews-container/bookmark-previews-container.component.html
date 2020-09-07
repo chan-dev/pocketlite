@@ -5,6 +5,7 @@
         <app-bookmark-preview
           class="md:w-1/3 w-full p-4 break-words"
           [bookmark]="bookmark"
+          (delete)="deleteBookmark($event)"
         ></app-bookmark-preview>
       </ng-container>
     </ng-container>

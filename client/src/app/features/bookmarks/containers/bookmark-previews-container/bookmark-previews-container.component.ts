@@ -4,8 +4,10 @@ import {
   ChangeDetectionStrategy,
   Input,
 } from '@angular/core';
+import { Store } from '@ngrx/store';
 
 import { Bookmark } from '@models/bookmark.model';
+import * as fromBookmarks from '@app/features/bookmarks/state';
 
 @Component({
   selector: 'app-bookmark-previews-container',
@@ -18,9 +20,13 @@ export class BookmarkPreviewsContainerComponent implements OnInit {
 
   placeholders = 9;
 
-  constructor() {}
+  constructor(private store: Store) {}
 
   ngOnInit() {}
+
+  deleteBookmark(id: string) {
+    this.store.dispatch(fromBookmarks.deleteBookmark({ id }));
+  }
 
   generatePlaceholder(count: number) {
     // create an iterable of keys then convert to array

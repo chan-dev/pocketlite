@@ -29,4 +29,10 @@ export class BookmarksService {
       .get<{ bookmarks: Bookmark[] }>(`/api/bookmarks/search?q=${query}`)
       .pipe(map(resp => resp.bookmarks));
   }
+
+  deleteBookmark(id: string) {
+    return this.http
+      .delete<{ id: string }>(`/api/bookmarks/${id}`)
+      .pipe(map(resp => resp.id));
+  }
 }

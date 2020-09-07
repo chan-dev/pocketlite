@@ -26,3 +26,22 @@ export const saveBookmarkFailure = createAction(
   '[Bookmarks API] Save Bookmark Failure',
   props<{ error: string }>()
 );
+export const deleteBookmark = createAction(
+  '[BookmarkPreviewsContainerComponent] Delete Bookmark',
+  props<{ id: string }>()
+);
+export const deleteConfirm = createAction(
+  '[ConfirmDialogComponent] Delete Confirm',
+  props<{ id: string }>()
+);
+export const deleteCancel = createAction(
+  '[ConfirmDialogComponent] Delete Cancel'
+);
+export const deleteBookmarkSuccess = createAction(
+  '[Bookmarks API] Delete Bookmark Success',
+  props<{ id: string }>()
+);
+export const deleteBookmarkFailure = createAction(
+  '[Bookmarks API] Delete Bookmark Failure',
+  props<{ error: string }>()
+);

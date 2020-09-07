@@ -3,7 +3,9 @@ import {
   OnInit,
   ChangeDetectionStrategy,
   Input,
+  Output,
   ViewEncapsulation,
+  EventEmitter,
 } from '@angular/core';
 
 import { Bookmark } from '@models/bookmark.model';
@@ -31,9 +33,14 @@ import { Bookmark } from '@models/bookmark.model';
   encapsulation: ViewEncapsulation.None,
 })
 export class BookmarkPreviewComponent implements OnInit {
+  @Output() delete = new EventEmitter<string>();
   @Input() bookmark: Bookmark;
 
   constructor() {}
 
   ngOnInit() {}
+
+  deleteBookmark(id: string) {
+    this.delete.emit(id);
+  }
 }
