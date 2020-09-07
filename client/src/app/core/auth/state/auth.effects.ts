@@ -39,7 +39,9 @@ export class AuthEffects {
       exhaustMap(() =>
         this.authService.currentUser$.pipe(
           map(currentUser => authActions.loginSuccess({ currentUser })),
-          catchError(error => of(authActions.loginFailure({ error })))
+          catchError(error =>
+            of(authActions.loginFailure({ error: error?.error?.message }))
+          )
         )
       )
     );
