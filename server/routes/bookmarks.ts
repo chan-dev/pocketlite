@@ -53,7 +53,7 @@ router.post(
 
       const savedBookmark = await newBookmark.save();
 
-      return res.json({
+      return res.status(201).json({
         bookmark: savedBookmark,
       });
     } catch (err) {
