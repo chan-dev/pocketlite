@@ -18,10 +18,11 @@ import { TagsComponent } from './components/tags/tags.component';
 import { TagsListComponent } from './components/tags/tags-list.component';
 import { SearchBoxComponent } from './components/search-box/search-box.component';
 import { AddLinkFormComponent } from './components/add-link-form/add-link-form.component';
-import { BookmarksContainerComponent } from './containers/bookmarks-container/bookmarks-container.component';
+import { BookmarksCurrentListContainerComponent } from './containers/bookmarks-current-list-container-container/bookmarks-current-list-container.component';
 import { BookmarkPreviewComponent } from './components/bookmark-preview/bookmark-preview.component';
 import { TextImgComponent } from './components/text-img/text-img.component';
-import { BookmarkPreviewsContainerComponent } from './containers/bookmark-previews-container/bookmark-previews-container.component';
+// tslint:disable-next-line: max-line-length
+import { BookmarksCollectionContainerComponent } from './containers/bookmarks-collection-container/bookmarks-collection-container.component';
 import { BookmarkSearchResultsContainerComponent } from './containers/bookmark-search-results-container/bookmark-search-results-container.component';
 
 @NgModule({
@@ -33,10 +34,10 @@ import { BookmarkSearchResultsContainerComponent } from './containers/bookmark-s
     TagsListComponent,
     SearchBoxComponent,
     AddLinkFormComponent,
-    BookmarksContainerComponent,
+    BookmarksCurrentListContainerComponent,
     BookmarkPreviewComponent,
     TextImgComponent,
-    BookmarkPreviewsContainerComponent,
+    BookmarksCollectionContainerComponent,
     BookmarkSearchResultsContainerComponent,
   ],
   imports: [

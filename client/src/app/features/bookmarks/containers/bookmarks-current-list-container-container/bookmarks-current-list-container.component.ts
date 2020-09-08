@@ -7,8 +7,8 @@ import * as fromBookmarks from '@app/features/bookmarks/state';
 import { tap, skip } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-bookmarks-container',
-  templateUrl: './bookmarks-container.component.html',
+  selector: 'app-bookmarks-current-list-container',
+  templateUrl: './bookmarks-current-list-container.component.html',
   styles: [
     `
       :host {
@@ -23,7 +23,7 @@ import { tap, skip } from 'rxjs/operators';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BookmarksContainerComponent implements OnInit {
+export class BookmarksCurrentListContainerComponent implements OnInit {
   private page = 1;
   bookmarks$: Observable<Bookmark[]>;
 

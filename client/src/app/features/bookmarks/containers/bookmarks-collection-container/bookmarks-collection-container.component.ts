@@ -10,12 +10,12 @@ import { Bookmark } from '@models/bookmark.model';
 import * as fromBookmarks from '@app/features/bookmarks/state';
 
 @Component({
-  selector: 'app-bookmark-previews-container',
-  templateUrl: './bookmark-previews-container.component.html',
+  selector: 'app-bookmarks-collection-container',
+  templateUrl: './bookmarks-collection-container.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BookmarkPreviewsContainerComponent implements OnInit {
+export class BookmarksCollectionContainerComponent implements OnInit {
   @Input() bookmarks: Bookmark[];
 
   placeholders = 9;
