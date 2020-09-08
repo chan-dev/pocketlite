@@ -45,10 +45,11 @@ router.post(
       }
 
       const bookmark = await scrapeLink(url);
+      const userId = (req as any).user.id;
 
       const newBookmark = new Bookmark({
         ...bookmark,
-        user_id: mongoose.Types.ObjectId(),
+        user_id: userId,
       });
 
       const savedBookmark = await newBookmark.save();
@@ -79,11 +80,14 @@ router.get(
   authJwt,
   async (req: Request, res: Response, next: NextFunction) => {
     const q = req.query.q || '';
+    const userId = (req as any).user.id;
 
     // NOTE: we have to explicitly add a hashmap type here; otherwise, Typescript
     // throws an error by making the implicit type {} w/c prevents us from
     // adding properties dynamically
-    let query: { [key: string]: any } = {};
+    let query: { [key: string]: any } = {
+      user_id: userId,
+    };
 
     // NOTE: if q is empty, $text will return empty results
     // so we better check for that condition

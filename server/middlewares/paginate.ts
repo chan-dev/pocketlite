@@ -56,8 +56,10 @@ const paginatedResults = <T extends mongoose.Document>(
     const startIndex = (page - 1) * limit;
     // const endIndex = page * limit;
 
+    const userId = (req as any).user.id;
+
     const results = await model
-      .find()
+      .find({ user_id: userId })
       .sort({ created_at: -1 })
       .skip(startIndex)
       .limit(limit)
