@@ -23,5 +23,8 @@ export class BookmarkSearchResultsContainerComponent implements OnInit {
     );
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.store.dispatch(fromSearch.clearBookmarks());
+    this.store.dispatch(fromSearch.searchBookmark());
+  }
 }

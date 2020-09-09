@@ -26,6 +26,10 @@ export const initialState: State = adapter.getInitialState({
 
 const searchReducer = createReducer(
   initialState,
+  on(searchActions.clearBookmarks, state => {
+    // TODO: try to set this equal to initialState
+    return adapter.removeAll(state);
+  }),
   on(searchActions.searchBookmark, state => {
     return {
       ...state,

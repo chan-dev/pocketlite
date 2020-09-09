@@ -2,8 +2,16 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { createEffect, ofType, Actions } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { tap, exhaustMap, map, catchError } from 'rxjs/operators';
+import {
+  tap,
+  exhaustMap,
+  map,
+  catchError,
+  withLatestFrom,
+} from 'rxjs/operators';
+import * as appState from '@app/core/core.state';
 
+import { Store, select } from '@ngrx/store';
 import { ToastrService } from 'ngx-toastr';
 
 import * as searchActions from './search.actions';
@@ -13,11 +21,40 @@ import { BookmarksService } from '../services/bookmarks.service';
   providedIn: 'root',
 })
 export class SearchEffects {
+  startSearch$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(searchActions.startSearch),
+        tap(({ query }) => {
+          this.router.navigate(['/bookmarks/search'], {
+            queryParamsHandling: 'merge',
+            queryParams: {
+              query,
+            },
+          });
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
   searchBookmark$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(searchActions.searchBookmark),
-      exhaustMap(({ query }) =>
-        this.bookmarksService.searchBookmarks(query).pipe(
+      exhaustMap(action => {
+        return of(action).pipe(
+          // TODO: reuse, create a reusable operator
+          withLatestFrom(
+            this.store.pipe(select(appState.selectQueryParams)),
+            (_, queryParams) => {
+              return queryParams;
+            }
+          )
+        );
+      }),
+      tap(queryParams => console.log({ queryParams })),
+      exhaustMap(queryParams => {
+        return this.bookmarksService.searchBookmarks(queryParams.query).pipe(
           map(bookmarks => searchActions.searchBookmarkSuccess({ bookmarks })),
           catchError(error =>
             of(
@@ -26,24 +63,10 @@ export class SearchEffects {
               })
             )
           )
-        )
-      )
+        );
+      })
     );
   });
-
-  searchBookmarkSuccess$ = createEffect(
-    () => {
-      return this.actions$.pipe(
-        ofType(searchActions.searchBookmarkSuccess),
-        tap(_ => {
-          this.router.navigate(['/bookmarks/search'], {
-            queryParamsHandling: 'merge',
-          });
-        })
-      );
-    },
-    { dispatch: false }
-  );
 
   searchBookmarkFailure$ = createEffect(
     () => {
@@ -60,6 +83,7 @@ export class SearchEffects {
   constructor(
     private actions$: Actions,
     private router: Router,
+    private store: Store,
     private bookmarksService: BookmarksService,
     private toastr: ToastrService
   ) {}

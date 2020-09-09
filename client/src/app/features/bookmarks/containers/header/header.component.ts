@@ -52,7 +52,7 @@ export class HeaderComponent implements OnInit {
 
   searchBookmarks(query: FormControl) {
     if (query.value.length) {
-      this.store.dispatch(fromSearch.searchBookmark({ query: query.value }));
+      this.store.dispatch(fromSearch.startSearch({ query: query.value }));
     }
   }
 
