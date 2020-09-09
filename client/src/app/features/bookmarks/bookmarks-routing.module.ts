@@ -13,10 +13,16 @@ const routes: Routes = [
       {
         path: '',
         component: BookmarksCurrentListContainerComponent,
+        data: {
+          reuseRoute: true,
+        },
       },
       {
         path: 'search',
         component: BookmarkSearchResultsContainerComponent,
+        data: {
+          reuseRoute: false,
+        },
       },
     ],
   },

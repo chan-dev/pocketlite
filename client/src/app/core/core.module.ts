@@ -1,7 +1,7 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule } from '@angular/router';
+import { RouterModule, RouteReuseStrategy } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
   HttpClientModule,
@@ -10,7 +10,10 @@ import {
 } from '@angular/common/http';
 
 import { StoreModule, ActionReducer, MetaReducer } from '@ngrx/store';
-import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import {
+  StoreRouterConnectingModule,
+  NavigationActionTiming,
+} from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { localStorageSync } from 'ngrx-store-localstorage';
@@ -27,6 +30,7 @@ import { HttpRequestInterceptor } from './interceptors/http-request.interceptor'
 import { RollbarService, rollbarFactory } from './rollbar';
 import { AppErrorHandlerService } from './error/app-error-handler.service';
 import { CustomSerializer } from './helpers/custom-serializer';
+import { CustomRouteReuseStrategy } from './helpers/custom-route-reuse';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
 export function localStorageSyncReducer(
@@ -53,6 +57,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreRouterConnectingModule.forRoot({
       serializer: CustomSerializer,
+      navigationActionTiming: NavigationActionTiming.PostActivation,
     }),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({
@@ -90,6 +95,10 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
       provide: HTTP_INTERCEPTORS,
       useClass: HttpRequestInterceptor,
       multi: true,
+    },
+    {
+      provide: RouteReuseStrategy,
+      useClass: CustomRouteReuseStrategy,
     },
   ],
 })
