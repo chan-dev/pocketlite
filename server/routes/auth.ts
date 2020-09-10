@@ -1,11 +1,14 @@
 import express, { Request, Response, NextFunction } from 'express';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
+import mongodb from 'mongodb';
 
 import config from '../config/keys';
 import { ApiError } from '../classes/error';
 
 const router = express.Router();
+
+const refreshTokens = new Map();
 
 router.get(
   '/google',
@@ -34,19 +37,60 @@ router.get(
     // the passport google's serializerUser done(null, user) callback
     const token = jwt.sign((req.user as any).toJSON(), secretKey);
 
-    const dayInMs = 24 * 60 * 60 * 1000;
     res.cookie(config.jwt.cookieName, token, {
       httpOnly: true,
-      maxAge: dayInMs,
+      maxAge: config.jwt.accessTokenExpiry,
     });
+
+    const refreshToken = req.user;
+    const refTokenId = new mongodb.ObjectID().toHexString();
+    refreshTokens.set(refTokenId, refreshToken);
+
     res.cookie(config.csurf.cookieName, req.csrfToken(), {
-      maxAge: dayInMs,
+      maxAge: config.csurf.csrfTokenExpiry,
+    });
+    res.cookie(config.jwt.refreshTokenCookieName, refTokenId, {
+      maxAge: config.jwt.refreshTokenExpiry,
+      httpOnly: true,
     });
     res.redirect(redirectUrl);
   }
 );
 
+router.post('/refresh', (req: Request, res: Response, next: NextFunction) => {
+  const refreshTokenId = req.cookies[config.jwt.refreshTokenCookieName];
+
+  // TODO: make a function for this
+  // NOTE: refreshToken is stored in cookie so if it expires
+  // the cookie is deleted in the client so we basically just
+  // check if refreshTokenId exist
+  if (refreshTokenId && refreshTokens.has(refreshTokenId)) {
+    const refreshToken = refreshTokens.get(refreshTokenId);
+    const {
+      jwt: { secretKey },
+    } = config;
+
+    const token = jwt.sign(refreshToken.toJSON(), secretKey);
+
+    res.cookie(config.jwt.cookieName, token, {
+      httpOnly: true,
+      maxAge: config.jwt.accessTokenExpiry,
+    });
+    res.status(200).json({
+      token,
+    });
+  } else {
+    return next(ApiError.refreshTokenExpired('Refresh Token expired'));
+  }
+});
+
 router.post('/logout', (req: Request, res: Response) => {
+  const refreshToken = req.cookies[config.jwt.refreshTokenCookieName];
+
+  if (refreshTokens.has(refreshToken)) {
+    refreshTokens.delete(config.jwt.refreshTokenCookieName);
+  }
+
   req.logout();
   // NOTE: in order to clear cookie, the cookie must have the same configuration
   // as when you set the cookie
@@ -56,6 +100,10 @@ router.post('/logout', (req: Request, res: Response) => {
   });
   res.clearCookie(config.csurf.cookieName, {
     maxAge: 0,
+  });
+  res.clearCookie(config.jwt.refreshTokenCookieName, {
+    maxAge: 0,
+    httpOnly: true,
   });
   // TODO: make sure the json response are consistent
   return res.json({
@@ -68,13 +116,9 @@ router.get(
   '/user',
   passport.authenticate('jwt', { session: false, failWithError: true }),
   (req: Request, res: Response) => {
-    console.log('we still access this route');
     // NOTE: we no longer need to acquire the cookie
     // on frontend since it's automatically passed in request
     // and in the backend, the cookie-parser with extract the jwt
-    console.log({
-      tokenInCookie: req.cookies['jwt'],
-    });
     return res.json({ user: req.user });
   },
   // error handler with failWithError enabled
@@ -84,12 +128,6 @@ router.get(
 );
 
 router.get('/error', (req: Request, res: Response) => {
-  /* res.status(401).json({ */
-  /*   error: true, */
-  /*   message: 'login failed', */
-  /* }); */
-  // TODO: should we call next(error) here or just throw
-  // since this is just an synchronous one
   throw ApiError.unauthenticated('Login failed');
 });
 

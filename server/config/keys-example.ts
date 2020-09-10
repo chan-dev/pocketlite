@@ -1,3 +1,7 @@
+const accessTokenExpiry = 0;
+const refreshTokenExpiry = 0;
+const csrfTokenExpiry = 0;
+
 export default {
   port: 3000,
   oauth2: {
@@ -13,9 +17,13 @@ export default {
   jwt: {
     secretKey: '',
     cookieName: '',
+    accessTokenExpiry,
+    refreshTokenExpiry,
+    refreshTokenCookieName: '',
   },
   csurf: {
     cookieName: '',
+    csrfTokenExpiry,
   },
   mongoose: {
     dbUrl: '',

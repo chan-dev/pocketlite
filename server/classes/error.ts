@@ -46,6 +46,10 @@ export class ApiError extends Error {
   static invalidCsrfToken(message: string): InvalidCsrfToken {
     return new InvalidCsrfToken(message);
   }
+
+  static refreshTokenExpired(message: string): RefreshTokenExpired {
+    return new RefreshTokenExpired(message);
+  }
 }
 
 export class HttpBadRequest extends ApiError {
@@ -141,5 +145,17 @@ export class InvalidCsrfToken extends ApiError {
   ) {
     super(message, statusCode, name, errorCode);
     Error.captureStackTrace(this, InvalidCsrfToken);
+  }
+}
+
+export class RefreshTokenExpired extends ApiError {
+  constructor(
+    public message: string,
+    public statusCode: HTTP_STATUS_CODES = HTTP_STATUS_CODES.UNAUTHENTICATED,
+    public name: string = 'ApiError.RefreshTokenExpired',
+    public errorCode: ERROR_CODES = ERROR_CODES.REFRESH_TOKEN
+  ) {
+    super(message, statusCode, name, errorCode);
+    Error.captureStackTrace(this, RefreshTokenExpired);
   }
 }
