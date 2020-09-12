@@ -95,7 +95,7 @@ export class AuthEffects {
 
   logoutConfirm$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(authActions.logoutConfirm),
+      ofType(authActions.logoutConfirm, authActions.forceLogout),
       exhaustMap(() =>
         this.authService.logout().pipe(
           map(() => authActions.logoutSuccess()),
@@ -127,6 +127,18 @@ export class AuthEffects {
     },
     { dispatch: false }
   );
+
+  refreshToken$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(authActions.refreshToken),
+      exhaustMap(() =>
+        this.authService.refreshToken().pipe(
+          map(() => authActions.refreshTokenSuccess()),
+          catchError(error => of(authActions.refreshTokenFailure({ error })))
+        )
+      )
+    );
+  });
 
   constructor(
     private router: Router,

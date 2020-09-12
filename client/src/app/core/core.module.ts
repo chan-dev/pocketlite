@@ -27,6 +27,7 @@ import { environment } from 'src/environments/environment';
 
 import { reducers } from './core.state';
 import { HttpRequestInterceptor } from './interceptors/http-request.interceptor';
+import { TokenInterceptor } from './interceptors/token-interceptor';
 import { RollbarService, rollbarFactory } from './rollbar';
 import { AppErrorHandlerService } from './error/app-error-handler.service';
 import { CustomSerializer } from './helpers/custom-serializer';
@@ -94,6 +95,11 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpRequestInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
       multi: true,
     },
     {

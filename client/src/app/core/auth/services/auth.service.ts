@@ -49,4 +49,8 @@ export class AuthService {
     // will be redirected by proxy to localhost:3000/api/auth/logout
     return this.http.post('/api/auth/logout', {});
   }
+
+  refreshToken() {
+    return this.http.post<{ token: string }>('/api/auth/refresh', {});
+  }
 }
