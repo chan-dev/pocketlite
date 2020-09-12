@@ -1,9 +1,6 @@
 <section class="bookmarks text-gray-900">
-  <!--   this serves as our container and add spacing with padding -->
   <div class="bookmark-list">
     <h2 class="bookmark-list__title mb-4">My Search List</h2>
-    <!-- TODO: add empty message -->
-    <!-- TODO: add loader -->
     <app-bookmarks-collection-container
       [bookmarks]="bookmarks$ | async"
     ></app-bookmarks-collection-container>
