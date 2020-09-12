@@ -1,10 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { Bookmark } from '@models/bookmark.model';
 import * as fromBookmarks from '@app/features/bookmarks/state';
-import { tap, skip } from 'rxjs/operators';
+import { filter, concatMap, withLatestFrom } from 'rxjs/operators';
 
 @Component({
   selector: 'app-bookmarks-current-list-container',
@@ -25,15 +25,24 @@ import { tap, skip } from 'rxjs/operators';
 })
 export class BookmarksCurrentListContainerComponent implements OnInit {
   private page = 1;
+
   bookmarks$: Observable<Bookmark[]>;
+  loading$: Observable<boolean>;
 
   constructor(private store: Store) {
     this.bookmarks$ = this.store.pipe(
-      select(fromBookmarks.selectBookmarks),
-      // NOTE: kinda hacky, selectors seem to fire once on
-      // initial load even without any action dispatched
-      skip(1),
-      tap(_ => console.log('fetch bookmarks'))
+      select(fromBookmarks.selectBookmarksLoading),
+      filter(loading => loading === false),
+      concatMap(loading =>
+        of(loading).pipe(
+          withLatestFrom(
+            this.store.select(fromBookmarks.selectBookmarks),
+            (_, bookmarks) => {
+              return bookmarks;
+            }
+          )
+        )
+      )
     );
     this.loadMore();
   }
