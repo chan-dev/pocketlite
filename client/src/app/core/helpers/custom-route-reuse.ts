@@ -3,17 +3,25 @@ import {
   ActivatedRouteSnapshot,
   DetachedRouteHandle,
 } from '@angular/router';
+import { ComponentRef } from '@angular/core';
 export class CustomRouteReuseStrategy extends RouteReuseStrategy {
   private readonly storedRouteHandles = new Map<string, DetachedRouteHandle>();
 
+  // Explanation for the methods:
+  // https://github.com/angular/angular/issues/16713#issuecomment-322113987
+
   /**
-   * Decides if we're gonna store the route we're navigating away from
+   * Decides if we're gonna detach and store the route we're navigating away from
    *
    * @param route the route we're navigating away from
-   * @returns boolean determines if we continue to store() method
+   * @returns boolean determines if we store the current route snapshot
    */
   shouldDetach(route: ActivatedRouteSnapshot): boolean {
-    return this.shouldReuse(route);
+    // console.log('🚩🚩🚩🚩🚩🚩🚩🚩🚩');
+    // console.log('shouldDetach runs');
+    // this.displayStoredRouteHandles();
+    // this.displayCurrentPath(route);
+    return !!route.routeConfig && this.shouldReuse(route);
   }
 
   /**
@@ -23,7 +31,11 @@ export class CustomRouteReuseStrategy extends RouteReuseStrategy {
    * @param handle the route handle we're storing
    */
   store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle): void {
-    this.storedRouteHandles.set(route.routeConfig.path, handle);
+    // console.log('🚩🚩🚩🚩🚩🚩🚩🚩🚩');
+    // console.log('store runs');
+    this.storedRouteHandles.set(this.getKey(route), handle);
+    // this.displayStoredRouteHandles();
+    // this.displayCurrentPath(route);
   }
 
   /**
@@ -33,7 +45,27 @@ export class CustomRouteReuseStrategy extends RouteReuseStrategy {
    * @returns boolean indicates whether to use any matching stored route handle
    */
   shouldAttach(route: ActivatedRouteSnapshot): boolean {
-    return this.storedRouteHandles.has(route?.routeConfig?.path);
+    // console.log('🚩🚩🚩🚩🚩🚩🚩🚩🚩');
+    // console.log('SHOULDATTACH RUNS');
+    // this.displayStoredRouteHandles();
+    // this.displayCurrentPath(route);
+
+    if (this.resetRoute(route)) {
+      // this.displayCurrentPath(route);
+
+      console.log('Cleanup stored route handles');
+      console.log('BEFORE');
+      this.displayStoredRouteHandles();
+
+      this.deleteAllRouteHandles();
+
+      console.log('AFTER');
+      this.displayStoredRouteHandles();
+      return false;
+    }
+    return (
+      !!route.routeConfig && !!this.storedRouteHandles.has(this.getKey(route))
+    );
   }
 
   /**
@@ -42,39 +74,120 @@ export class CustomRouteReuseStrategy extends RouteReuseStrategy {
    * @param route the current route
    * @returns DetachedRouteHandle
    */
-  retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle {
-    return this.storedRouteHandles.get(route?.routeConfig?.path);
+  retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle | null {
+    // console.log('🚩🚩🚩🚩🚩🚩🚩🚩🚩');
+    // console.log('retrieve runs');
+    // this.displayStoredRouteHandles();
+    // this.displayCurrentPath(route);
+    return route.routeConfig
+      ? this.storedRouteHandles.get(this.getKey(route))
+      : null;
   }
 
   /**
    * NOTE: if this returns true, none of the other methods are fired
    *
-   * @param future the route the user is navigating to
-   * @param curr the route the user is navigating away from
+   * @param future ironically is the route we're navigating away from
+   * @param curr the route the user is navigating to
    * @returns boolean indicates whether to reuse the route
    */
   shouldReuseRoute(
     future: ActivatedRouteSnapshot,
     curr: ActivatedRouteSnapshot
   ): boolean {
-    return this.shouldReuse(future) && future.routeConfig === curr.routeConfig;
+    // console.log('🚩🚩🚩🚩🚩🚩🚩🚩🚩');
+    // console.log('shouldReuseRoute runs');
+
+    // this.displayStoredRouteHandles();
+
+    // console.log(
+    //   'shouldReuseRoute value: ',
+    //   future.routeConfig === curr.routeConfig
+    // );
+
+    return future.routeConfig === curr.routeConfig;
   }
 
   /**
    * Determines if we reuse the route
-   * By default, If route.data.reuseRoute is not specified, then reuse the route
-   * If route.data.reuseRoute is explicitly specified, check if it's true
+   *
+   * Make sure to add route data { data: { reuseRoute: true }} for any routes
+   * you want to reuse
    *
    * @param route the route to check
    * @returns boolean indicates if this route is to be reused
    */
   private shouldReuse(route: ActivatedRouteSnapshot) {
-    return (
-      !route.data.hasOwnProperty('reuseRoute') || route.data.reuseRoute === true
+    return !!route.data && route.data.reuseRoute === true;
+  }
+
+  /**
+   * Traverse the current route snapshot
+   * Adapted from https://stackoverflow.com/a/58737722/9732932
+   *
+   * This is to check if the current route snapshot has resetRoute
+   * w/c is our indicator that we need to do cleanup and delete all
+   * references to route handlers and destroy referenced components
+   *
+   * @param snapshot route snapshot to check
+   */
+  private resetRoute(snapshot: ActivatedRouteSnapshot) {
+    const resetRouteFound = snapshot.pathFromRoot
+      .map(v => v.data)
+      .filter(v => v.resetRoute)
+      // NOTE: we only care about the last segment in the route
+      .pop();
+
+    return resetRouteFound && resetRouteFound.resetRoute === true;
+  }
+
+  /**
+   * Creates a unique key for the storedRouteHandles Map.
+   * By convention, We use the route.routeConfig.path to generate unique keys
+   *
+   * This prevents issues with lazy-loaded or deeply nested modules where sometimes
+   * the route.routeConfig.path is empty.
+   *
+   * @param route route to generate unique key from
+   * @returns string concatenated paths of the current route starting from root route
+   */
+  private getKey(route: ActivatedRouteSnapshot): string {
+    const routeFromRoot = route.pathFromRoot
+      .map((el: ActivatedRouteSnapshot) =>
+        el.routeConfig ? el.routeConfig.path : ''
+      )
+      .filter(str => str.length > 0)
+      .join('/');
+
+    return routeFromRoot;
+  }
+
+  private deleteAllRouteHandles() {
+    this.storedRouteHandles.forEach(handle => this.destroyComponent(handle));
+    this.storedRouteHandles.clear();
+  }
+
+  private destroyComponent(handle: DetachedRouteHandle): void {
+    // tslint:disable-next-line: no-string-literal
+    const componentRef: ComponentRef<any> = handle['componentRef'];
+    if (componentRef) {
+      componentRef.destroy();
+    }
+  }
+
+  private displayCurrentPath(route: ActivatedRouteSnapshot) {
+    console.log(
+      'path:',
+      route.routeConfig && route.routeConfig.path.length
+        ? route.routeConfig.path
+        : '/'
     );
   }
 
   private displayStoredRouteHandles() {
-    return [...this.storedRouteHandles.values()];
+    console.log('current route handle keys');
+    console.log([...this.storedRouteHandles.keys()]);
+    console.log('current route handles values');
+    console.log([...this.storedRouteHandles.values()]);
   }
 }

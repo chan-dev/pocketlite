@@ -20,9 +20,6 @@ const routes: Routes = [
       {
         path: 'search',
         component: BookmarkSearchResultsContainerComponent,
-        data: {
-          reuseRoute: false,
-        },
       },
     ],
   },

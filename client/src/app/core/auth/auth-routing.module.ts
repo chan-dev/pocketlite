@@ -18,6 +18,12 @@ const routes: Routes = [
       {
         path: 'login',
         component: LoginComponent,
+        data: {
+          // NOTE: this is required
+          // this tells the routeReuseStrategy to cleanup all
+          // route handles
+          resetRoute: true,
+        },
       },
       {
         path: 'callback',
