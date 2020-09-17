@@ -6,22 +6,19 @@ import {
   HttpRequest,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { select, Store } from '@ngrx/store';
+import { EMPTY, Observable, throwError } from 'rxjs';
 import {
   catchError,
-  tap,
   switchMap,
   filter,
   take,
   shareReplay,
 } from 'rxjs/operators';
-import { select, Store } from '@ngrx/store';
 
 import * as fromAuth from '@app/core/auth/state';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class TokenInterceptor implements HttpInterceptor {
   private isRefreshing = false;
   private isTokenRefreshed$: Observable<boolean | null>;
@@ -61,22 +58,17 @@ export class TokenInterceptor implements HttpInterceptor {
           if (refreshed) {
             return next.handle(req);
           }
-
-          // this is required so we the error handler
-          // of the subsequent tap() is called
           throw new Error('Token request error');
         }),
-        tap(
-          () => console.log('refreshed token'),
-          () => this.store.dispatch(fromAuth.forceLogout())
-        )
+        catchError(() => {
+          this.store.dispatch(fromAuth.forceLogout());
+          return EMPTY;
+        })
       );
     } else {
       // queued requests
       return this.isTokenRefreshed$.pipe(
-        // only allow last queued request when
-        // jwt token is refreshed
-        filter(refreshed => refreshed === true),
+        // only allow the last queued request
         take(1),
         switchMap(() => {
           return next.handle(req);
