@@ -102,10 +102,10 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
       useClass: TokenInterceptor,
       multi: true,
     },
-    {
-      provide: RouteReuseStrategy,
-      useClass: CustomRouteReuseStrategy,
-    },
+    // {
+    //   provide: RouteReuseStrategy,
+    //   useClass: CustomRouteReuseStrategy,
+    // },
   ],
 })
 export class CoreModule {}

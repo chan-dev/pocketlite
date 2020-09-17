@@ -44,6 +44,7 @@ export class BookmarksCurrentListContainerComponent implements OnInit {
         )
       )
     );
+    this.store.dispatch(fromBookmarks.clearBookmarksOnCurrentList());
     this.loadMore();
   }
 
