@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import { Tag } from '@models/tag.model';
 
-const tagSchema = new mongoose.Schema({
+const TagSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'name is required'],
@@ -13,8 +13,8 @@ const tagSchema = new mongoose.Schema({
   },
 });
 
-tagSchema.index({ name: 1, user_id: 1 }, { unique: true });
+TagSchema.index({ name: 1, user_id: 1 }, { unique: true });
 
 type TagModel = Tag & mongoose.Document;
 
-export default mongoose.model<TagModel>('Tag', tagSchema);
+export default mongoose.model<TagModel>('Tag', TagSchema);

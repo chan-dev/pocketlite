@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { User } from '@models/user.model';
 
-const userSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
   googleId: {
     type: String,
     required: [true, 'googleId is required'],
@@ -26,4 +26,4 @@ const userSchema = new mongoose.Schema({
 
 type UserModel = User & mongoose.Document;
 
-export default mongoose.model<UserModel>('User', userSchema);
+export default mongoose.model<UserModel>('User', UserSchema);

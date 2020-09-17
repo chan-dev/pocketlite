@@ -2,7 +2,7 @@ import mongoose, { DocumentQuery, Schema } from 'mongoose';
 import { Bookmark } from '@models/bookmark.model';
 import { validateUrl } from '../helpers/validators';
 
-const bookSchema = new mongoose.Schema(
+const BookSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -64,10 +64,10 @@ const bookSchema = new mongoose.Schema(
   }
 );
 
-bookSchema.index({ created_at: 1, type: -1 });
-bookSchema.index({ title: 'text', description: 'text' });
+BookSchema.index({ created_at: 1, type: -1 });
+BookSchema.index({ title: 'text', description: 'text' });
 
-bookSchema.statics.searchPartial = function searchPartial({
+BookSchema.statics.searchPartial = function searchPartial({
   userId,
   q,
 }: {
@@ -80,7 +80,7 @@ bookSchema.statics.searchPartial = function searchPartial({
   });
 };
 
-bookSchema.statics.searchFull = function searchFull({
+BookSchema.statics.searchFull = function searchFull({
   userId,
   q,
 }: {
@@ -113,5 +113,5 @@ interface BookmarkModel extends mongoose.Model<BookmarkDocument> {
 
 export default mongoose.model<BookmarkDocument, BookmarkModel>(
   'Bookmark',
-  bookSchema
+  BookSchema
 );
