@@ -16,7 +16,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     const headers = req.headers.set('Content-Type', 'application/json');
-    const authReq = req.clone({ headers });
+    const authReq = req.clone({ headers, withCredentials: true });
     return next.handle(authReq);
   }
 }
