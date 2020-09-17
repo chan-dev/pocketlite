@@ -1,8 +1,10 @@
 import mongoose, { DocumentQuery, Schema } from 'mongoose';
+import mongoose_delete from 'mongoose-delete';
+
 import { Bookmark } from '@models/bookmark.model';
 import { validateUrl } from '../helpers/validators';
 
-const BookSchema = new mongoose.Schema(
+const BookmarkSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -26,7 +28,7 @@ const BookSchema = new mongoose.Schema(
       unique: true,
       validate: {
         validator: validateUrl,
-        message: props => `url is not valid`,
+        message: () => `url is not valid`,
       },
     },
     domain: {
@@ -64,54 +66,91 @@ const BookSchema = new mongoose.Schema(
   }
 );
 
-BookSchema.index({ created_at: 1, type: -1 });
-BookSchema.index({ title: 'text', description: 'text' });
+BookmarkSchema.plugin(mongoose_delete);
 
-BookSchema.statics.searchPartial = function searchPartial({
-  userId,
-  q,
-}: {
-  userId: string;
-  q: string;
-}) {
-  return (this as DocumentQuery<any[], any, {}>).find({
-    user_id: userId,
-    $or: [{ title: new RegExp(q, 'gi') }, { description: new RegExp(q, 'gi') }],
-  });
+BookmarkSchema.index({ created_at: 1, type: -1 });
+BookmarkSchema.index({ title: 'text', description: 'text' });
+
+type BookmarkDocumentQuery<
+  T extends mongoose.Document = BookmarkDocument
+> = DocumentQuery<T[], T>;
+
+// we created this type just so we can reference the bookmarkQueryHelpers
+// on its own body; otherwise, it will be a circular type error
+interface BookmarkQueryHelper extends bookmarkQueryHelperType {}
+
+let bookmarkQueryHelpers = {
+  byUser(this: BookmarkDocumentQuery & BookmarkQueryHelper, userId: string) {
+    return this.where({
+      user_id: userId,
+    });
+  },
+
+  findArchived(
+    this: BookmarkDocumentQuery & BookmarkQueryHelper,
+    archived: boolean
+  ) {
+    return this.where({
+      deleted: archived,
+    });
+  },
 };
 
-BookSchema.statics.searchFull = function searchFull({
-  userId,
-  q,
-}: {
-  userId: string;
-  q: string;
-}) {
-  return (this as DocumentQuery<any[], any, {}>).find({
-    user_id: userId,
-    $text: {
-      $search: q,
-      $caseSensitive: false,
-    },
-  });
+let bookmarkStaticMethods = {
+  searchPartial(
+    this: BookmarkModel,
+    userId: string,
+    q: string,
+    archived: boolean
+  ) {
+    return this.find({
+      $or: [
+        { title: new RegExp(q, 'gi') },
+        { description: new RegExp(q, 'gi') },
+      ],
+    })
+      .byUser(userId)
+      .findArchived(archived);
+  },
+
+  searchFull(
+    this: BookmarkModel,
+    userId: string,
+    q: string,
+    archived: boolean
+  ) {
+    return this.find({
+      user_id: userId,
+      $text: {
+        $search: q,
+        $caseSensitive: false,
+      },
+    })
+      .byUser(userId)
+      .findArchived(archived);
+  },
 };
+
+let bookmarkInstanceMethods = {};
+
+type bookmarkStaticType = typeof bookmarkStaticMethods;
+type bookmarkQueryHelperType = typeof bookmarkQueryHelpers;
+type bookmarkInstanceType = typeof bookmarkInstanceMethods;
+
+BookmarkSchema.query = bookmarkQueryHelpers;
+BookmarkSchema.statics = bookmarkStaticMethods;
 
 // Note: we omit the id on Bookmark interface because
 // id is of type string in Bookmark interface while id is of type ObjectId
 // in mongoose.Document
-interface BookmarkDocument extends mongoose.Document, Omit<Bookmark, 'id'> {
-  // instance methods here
-}
 
-interface BookmarkModel extends mongoose.Model<BookmarkDocument> {
-  // static methods here
-  searchPartial(query: {
-    userId: string;
-    q: string;
-  }): mongoose.DocumentQuery<Bookmark[], any, {}>;
-}
+// prettier-ignore
+interface BookmarkDocument extends mongoose.Document, Omit<Bookmark, 'id'>, bookmarkInstanceType {}
+
+// prettier-ignore
+interface BookmarkModel extends mongoose.Model<BookmarkDocument, bookmarkQueryHelperType>, bookmarkStaticType {}
 
 export default mongoose.model<BookmarkDocument, BookmarkModel>(
   'Bookmark',
-  BookSchema
+  BookmarkSchema
 );

@@ -82,13 +82,13 @@ router.get(
     const q = req.query.q || '';
     const userId = (req as any).user.id;
 
-    let query: { userId: string; q: string } = {
-      userId: userId,
-      q: q as string,
-    };
-
     try {
-      const bookmarks = await Bookmark.searchPartial(query).exec();
+      const bookmarks = await Bookmark.searchPartial(
+        userId as string,
+        q as string,
+        false
+      ).exec();
+
       return res.json({ bookmarks });
     } catch (err) {
       next(ApiError.internalServerError('Searching failed unexpectedly'));
