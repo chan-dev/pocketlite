@@ -88,6 +88,35 @@ const bookmarksReducer = createReducer(
       error,
       loading: false,
     };
+  }),
+  on(
+    bookmarkActions.clearBookmarksOnCurrentList,
+    bookmarkActions.clearBookmarksOnSearch,
+    state => {
+      // TODO: try to set this equal to initialState
+      return adapter.removeAll(state);
+    }
+  ),
+  on(bookmarkActions.searchBookmark, state => {
+    return {
+      ...state,
+      loading: true,
+      error: null,
+    };
+  }),
+  on(bookmarkActions.searchBookmarkSuccess, (state, { bookmarks }) => {
+    return adapter.setAll(bookmarks, {
+      ...state,
+      loading: false,
+      error: null,
+    });
+  }),
+  on(bookmarkActions.searchBookmarkFailure, (state, { error }) => {
+    return {
+      ...state,
+      error,
+      loading: false,
+    };
   })
 );
 

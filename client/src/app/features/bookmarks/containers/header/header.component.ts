@@ -7,7 +7,6 @@ import { ToastrService } from 'ngx-toastr';
 
 import * as fromAuth from '@app/core/auth/state';
 import * as fromBookmarks from '@app/features/bookmarks/state/bookmarks.actions';
-import * as fromSearch from '@app/features/bookmarks/state/search.actions';
 import { SidenavService } from '../../services/sidenav.service';
 
 @Component({
@@ -52,7 +51,7 @@ export class HeaderComponent implements OnInit {
 
   searchBookmarks(query: FormControl) {
     if (query.value.length) {
-      this.store.dispatch(fromSearch.startSearch({ query: query.value }));
+      this.store.dispatch(fromBookmarks.startSearch({ query: query.value }));
     }
   }
 

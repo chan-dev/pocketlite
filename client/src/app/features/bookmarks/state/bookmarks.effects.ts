@@ -1,10 +1,21 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { createEffect, ofType, Actions } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { tap, exhaustMap, map, catchError } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
+import {
+  tap,
+  exhaustMap,
+  map,
+  catchError,
+  withLatestFrom,
+  concatMap,
+  mergeMap,
+} from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';
 
+import * as appState from '@app/core/core.state';
 import * as bookmarkActions from './bookmarks.actions';
 import { BookmarksService } from '../services/bookmarks.service';
 import { ConfirmDialogService } from '@app/shared/confirm-dialog/confirm-dialog.service';
@@ -16,7 +27,9 @@ export class BookmarkEffects {
   getBookmarkItems$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(bookmarkActions.getBookmarkItems),
-      exhaustMap(({ page, limit }) =>
+      // we use concatMap since they should be in order
+      // for pagination
+      concatMap(({ page, limit }) =>
         this.bookmarksService.fetchBookmarks(page, limit).pipe(
           map(bookmarks => bookmarkActions.loadBookmarksSuccess({ bookmarks })),
           catchError(error =>
@@ -139,10 +152,81 @@ export class BookmarkEffects {
     { dispatch: false }
   );
 
+  startSearch$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(bookmarkActions.startSearch),
+        tap(({ query }) => {
+          this.router.navigate(['/bookmarks/search'], {
+            queryParamsHandling: 'merge',
+            queryParams: {
+              query,
+            },
+          });
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  searchBookmark$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(bookmarkActions.searchBookmark),
+      tap(_ => console.log('searchBookmark$ runs 🔖')),
+      // NOTE: changing exhaustMap to mergeMap fixes our problem
+      mergeMap(action => {
+        return of(action).pipe(
+          // TODO: reuse, create a reusable operator
+          withLatestFrom(
+            this.store.pipe(select(appState.selectQueryParams)),
+            (_, queryParams) => {
+              console.log('withLatestFrom runs');
+              return queryParams;
+            }
+          )
+        );
+      }),
+      // tap(queryParams => console.log({ queryParams })),
+      // NOTE: this doesn't run after 2nd search
+      mergeMap(queryParams => {
+        console.log('exhaustMap');
+        return this.bookmarksService.searchBookmarks(queryParams.query).pipe(
+          // TODO: check if this happens after interceptor
+          tap(_ => console.log('searchBookmark$ http request started 🔖')),
+          map(bookmarks =>
+            bookmarkActions.searchBookmarkSuccess({ bookmarks })
+          ),
+          catchError(error =>
+            of(
+              bookmarkActions.searchBookmarkFailure({
+                error: error?.error?.message,
+              })
+            )
+          ),
+          tap(value => console.log('searchBookmark$ has finished'))
+        );
+      })
+    );
+  });
+
+  searchBookmarkFailure$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(bookmarkActions.searchBookmarkFailure),
+        tap(error => {
+          this.toastr.error(error.error);
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
   constructor(
+    private router: Router,
+    private store: Store,
     private actions$: Actions,
-    private bookmarksService: BookmarksService,
     private toastr: ToastrService,
+    private bookmarksService: BookmarksService,
     private confirmDialogService: ConfirmDialogService
   ) {}
 }

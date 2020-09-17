@@ -9,7 +9,7 @@ import { Observable, of, Subscription } from 'rxjs';
 import { filter, withLatestFrom, concatMap } from 'rxjs/operators';
 
 import { Bookmark } from '@models/bookmark.model';
-import * as fromSearch from '@app/features/bookmarks/state';
+import * as fromBookmarks from '@app/features/bookmarks/state';
 import * as fromRoot from '@app/core/core.state';
 
 @Component({
@@ -26,12 +26,12 @@ export class BookmarkSearchResultsContainerComponent
 
   constructor(private store: Store) {
     this.bookmarks$ = this.store.pipe(
-      select(fromSearch.selectSearchLoading),
+      select(fromBookmarks.selectBookmarksLoading),
       filter(loading => loading === false),
       concatMap(loading =>
         of(loading).pipe(
           withLatestFrom(
-            this.store.select(fromSearch.selectSearchResults),
+            this.store.select(fromBookmarks.selectBookmarks),
             (_, bookmarks) => {
               return bookmarks;
             }
@@ -48,8 +48,8 @@ export class BookmarkSearchResultsContainerComponent
         filter(params => params.hasOwnProperty('query'))
       )
       .subscribe(params => {
-        this.store.dispatch(fromSearch.clearBookmarks());
-        this.store.dispatch(fromSearch.searchBookmark());
+        this.store.dispatch(fromBookmarks.clearBookmarksOnSearch());
+        this.store.dispatch(fromBookmarks.searchBookmark());
       });
   }
 

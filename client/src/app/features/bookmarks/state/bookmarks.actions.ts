@@ -45,3 +45,24 @@ export const deleteBookmarkFailure = createAction(
   '[Bookmarks API] Delete Bookmark Failure',
   props<{ error: string }>()
 );
+export const startSearch = createAction(
+  '[HeaderComponent] Start Search',
+  props<{ query: string }>()
+);
+export const clearBookmarksOnSearch = createAction(
+  '[BookmarkSearchResultsContainerComponent] Clear Search Bookmarks'
+);
+export const clearBookmarksOnCurrentList = createAction(
+  '[BookmarksCurrentListContainerComponent] Clear Current List Bookmarks'
+);
+export const searchBookmark = createAction(
+  '[BookmarkSearchResultsContainerComponent] Search Bookmark'
+);
+export const searchBookmarkSuccess = createAction(
+  '[Bookmarks API] Search Bookmark Success',
+  props<{ bookmarks: Bookmark[] }>()
+);
+export const searchBookmarkFailure = createAction(
+  '[Bookmarks API] Search Bookmark Failure',
+  props<{ error: string }>()
+);
