@@ -12,6 +12,7 @@ import jwtSetup from './strategies/jwt';
 import authRoutes from './routes/auth';
 import bookmarkRoutes from './routes/bookmarks';
 import * as error from './middlewares/error';
+import csurfHandler from './middlewares/csurf';
 
 const app = express();
 const db = mongoose.connection;
@@ -50,14 +51,11 @@ app.use(cookieParser());
 // app.use(cors());
 app.use(passport.initialize());
 // TODO: remove this since we'll use JWT
+// check if we disable this, will serializeUser and deserializeUser be called
 app.use(passport.session());
 // TODO: use only it as route middleware?
 // https://medium.com/@d.silvas/how-to-implement-csrf-protection-on-a-jwt-based-app-node-csurf-angular-bb90af2a9efd
-app.use(
-  csurf({
-    cookie: true,
-  })
-);
+app.use(csurfHandler(csurf({ cookie: true })));
 
 const corsConfig = {
   // TODO: update this one
