@@ -1,4 +1,4 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { DocumentQuery, Schema } from 'mongoose';
 import { Bookmark } from '@models/bookmark.model';
 import { validateUrl } from '../helpers/validators';
 
@@ -67,6 +67,51 @@ const bookSchema = new mongoose.Schema(
 bookSchema.index({ created_at: 1, type: -1 });
 bookSchema.index({ title: 'text', description: 'text' });
 
-type BookmarkModel = Bookmark & mongoose.Document;
+bookSchema.statics.searchPartial = function searchPartial({
+  userId,
+  q,
+}: {
+  userId: string;
+  q: string;
+}) {
+  return (this as DocumentQuery<any[], any, {}>).find({
+    user_id: userId,
+    $or: [{ title: new RegExp(q, 'gi') }, { description: new RegExp(q, 'gi') }],
+  });
+};
 
-export default mongoose.model<BookmarkModel>('Bookmark', bookSchema);
+bookSchema.statics.searchFull = function searchFull({
+  userId,
+  q,
+}: {
+  userId: string;
+  q: string;
+}) {
+  return (this as DocumentQuery<any[], any, {}>).find({
+    user_id: userId,
+    $text: {
+      $search: q,
+      $caseSensitive: false,
+    },
+  });
+};
+
+// Note: we omit the id on Bookmark interface because
+// id is of type string in Bookmark interface while id is of type ObjectId
+// in mongoose.Document
+interface BookmarkDocument extends mongoose.Document, Omit<Bookmark, 'id'> {
+  // instance methods here
+}
+
+interface BookmarkModel extends mongoose.Model<BookmarkDocument> {
+  // static methods here
+  searchPartial(query: {
+    userId: string;
+    q: string;
+  }): mongoose.DocumentQuery<Bookmark[], any, {}>;
+}
+
+export default mongoose.model<BookmarkDocument, BookmarkModel>(
+  'Bookmark',
+  bookSchema
+);

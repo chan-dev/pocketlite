@@ -24,7 +24,7 @@ router.post(
   '/',
   authJwt,
   async (req: Request, res: Response, next: NextFunction) => {
-    const { url } = req.body;
+    const { url }: { url: string } = req.body;
 
     // NOTE:
     // check before passing the we do web scraping
@@ -82,23 +82,13 @@ router.get(
     const q = req.query.q || '';
     const userId = (req as any).user.id;
 
-    // NOTE: we have to explicitly add a hashmap type here; otherwise, Typescript
-    // throws an error by making the implicit type {} w/c prevents us from
-    // adding properties dynamically
-    let query: { [key: string]: any } = {
-      user_id: userId,
+    let query: { userId: string; q: string } = {
+      userId: userId,
+      q: q as string,
     };
 
-    // NOTE: if q is empty, $text will return empty results
-    // so we better check for that condition
-    if (q.length) {
-      query['$text'] = {
-        $search: q,
-      };
-    }
-
     try {
-      const bookmarks = await Bookmark.find(query).exec();
+      const bookmarks = await Bookmark.searchPartial(query).exec();
       return res.json({ bookmarks });
     } catch (err) {
       next(ApiError.internalServerError('Searching failed unexpectedly'));
