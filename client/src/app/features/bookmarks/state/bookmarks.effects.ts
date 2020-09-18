@@ -154,7 +154,7 @@ export class BookmarkEffects {
     { dispatch: false }
   );
 
-  archiveConfirm$ = createEffect(() => {
+  archiveBookmark$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(bookmarkActions.archiveBookmark),
       exhaustMap(({ id }) =>
