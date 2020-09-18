@@ -112,4 +112,20 @@ router.delete(
   }
 );
 
+router.put(
+  '/archive/:id',
+  authJwt,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id;
+
+    try {
+      const bookmark = await Bookmark.deleteById(id).exec();
+
+      return res.json({ bookmark });
+    } catch (err) {
+      next(ApiError.internalServerError('Archive failed unexpectedly'));
+    }
+  }
+);
+
 export default router;
