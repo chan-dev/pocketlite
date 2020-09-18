@@ -128,4 +128,25 @@ router.put(
   }
 );
 
+router.get(
+  '/archives',
+  authJwt,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = (req as any).user.id;
+      const bookmarks = await Bookmark.find()
+        .byUser(userId)
+        .findArchived(true)
+        .exec();
+
+      return res.json({ bookmarks });
+    } catch (err) {
+      console.log({ err });
+      next(
+        ApiError.internalServerError('Fetching Archives failed unexpectedly')
+      );
+    }
+  }
+);
+
 export default router;
