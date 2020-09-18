@@ -1,5 +1,8 @@
-import mongoose, { DocumentQuery, Schema } from 'mongoose';
-import mongoose_delete from 'mongoose-delete';
+import mongoose, { Schema } from 'mongoose';
+import mongoose_delete, {
+  SoftDeleteInterface,
+  SoftDeleteModel,
+} from 'mongoose-delete';
 
 import { Bookmark } from '@models/bookmark.model';
 import { validateUrl } from '../helpers/validators';
@@ -66,19 +69,26 @@ const BookmarkSchema = new mongoose.Schema(
   }
 );
 
-BookmarkSchema.plugin(mongoose_delete);
-
 BookmarkSchema.index({ created_at: 1, type: -1 });
 BookmarkSchema.index({ title: 'text', description: 'text' });
 
 type BookmarkDocumentQuery<
   T extends mongoose.Document = BookmarkDocument
-> = DocumentQuery<T[], T>;
+> = mongoose.DocumentQuery<T[], T>;
 
 // we created this type just so we can reference the bookmarkQueryHelpers
-// on its own body; otherwise, it will be a circular type error
-interface BookmarkQueryHelper extends bookmarkQueryHelperType {}
+// within its own definition; otherwise, it will be a circular type error
+interface BookmarkQueryHelper extends bookmarkQueryHelpersType {}
 
+// Notice the "this" keyword on the follow objects
+// In typescript, the this keyword as the first parameter basically means
+// that at compile-time we expect the "this" reference to point to
+// BookmarkDocumentQuery & BookmarkQueryHelper type for typing to work
+// https://www.typescriptlang.org/docs/handbook/functions.html#this-parameters
+
+// query helpers are used for chaining so we expect "this" to point to
+// the existing document query(BookmarkDocumentQuery) w/c may have
+// existing query helpers(BookmarkQueryHelper)
 let bookmarkQueryHelpers = {
   byUser(this: BookmarkDocumentQuery & BookmarkQueryHelper, userId: string) {
     return this.where({
@@ -96,6 +106,8 @@ let bookmarkQueryHelpers = {
   },
 };
 
+// static methods are attached to the Model itself
+// so "this" needs to refer to our custom model (BookmarkModel)
 let bookmarkStaticMethods = {
   searchPartial(
     this: BookmarkModel,
@@ -131,24 +143,46 @@ let bookmarkStaticMethods = {
   },
 };
 
+// "this" in instance methods need to refer to our custom Document (BookmarkDocument)
 let bookmarkInstanceMethods = {};
-
-type bookmarkStaticType = typeof bookmarkStaticMethods;
-type bookmarkQueryHelperType = typeof bookmarkQueryHelpers;
-type bookmarkInstanceType = typeof bookmarkInstanceMethods;
 
 BookmarkSchema.query = bookmarkQueryHelpers;
 BookmarkSchema.statics = bookmarkStaticMethods;
+BookmarkSchema.methods = bookmarkInstanceMethods;
 
-// Note: we omit the id on Bookmark interface because
+// create type aliases for custom static, instance and query helper methods
+type bookmarkStaticType = typeof bookmarkStaticMethods;
+type bookmarkQueryHelpersType = typeof bookmarkQueryHelpers;
+type bookmarkInstanceType = typeof bookmarkInstanceMethods;
+
+// plugin must be called after we add our own static, instance or query
+// helpers methods since plugins override those
+BookmarkSchema.plugin(mongoose_delete);
+
+// we omit the id on Bookmark interface because
 // id is of type string in Bookmark interface while id is of type ObjectId
 // in mongoose.Document
 
-// prettier-ignore
-interface BookmarkDocument extends mongoose.Document, Omit<Bookmark, 'id'>, bookmarkInstanceType {}
+// notice that our custom Document and Model respectively extends SoftDeleteInterface and SoftDeleteModal
+// because they must follow the same signature of the plugin for typescript to correctly infer
+// the types by reading the defition files
+// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/mongoose-delete/index.d.ts#L23
 
 // prettier-ignore
-interface BookmarkModel extends mongoose.Model<BookmarkDocument, bookmarkQueryHelperType>, bookmarkStaticType {}
+export interface BookmarkDocument extends mongoose.Document,
+  SoftDeleteInterface,
+  Omit<Bookmark, 'id'>,
+  bookmarkInstanceType {}
+
+// NOTE:
+// we provide defaults for mongoose.Document and QueryHelpers
+// so we don't have to provide them explicitly when we use BookmarkModel
+
+// prettier-ignore
+export interface BookmarkModel<T extends mongoose.Document = BookmarkDocument, QueryHelpers = bookmarkQueryHelpersType> extends mongoose.Model<T, QueryHelpers>,
+  SoftDeleteModel<T, QueryHelpers>,
+  bookmarkStaticType {
+  }
 
 export default mongoose.model<BookmarkDocument, BookmarkModel>(
   'Bookmark',
