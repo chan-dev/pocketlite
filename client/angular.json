@@ -22,6 +22,7 @@
             "customWebpackConfig": {
               "path": "extra-webpack.config.js"
             },
+            "allowedCommonJsDependencies": ["ngrx-store-localstorage"],
             "outputPath": "dist/pocketlite",
             "index": "src/index.html",
             "main": "src/main.ts",
