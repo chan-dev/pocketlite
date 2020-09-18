@@ -56,15 +56,15 @@ export const clearBookmarksOnSearch = createAction(
 export const clearBookmarksOnCurrentList = createAction(
   '[BookmarksCurrentListContainerComponent] Clear Current List Bookmarks'
 );
-export const searchBookmark = createAction(
-  '[BookmarkSearchResultsContainerComponent] Search Bookmark'
+export const searchBookmarks = createAction(
+  '[BookmarkSearchResultsContainerComponent] Search Bookmarks'
 );
-export const searchBookmarkSuccess = createAction(
-  '[Bookmarks API] Search Bookmark Success',
+export const searchBookmarksSuccess = createAction(
+  '[Bookmarks API] Search Bookmarks Success',
   props<{ bookmarks: Bookmark[] }>()
 );
-export const searchBookmarkFailure = createAction(
-  '[Bookmarks API] Search Bookmark Failure',
+export const searchBookmarksFailure = createAction(
+  '[Bookmarks API] Search Bookmarks Failure',
   props<{ error: string }>()
 );
 export const archiveBookmark = createAction(

@@ -225,7 +225,7 @@ export class BookmarkEffects {
 
   searchBookmark$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(bookmarkActions.searchBookmark),
+      ofType(bookmarkActions.searchBookmarks),
       tap(_ => console.log('searchBookmark$ runs 🔖')),
       // NOTE: changing exhaustMap to mergeMap fixes our problem
       mergeMap(action => {
@@ -248,11 +248,11 @@ export class BookmarkEffects {
           // TODO: check if this happens after interceptor
           tap(_ => console.log('searchBookmark$ http request started 🔖')),
           map(bookmarks =>
-            bookmarkActions.searchBookmarkSuccess({ bookmarks })
+            bookmarkActions.searchBookmarksSuccess({ bookmarks })
           ),
           catchError(error =>
             of(
-              bookmarkActions.searchBookmarkFailure({
+              bookmarkActions.searchBookmarksFailure({
                 error: error?.error?.message,
               })
             )
@@ -266,7 +266,7 @@ export class BookmarkEffects {
   searchBookmarkFailure$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(bookmarkActions.searchBookmarkFailure),
+        ofType(bookmarkActions.searchBookmarksFailure),
         tap(error => {
           this.toastr.error(error.error);
         })

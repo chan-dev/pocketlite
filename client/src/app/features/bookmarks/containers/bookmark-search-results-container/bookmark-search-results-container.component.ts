@@ -49,7 +49,7 @@ export class BookmarkSearchResultsContainerComponent
       )
       .subscribe(params => {
         this.store.dispatch(fromBookmarks.clearBookmarksOnSearch());
-        this.store.dispatch(fromBookmarks.searchBookmark());
+        this.store.dispatch(fromBookmarks.searchBookmarks());
       });
   }
 

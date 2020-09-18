@@ -121,21 +121,21 @@ const bookmarksReducer = createReducer(
       return adapter.removeAll(state);
     }
   ),
-  on(bookmarkActions.searchBookmark, state => {
+  on(bookmarkActions.searchBookmarks, state => {
     return {
       ...state,
       loading: true,
       error: null,
     };
   }),
-  on(bookmarkActions.searchBookmarkSuccess, (state, { bookmarks }) => {
+  on(bookmarkActions.searchBookmarksSuccess, (state, { bookmarks }) => {
     return adapter.setAll(bookmarks, {
       ...state,
       loading: false,
       error: null,
     });
   }),
-  on(bookmarkActions.searchBookmarkFailure, (state, { error }) => {
+  on(bookmarkActions.searchBookmarksFailure, (state, { error }) => {
     return {
       ...state,
       error,
