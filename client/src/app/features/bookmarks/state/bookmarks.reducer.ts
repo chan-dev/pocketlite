@@ -89,6 +89,30 @@ const bookmarksReducer = createReducer(
       loading: false,
     };
   }),
+  on(bookmarkActions.archiveBookmark, state => {
+    return {
+      ...state,
+      loading: true,
+      error: null,
+    };
+  }),
+  on(bookmarkActions.archiveBookmarkSuccess, (state, { bookmark }) => {
+    // NOTE: we used setOne here instead of updateOne since
+    // we'll let the package mongo_delete automate the soft delete
+    // for us. We'll just replace that particular document
+    return adapter.updateOne(bookmark, {
+      ...state,
+      loading: false,
+      error: null,
+    });
+  }),
+  on(bookmarkActions.archiveBookmarkFailure, (state, { error }) => {
+    return {
+      ...state,
+      error,
+      loading: false,
+    };
+  }),
   on(
     bookmarkActions.clearBookmarksOnCurrentList,
     bookmarkActions.clearBookmarksOnSearch,

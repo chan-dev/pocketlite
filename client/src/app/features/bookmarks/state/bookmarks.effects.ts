@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { createEffect, ofType, Actions } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { select, Store } from '@ngrx/store';
+import { Update } from '@ngrx/entity';
 import {
   tap,
   exhaustMap,
@@ -15,6 +16,7 @@ import {
 
 import { ToastrService } from 'ngx-toastr';
 
+import { Bookmark } from '@models/bookmark.model';
 import * as appState from '@app/core/core.state';
 import * as bookmarkActions from './bookmarks.actions';
 import { BookmarksService } from '../services/bookmarks.service';
@@ -144,6 +146,58 @@ export class BookmarkEffects {
     () => {
       return this.actions$.pipe(
         ofType(bookmarkActions.deleteBookmarkFailure),
+        tap(error => {
+          this.toastr.error(error.error);
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  archiveConfirm$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(bookmarkActions.archiveBookmark),
+      exhaustMap(({ id }) =>
+        this.bookmarksService.archiveBookmark(id).pipe(
+          map(bookmark => {
+            const updatedBookmark: Update<Bookmark> = {
+              id,
+              changes: {
+                deleted: true,
+              },
+            };
+            return bookmarkActions.archiveBookmarkSuccess({
+              bookmark: updatedBookmark,
+            });
+          }),
+          catchError(error =>
+            of(
+              bookmarkActions.archiveBookmarkFailure({
+                error: error?.error?.message,
+              })
+            )
+          )
+        )
+      )
+    );
+  });
+
+  archiveBookmarkSuccess$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(bookmarkActions.archiveBookmarkSuccess),
+        tap(_ => {
+          this.toastr.success('Bookmark has been archived');
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  archiveBookmarkFailure$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(bookmarkActions.archiveBookmarkFailure),
         tap(error => {
           this.toastr.error(error.error);
         })

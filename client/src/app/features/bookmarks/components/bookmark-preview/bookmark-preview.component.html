@@ -62,6 +62,13 @@
           </button>
           <button
             class="hover:bg-gray-200 hover:text-green-800 flex items-center justify-start p-2"
+            (click)="archiveBookmark(bookmark.id)"
+          >
+            <mat-icon class="mr-2">archive</mat-icon>
+            Archive
+          </button>
+          <button
+            class="hover:bg-gray-200 hover:text-green-800 flex items-center justify-start p-2"
             (click)="deleteBookmark(bookmark.id)"
           >
             <mat-icon class="mr-2">delete</mat-icon>

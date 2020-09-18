@@ -35,4 +35,10 @@ export class BookmarksService {
       .delete<{ id: string }>(`/api/bookmarks/${id}`)
       .pipe(map(resp => resp.id));
   }
+
+  archiveBookmark(id: string) {
+    return this.http
+      .put<{ bookmark: Bookmark }>(`/api/bookmarks/archive/${id}`, {})
+      .pipe(map(resp => resp.bookmark));
+  }
 }

@@ -28,6 +28,10 @@ export class BookmarksCollectionContainerComponent implements OnInit {
     this.store.dispatch(fromBookmarks.deleteBookmark({ id }));
   }
 
+  archiveBookmark(id: string) {
+    this.store.dispatch(fromBookmarks.archiveBookmark({ id }));
+  }
+
   generatePlaceholder(count: number) {
     // create an iterable of keys then convert to array
     return Array.from(Array(count).keys());

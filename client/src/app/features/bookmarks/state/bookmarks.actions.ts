@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { Update } from '@ngrx/entity';
 
 import { Bookmark } from '@models/bookmark.model';
 
@@ -64,5 +65,17 @@ export const searchBookmarkSuccess = createAction(
 );
 export const searchBookmarkFailure = createAction(
   '[Bookmarks API] Search Bookmark Failure',
+  props<{ error: string }>()
+);
+export const archiveBookmark = createAction(
+  '[BookmarkPreviewsContainerComponent] Archive Bookmark',
+  props<{ id: string }>()
+);
+export const archiveBookmarkSuccess = createAction(
+  '[Bookmarks API] Archive Bookmark Success',
+  props<{ bookmark: Update<Bookmark> }>()
+);
+export const archiveBookmarkFailure = createAction(
+  '[Bookmarks API] Archive Bookmark Failure',
   props<{ error: string }>()
 );
