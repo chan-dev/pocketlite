@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { createEffect, ofType, Actions } from '@ngrx/effects';
-import { EMPTY, of } from 'rxjs';
+import { of } from 'rxjs';
 import { tap, exhaustMap, map, catchError } from 'rxjs/operators';
 
 import { AuthService } from '../services/auth.service';
@@ -134,7 +134,9 @@ export class AuthEffects {
       exhaustMap(() =>
         this.authService.refreshToken().pipe(
           map(() => authActions.refreshTokenSuccess()),
-          catchError(error => of(authActions.refreshTokenFailure({ error })))
+          catchError(error =>
+            of(authActions.refreshTokenFailure({ error: error?.error.message }))
+          )
         )
       )
     );
