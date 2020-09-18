@@ -36,7 +36,7 @@ export class BookmarksCurrentListContainerComponent implements OnInit {
       concatMap(loading =>
         of(loading).pipe(
           withLatestFrom(
-            this.store.select(fromBookmarks.selectBookmarks),
+            this.store.select(fromBookmarks.selectCurrentBookmarks),
             (_, bookmarks) => {
               return bookmarks;
             }

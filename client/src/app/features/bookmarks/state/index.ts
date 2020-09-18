@@ -36,6 +36,10 @@ export const selectBookmarks = createSelector(
   selectBookmarksState,
   fromBookmarks.selectBookmarks
 );
+export const selectCurrentBookmarks = createSelector(
+  selectBookmarks,
+  bookmarks => bookmarks.filter(b => !b.deleted)
+);
 export const selectBookmarksCount = createSelector(
   selectBookmarksState,
   fromBookmarks.selectBookmarksCount
