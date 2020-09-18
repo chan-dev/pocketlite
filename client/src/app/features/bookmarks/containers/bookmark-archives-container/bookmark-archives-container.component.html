@@ -1,0 +1,8 @@
+<section class="bookmarks text-gray-900">
+  <div class="bookmark-list">
+    <h2 class="bookmark-list__title mb-4">Archives</h2>
+    <app-bookmarks-collection-container
+      [bookmarks]="bookmarks$ | async"
+    ></app-bookmarks-collection-container>
+  </div>
+</section>

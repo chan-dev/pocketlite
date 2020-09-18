@@ -41,4 +41,10 @@ export class BookmarksService {
       .put<{ bookmark: Bookmark }>(`/api/bookmarks/archive/${id}`, {})
       .pipe(map(resp => resp.bookmark));
   }
+
+  getArchivedBookmarks() {
+    return this.http
+      .get<{ bookmarks: Bookmark[] }>(`/api/bookmarks/archives`)
+      .pipe(map(res => res.bookmarks));
+  }
 }

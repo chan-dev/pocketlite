@@ -24,6 +24,7 @@ import { TextImgComponent } from './components/text-img/text-img.component';
 // tslint:disable-next-line: max-line-length
 import { BookmarksCollectionContainerComponent } from './containers/bookmarks-collection-container/bookmarks-collection-container.component';
 import { BookmarkSearchResultsContainerComponent } from './containers/bookmark-search-results-container/bookmark-search-results-container.component';
+import { BookmarkArchivesContainerComponent } from './containers/bookmark-archives-container/bookmark-archives-container.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { BookmarkSearchResultsContainerComponent } from './containers/bookmark-s
     TextImgComponent,
     BookmarksCollectionContainerComponent,
     BookmarkSearchResultsContainerComponent,
+    BookmarkArchivesContainerComponent,
   ],
   imports: [
     CommonModule,

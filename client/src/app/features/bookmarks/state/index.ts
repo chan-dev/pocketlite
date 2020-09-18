@@ -40,6 +40,10 @@ export const selectCurrentBookmarks = createSelector(
   selectBookmarks,
   bookmarks => bookmarks.filter(b => !b.deleted)
 );
+export const selectArchivedBookmarks = createSelector(
+  selectBookmarks,
+  bookmarks => bookmarks.filter(b => b.deleted)
+);
 export const selectBookmarksCount = createSelector(
   selectBookmarksState,
   fromBookmarks.selectBookmarksCount

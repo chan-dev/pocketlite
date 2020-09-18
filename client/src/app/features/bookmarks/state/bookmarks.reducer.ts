@@ -116,6 +116,7 @@ const bookmarksReducer = createReducer(
   on(
     bookmarkActions.clearBookmarksOnCurrentList,
     bookmarkActions.clearBookmarksOnSearch,
+    bookmarkActions.clearBookmarksOnArchive,
     state => {
       // TODO: try to set this equal to initialState
       return adapter.removeAll(state);
@@ -136,6 +137,27 @@ const bookmarksReducer = createReducer(
     });
   }),
   on(bookmarkActions.searchBookmarksFailure, (state, { error }) => {
+    return {
+      ...state,
+      error,
+      loading: false,
+    };
+  }),
+  on(bookmarkActions.getArchivedBookmarks, state => {
+    return {
+      ...state,
+      loading: true,
+      error: null,
+    };
+  }),
+  on(bookmarkActions.getArchivedBookmarksSuccess, (state, { bookmarks }) => {
+    return adapter.setAll(bookmarks, {
+      ...state,
+      loading: false,
+      error: null,
+    });
+  }),
+  on(bookmarkActions.getArchivedBookmarksFailure, (state, { error }) => {
     return {
       ...state,
       error,

@@ -275,6 +275,42 @@ export class BookmarkEffects {
     { dispatch: false }
   );
 
+  getArchivedBookmark$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(bookmarkActions.getArchivedBookmarks),
+      mergeMap(queryParams => {
+        console.log('exhaustMap');
+        return this.bookmarksService.getArchivedBookmarks().pipe(
+          // TODO: check if this happens after interceptor
+          tap(_ => console.log('getArchivedBookmark$ http request started 🔖')),
+          map(bookmarks =>
+            bookmarkActions.getArchivedBookmarksSuccess({ bookmarks })
+          ),
+          catchError(error =>
+            of(
+              bookmarkActions.getArchivedBookmarksFailure({
+                error: error?.error?.message,
+              })
+            )
+          ),
+          tap(value => console.log('getArchivedBookmark$ has finished'))
+        );
+      })
+    );
+  });
+
+  getArchivedBookmarkFailure$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(bookmarkActions.getArchivedBookmarksFailure),
+        tap(error => {
+          this.toastr.error(error.error);
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
   constructor(
     private router: Router,
     private store: Store,

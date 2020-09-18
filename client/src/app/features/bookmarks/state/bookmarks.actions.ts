@@ -79,3 +79,17 @@ export const archiveBookmarkFailure = createAction(
   '[Bookmarks API] Archive Bookmark Failure',
   props<{ error: string }>()
 );
+export const clearBookmarksOnArchive = createAction(
+  '[BookmarkArchivedContainerComponent] Clear Archived Bookmarks'
+);
+export const getArchivedBookmarks = createAction(
+  '[BookmarkArchivedContainerComponent] Get Archived Bookmarks'
+);
+export const getArchivedBookmarksSuccess = createAction(
+  '[Bookmarks API] Get Archived Bookmarks Success',
+  props<{ bookmarks: Bookmark[] }>()
+);
+export const getArchivedBookmarksFailure = createAction(
+  '[Bookmarks API] Get Archived Bookmarks Failure',
+  props<{ error: string }>()
+);
