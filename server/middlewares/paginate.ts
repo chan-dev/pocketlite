@@ -1,11 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import * as mongoose from 'mongoose';
 
 import { ApiError } from '../classes/error';
+import { BookmarkModel } from 'models/bookmark';
 
-const paginatedResults = <T extends mongoose.Document>(
-  model: mongoose.Model<T>
-) => {
+const paginatedResults = (model: BookmarkModel) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     // NOTE: we chose '+' for converting string to numeric
     // since parseInt or Number coerces invalid types to
@@ -58,8 +56,11 @@ const paginatedResults = <T extends mongoose.Document>(
 
     const userId = (req as any).user.id;
 
+    // TODO: make query helpers work here
     const results = await model
-      .find({ user_id: userId })
+      .find()
+      .byUser(userId)
+      .findArchived(false)
       .sort({ created_at: -1 })
       .skip(startIndex)
       .limit(limit)
