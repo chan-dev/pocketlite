@@ -35,17 +35,22 @@
         <section class="sidenav__body p-2 w-64 space-y-3 text-sm">
           <!-- main links -->
           <ul class="sidenav__list">
-            <li class="sidenav__items">
-              <a [routerLink]="['/']" routerLinkActive="active">
+            <li
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              class="sidenav__items"
+            >
+              <a [routerLink]="['/bookmarks']">
                 <mat-icon class="mr-1">home</mat-icon>
                 my list
               </a>
             </li>
-            <li class="sidenav__items">
-              <a
-                [routerLink]="['/bookmarks/archives']"
-                routerLinkActive="active"
-              >
+            <li
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              class="sidenav__items"
+            >
+              <a [routerLink]="['/bookmarks/archives']">
                 <mat-icon class="mr-1">archive</mat-icon>
                 archive
               </a>
