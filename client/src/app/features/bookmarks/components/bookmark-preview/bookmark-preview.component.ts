@@ -35,6 +35,7 @@ import { Bookmark } from '@models/bookmark.model';
 export class BookmarkPreviewComponent implements OnInit {
   @Output() delete = new EventEmitter<string>();
   @Output() archive = new EventEmitter<string>();
+  @Output() restore = new EventEmitter<string>();
   @Input() bookmark: Bookmark;
 
   constructor() {}
@@ -47,5 +48,9 @@ export class BookmarkPreviewComponent implements OnInit {
 
   archiveBookmark(id: string) {
     this.archive.emit(id);
+  }
+
+  restoreBookmark(id: string) {
+    this.restore.emit(id);
   }
 }
