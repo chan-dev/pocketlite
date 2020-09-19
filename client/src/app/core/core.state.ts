@@ -28,3 +28,8 @@ export const selectQueryParams = createSelector(
   selectRouteState,
   state => state.queryParams
 );
+
+export const selectRouteUrl = createSelector(
+  selectRouteState,
+  state => state.url
+);

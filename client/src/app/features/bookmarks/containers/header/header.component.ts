@@ -1,12 +1,20 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  OnDestroy,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 
 import { ToastrService } from 'ngx-toastr';
 
 import * as fromAuth from '@app/core/auth/state';
 import * as fromBookmarks from '@app/features/bookmarks/state/bookmarks.actions';
+import * as fromRoot from '@app/core/core.state';
 import { SidenavService } from '../../services/sidenav.service';
 
 @Component({
@@ -15,7 +23,9 @@ import { SidenavService } from '../../services/sidenav.service';
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
+  private subscription: Subscription;
+
   searchboxVisible = false;
   addLinkFormVisible = false;
 
@@ -23,10 +33,38 @@ export class HeaderComponent implements OnInit {
     private sidenavService: SidenavService,
     private store: Store,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cd: ChangeDetectorRef
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.subscription = this.store
+      .pipe(select(fromRoot.selectRouteUrl))
+      .subscribe(url => {
+        // close searchbox everytime we navigate away
+        // from search component
+        if (url.indexOf('/search') < 0) {
+          // Since we're changing this.searchboxVisible thru this.closeSearch()
+          // w/o any event handler occuring in this component or child components
+          // then we have to manually call change detection
+          this.closeSearch();
+
+          // Since using OnPush strategy
+          // change detection in OnPush only runs if one of these occurs
+          // * Input() binding changes (no input binding for current component)
+          // * This component or one of it's children triggers an event handler
+          // * Observable in our templates using async emits a new value
+          // * Change detection is run manually
+          this.cd.detectChanges();
+        }
+      });
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
 
   toggleSidenav() {
     this.sidenavService.toggle();
