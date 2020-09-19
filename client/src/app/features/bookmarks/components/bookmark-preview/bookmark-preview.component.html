@@ -43,8 +43,28 @@
       </div>
     </article>
     <!-- action menu -->
-    <div class="action-buttons text-gray-700 text-right my-4">
-      <button [matMenuTriggerFor]="menu" aria-label="Bookmark preview menu">
+    <div class="action-buttons flex justify-between text-gray-700 my-4">
+      <div class="status-icons flex">
+        <span class="flex rounded mx-1 bg-yellow-500 text-white" *ngIf="true">
+          <span class="cdk-visually-hidden">This bookmark is favorited</span>
+          <mat-icon>star_rate</mat-icon>
+        </span>
+        <span
+          class="flex rounded mx-1 bg-blue-600 text-white"
+          *ngIf="bookmark.contentInMarkdown.length"
+        >
+          <span class="cdk-visually-hidden"
+            >This bookmark will be redirected to the original webpage</span
+          >
+          <mat-icon>language</mat-icon>
+        </span>
+      </div>
+
+      <button
+        class="flex ml-auto"
+        [matMenuTriggerFor]="menu"
+        aria-label="Bookmark preview menu"
+      >
         <mat-icon>more_horiz</mat-icon>
       </button>
       <mat-menu
