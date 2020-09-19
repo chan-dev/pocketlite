@@ -206,6 +206,58 @@ export class BookmarkEffects {
     { dispatch: false }
   );
 
+  restoreBookmark$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(bookmarkActions.restoreBookmark),
+      exhaustMap(({ id }) =>
+        this.bookmarksService.restoreBookmark(id).pipe(
+          map(bookmark => {
+            const updatedBookmark: Update<Bookmark> = {
+              id,
+              changes: {
+                deleted: false,
+              },
+            };
+            return bookmarkActions.restoreBookmarkSuccess({
+              bookmark: updatedBookmark,
+            });
+          }),
+          catchError(error =>
+            of(
+              bookmarkActions.restoreBookmarkFailure({
+                error: error?.error?.message,
+              })
+            )
+          )
+        )
+      )
+    );
+  });
+
+  restoreBookmarkSuccess$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(bookmarkActions.restoreBookmarkSuccess),
+        tap(_ => {
+          this.toastr.success('Bookmark has been restored');
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  restoreBookmarkFailure$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(bookmarkActions.restoreBookmarkFailure),
+        tap(error => {
+          this.toastr.error(error.error);
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
   startSearch$ = createEffect(
     () => {
       return this.actions$.pipe(
