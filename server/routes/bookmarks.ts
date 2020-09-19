@@ -128,6 +128,25 @@ router.put(
   }
 );
 
+router.put(
+  '/archive/:id/restore',
+  authJwt,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id;
+    const bookmarkId = mongoose.Types.ObjectId(id);
+
+    try {
+      const bookmark = await Bookmark.restore({ _id: bookmarkId }).exec();
+
+      return res.json({ bookmark });
+    } catch (err) {
+      next(
+        ApiError.internalServerError('Restoring Archive failed unexpectedly')
+      );
+    }
+  }
+);
+
 router.get(
   '/archives',
   authJwt,
