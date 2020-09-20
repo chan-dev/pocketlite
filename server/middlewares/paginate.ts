@@ -3,7 +3,10 @@ import { Request, Response, NextFunction } from 'express';
 import { ApiError } from '../classes/error';
 import { BookmarkModel, PaginateOptions } from 'models/bookmark';
 
-const paginatedResults = (model: BookmarkModel) => {
+const paginatedResults = (
+  model: BookmarkModel,
+  options: Omit<PaginateOptions, 'userId' | 'limit' | 'offset'>
+) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     // NOTE: we chose '+' for converting string to numeric
     // since parseInt or Number coerces invalid types to
@@ -56,19 +59,19 @@ const paginatedResults = (model: BookmarkModel) => {
 
     const userId = (req as any).user.id;
 
-    const options: PaginateOptions = {
+    const paginateOptions: PaginateOptions = {
       userId,
       limit,
       offset: startIndex,
-      sortBy: 'created_at',
-      sortOrder: -1,
-      archived: false,
-      favorited: false,
-      q: '',
+      sortBy: options.sortBy || 'created_at',
+      sortOrder: options.sortOrder || -1,
+      archived: options.archived || false,
+      favorited: options.favorited || false,
+      q: options.q || '',
     };
 
     // TODO: make query helpers work here
-    const results = await model.paginate(options).exec();
+    const results = await model.paginate(paginateOptions).exec();
 
     (res as any).paginatedResults = results || [];
     next();

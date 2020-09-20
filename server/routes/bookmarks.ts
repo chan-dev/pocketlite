@@ -13,7 +13,13 @@ const router = express.Router();
 router.get(
   '/',
   authJwt,
-  paginatedResults(Bookmark),
+  paginatedResults(Bookmark, {
+    sortBy: 'created_at',
+    sortOrder: -1,
+    archived: false,
+    favorited: false,
+    q: '',
+  }),
   async (req: Request, res: Response) => {
     const bookmarks = (res as any).paginatedResults;
     return res.json({ bookmarks });
