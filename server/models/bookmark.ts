@@ -13,6 +13,14 @@ export interface BookmarkOptions {
   q: string;
 }
 
+export interface PaginateOptions extends BookmarkOptions {
+  offset: number;
+  limit: number;
+  sortBy: string;
+  sortOrder: 1 | -1 | 'asc' | 'desc';
+  favorited: boolean;
+}
+
 const BookmarkSchema = new mongoose.Schema(
   {
     title: {
@@ -138,6 +146,16 @@ let bookmarkStaticMethods = {
     })
       .byUser(userId)
       .findArchived(archived);
+  },
+
+  paginate(this: BookmarkModel, options: PaginateOptions) {
+    const { userId, offset, limit, sortBy, sortOrder, archived } = options;
+    return this.find()
+      .byUser(userId)
+      .findArchived(archived)
+      .sort({ [sortBy]: sortOrder })
+      .skip(offset)
+      .limit(limit);
   },
 };
 

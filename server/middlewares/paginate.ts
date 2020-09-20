@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 import { ApiError } from '../classes/error';
-import { BookmarkModel } from 'models/bookmark';
+import { BookmarkModel, PaginateOptions } from 'models/bookmark';
 
 const paginatedResults = (model: BookmarkModel) => {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -56,15 +56,19 @@ const paginatedResults = (model: BookmarkModel) => {
 
     const userId = (req as any).user.id;
 
+    const options: PaginateOptions = {
+      userId,
+      limit,
+      offset: startIndex,
+      sortBy: 'created_at',
+      sortOrder: -1,
+      archived: false,
+      favorited: false,
+      q: '',
+    };
+
     // TODO: make query helpers work here
-    const results = await model
-      .find()
-      .byUser(userId)
-      .findArchived(false)
-      .sort({ created_at: -1 })
-      .skip(startIndex)
-      .limit(limit)
-      .exec();
+    const results = await model.paginate(options).exec();
 
     (res as any).paginatedResults = results || [];
     next();
