@@ -7,6 +7,12 @@ import mongoose_delete, {
 import { Bookmark } from '@models/bookmark.model';
 import { validateUrl } from '../helpers/validators';
 
+export interface BookmarkOptions {
+  userId: string;
+  archived: boolean;
+  q: string;
+}
+
 const BookmarkSchema = new mongoose.Schema(
   {
     title: {
@@ -109,12 +115,8 @@ let bookmarkQueryHelpers = {
 // static methods are attached to the Model itself
 // so "this" needs to refer to our custom model (BookmarkModel)
 let bookmarkStaticMethods = {
-  searchPartial(
-    this: BookmarkModel,
-    userId: string,
-    q: string,
-    archived: boolean
-  ) {
+  searchPartial(this: BookmarkModel, options: BookmarkOptions) {
+    const { q, userId, archived } = options;
     return this.find({
       $or: [
         { title: new RegExp(q, 'gi') },
@@ -125,12 +127,8 @@ let bookmarkStaticMethods = {
       .findArchived(archived);
   },
 
-  searchFull(
-    this: BookmarkModel,
-    userId: string,
-    q: string,
-    archived: boolean
-  ) {
+  searchFull(this: BookmarkModel, options: BookmarkOptions) {
+    const { userId, q, archived } = options;
     return this.find({
       user_id: userId,
       $text: {

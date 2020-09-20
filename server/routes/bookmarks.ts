@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 
-import Bookmark from '../models/bookmark';
+import Bookmark, { BookmarkOptions } from '../models/bookmark';
 import scrapeLink from '../helpers/link-scraper';
 import paginatedResults from '../middlewares/paginate';
 import authJwt from '../middlewares/auth-jwt';
@@ -79,15 +79,17 @@ router.get(
   '/search',
   authJwt,
   async (req: Request, res: Response, next: NextFunction) => {
-    const q = req.query.q || '';
+    const q = (req.query.q || '') as string;
     const userId = (req as any).user.id;
 
+    let options: BookmarkOptions = {
+      userId,
+      q,
+      archived: false,
+    };
+
     try {
-      const bookmarks = await Bookmark.searchPartial(
-        userId as string,
-        q as string,
-        false
-      ).exec();
+      const bookmarks = await Bookmark.searchPartial(options).exec();
 
       return res.json({ bookmarks });
     } catch (err) {
