@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import { Bookmark } from '@models/bookmark.model';
+import { BookmarkFavorite } from '@models/bookmark-favorite.model';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -52,5 +53,11 @@ export class BookmarksService {
     return this.http
       .get<{ bookmarks: Bookmark[] }>(`/api/bookmarks/archives`)
       .pipe(map(res => res.bookmarks));
+  }
+
+  getBookmarkFavorited() {
+    return this.http
+      .get<{ favorites: BookmarkFavorite[] }>(`/api/bookmarks/favorited`)
+      .pipe(map(res => res.favorites));
   }
 }
