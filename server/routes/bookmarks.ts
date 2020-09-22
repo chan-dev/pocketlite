@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 
 import Bookmark, { BookmarkOptions } from '../models/bookmark';
+import BookmarkFavorite from '../models/bookmark-favorite';
 import scrapeLink from '../helpers/link-scraper';
 import paginatedResults from '../middlewares/paginate';
 import authJwt from '../middlewares/auth-jwt';
@@ -171,6 +172,27 @@ router.get(
       console.log({ err });
       next(
         ApiError.internalServerError('Fetching Archives failed unexpectedly')
+      );
+    }
+  }
+);
+
+router.get(
+  '/favorited',
+  authJwt,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = (req as any).user.id;
+      console.log({ userId });
+      const favorites = await BookmarkFavorite.find({
+        user_id: userId,
+      }).exec();
+
+      return res.json({ favorites });
+    } catch (err) {
+      console.log({ err });
+      next(
+        ApiError.internalServerError('Fetching Favorites failed unexpectedly')
       );
     }
   }
