@@ -4,14 +4,18 @@ import {
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
+
 import { RouterStateUrl } from './helpers/custom-serializer';
+import * as fromAuth from '@app/core/auth/state';
 
 export interface State {
   router: fromRouter.RouterReducerState<any>;
+  auth: fromAuth.AuthState;
 }
 
 export const reducers: ActionReducerMap<State> = {
   router: fromRouter.routerReducer,
+  auth: fromAuth.reducer,
 };
 
 export const selectRouter = createFeatureSelector<

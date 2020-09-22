@@ -34,6 +34,7 @@ import { AppErrorHandlerService } from './error/app-error-handler.service';
 import { CustomSerializer } from './helpers/custom-serializer';
 import { CustomRouteReuseStrategy } from './helpers/custom-route-reuse';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { AuthEffects } from './auth/state';
 
 export function localStorageSyncReducer(
   reducer: ActionReducer<any>
@@ -56,17 +57,27 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
       cookieName: 'XSRF-TOKEN',
       headerName: 'X-XSRF-TOKEN',
     }),
-    StoreModule.forRoot(reducers, { metaReducers }),
+    AuthModule,
+    StoreModule.forRoot(reducers, {
+      metaReducers,
+      runtimeChecks: {
+        strictStateImmutability: true,
+        strictActionImmutability: true,
+        strictStateSerializability: true,
+        strictActionSerializability: true,
+        strictActionWithinNgZone: true,
+        strictActionTypeUniqueness: true,
+      },
+    }),
     StoreRouterConnectingModule.forRoot({
       serializer: CustomSerializer,
       navigationActionTiming: NavigationActionTiming.PostActivation,
     }),
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([AuthEffects]),
     StoreDevtoolsModule.instrument({
       name: 'PocketLite',
       logOnly: environment.production,
     }),
-    AuthModule,
     ConfirmDialogModule,
     ErrorModule,
     ToastrModule.forRoot({
