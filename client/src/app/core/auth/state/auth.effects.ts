@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
 import { createEffect, ofType, Actions } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { tap, exhaustMap, map, catchError } from 'rxjs/operators';
@@ -9,9 +8,7 @@ import { AuthService } from '../services/auth.service';
 import { ConfirmDialogService } from '@app/shared/confirm-dialog/confirm-dialog.service';
 import * as authActions from './auth.actions';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AuthEffects {
   private redirects = {
     login: {
@@ -23,15 +20,12 @@ export class AuthEffects {
       failure: '/',
     },
   };
-  login$ = createEffect(
-    () => {
-      return this.actions$.pipe(
-        ofType(authActions.login),
-        tap(() => this.store.dispatch(authActions.loginCallback()))
-      );
-    },
-    { dispatch: false }
-  );
+  login$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(authActions.login),
+      map(() => authActions.loginCallback())
+    );
+  });
 
   loginCallback$ = createEffect(() => {
     return this.actions$.pipe(
@@ -144,7 +138,6 @@ export class AuthEffects {
 
   constructor(
     private router: Router,
-    private store: Store<any>,
     private actions$: Actions,
     private authService: AuthService,
     private confirmDialogService: ConfirmDialogService
