@@ -2,8 +2,8 @@ import { createAction, props } from '@ngrx/store';
 
 import { User } from '@models/user.model';
 
-export const login = createAction('[Login Page] Login');
-export const loginCallback = createAction('[Login Page] Login Callback');
+export const login = createAction('[CallbackComponent Page] Login');
+export const loginCallback = createAction('[AuthEffects] Login Callback');
 export const loginSuccess = createAction(
   '[Auth API] Login Success',
   props<{ currentUser: User }>()
