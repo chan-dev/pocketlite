@@ -15,6 +15,6 @@ const TagSchema = new mongoose.Schema({
 
 TagSchema.index({ name: 1, user_id: 1 }, { unique: true });
 
-type TagModel = Tag & mongoose.Document;
+type TagDocument = Tag & mongoose.Document;
 
-export default mongoose.model<TagModel>('Tag', TagSchema);
+export default mongoose.model<TagDocument>('Tag', TagSchema);
