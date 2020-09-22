@@ -22,9 +22,7 @@ import * as bookmarkActions from './bookmarks.actions';
 import { BookmarksService } from '../services/bookmarks.service';
 import { ConfirmDialogService } from '@app/shared/confirm-dialog/confirm-dialog.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class BookmarkEffects {
   getBookmarkItems$ = createEffect(() => {
     return this.actions$.pipe(
