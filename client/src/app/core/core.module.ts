@@ -1,4 +1,4 @@
-import { NgModule, ErrorHandler } from '@angular/core';
+import { NgModule, ErrorHandler, Optional, SkipSelf } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, RouteReuseStrategy } from '@angular/router';
@@ -10,6 +10,7 @@ import {
 } from '@angular/common/http';
 
 import { StoreModule, ActionReducer, MetaReducer } from '@ngrx/store';
+import { throwError } from 'rxjs';
 import {
   StoreRouterConnectingModule,
   NavigationActionTiming,
@@ -108,4 +109,10 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     // },
   ],
 })
-export class CoreModule {}
+export class CoreModule {
+  constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
+    if (parentModule) {
+      throwError('CoreModule can only be imported once inside AppModule');
+    }
+  }
+}
