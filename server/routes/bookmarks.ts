@@ -198,4 +198,49 @@ router.get(
   }
 );
 
+router.post(
+  '/favorite',
+  authJwt,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = (req as any).user.id;
+      const { bookmarkId } = req.body;
+
+      const bookmarkFavorite = new BookmarkFavorite({
+        user_id: userId,
+        bookmark_id: bookmarkId,
+      });
+
+      const favorite = await bookmarkFavorite.save();
+
+      return res.status(201).json({ favorite });
+    } catch (err) {
+      console.log({ err });
+      next(
+        ApiError.internalServerError('Favorite Bookmark failed unexpectedly')
+      );
+    }
+  }
+);
+
+router.delete(
+  '/favorite/:id',
+  authJwt,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const id = req.params.id;
+
+      const favorite = await BookmarkFavorite.findOneAndDelete({
+        _id: id,
+      }).exec();
+
+      return res.status(200).json({ favorite });
+    } catch (err) {
+      console.log({ err });
+      next(
+        ApiError.internalServerError('Unfavorite Bookmark failed unexpectedly')
+      );
+    }
+  }
+);
 export default router;
