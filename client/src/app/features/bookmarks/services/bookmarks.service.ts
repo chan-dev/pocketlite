@@ -55,6 +55,13 @@ export class BookmarksService {
       .pipe(map(res => res.bookmarks));
   }
 
+  getFavoritedBookmarks() {
+    return this.http
+      .get<{ bookmarks: Bookmark[] }>(`/api/bookmarks/favorites`)
+      .pipe(map(res => res.bookmarks));
+  }
+
+  // TODO: move to bookmarkFavorite.service?
   getBookmarkFavorited() {
     return this.http
       .get<{ favorites: BookmarkFavorite[] }>(`/api/bookmarks/favorited`)
