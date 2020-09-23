@@ -178,6 +178,37 @@ router.get(
 );
 
 router.get(
+  '/favorites',
+  authJwt,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = (req as any).user.id;
+
+      const bookmarkFavorites = await BookmarkFavorite.find({
+        user_id: userId,
+      }).exec();
+
+      const bookmarkFavoriteIds = bookmarkFavorites.map(fav => fav.bookmark_id);
+
+      const bookmarks = await Bookmark.find()
+        .byUser(userId)
+        .where('_id')
+        .in(bookmarkFavoriteIds)
+        .exec();
+
+      return res.json({ bookmarks });
+    } catch (err) {
+      console.log({ err });
+      next(
+        ApiError.internalServerError(
+          'Fetching Favorited Bookmarks failed unexpectedly'
+        )
+      );
+    }
+  }
+);
+
+router.get(
   '/favorited',
   authJwt,
   async (req: Request, res: Response, next: NextFunction) => {
