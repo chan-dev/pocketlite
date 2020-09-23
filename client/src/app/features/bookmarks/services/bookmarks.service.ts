@@ -60,4 +60,20 @@ export class BookmarksService {
       .get<{ favorites: BookmarkFavorite[] }>(`/api/bookmarks/favorited`)
       .pipe(map(res => res.favorites));
   }
+
+  favoriteBookmark(bookmarkId: string) {
+    return this.http
+      .post<{ favorite: BookmarkFavorite }>(`/api/bookmarks/favorite`, {
+        bookmarkId,
+      })
+      .pipe(map(res => res.favorite));
+  }
+
+  unfavoriteBookmark(bookmarkFavoriteId: string) {
+    return this.http
+      .delete<{ favorite: BookmarkFavorite }>(
+        `/api/bookmarks/favorite/${bookmarkFavoriteId}`
+      )
+      .pipe(map(res => res.favorite));
+  }
 }
