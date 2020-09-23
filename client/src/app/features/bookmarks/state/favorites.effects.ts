@@ -2,12 +2,15 @@ import { Injectable } from '@angular/core';
 import { createEffect, ofType, Actions } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { Action } from '@ngrx/store';
-import { tap, map, catchError, mergeMap } from 'rxjs/operators';
+import { Update } from '@ngrx/entity';
+import { tap, map, catchError, mergeMap, switchMap } from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';
 
 import * as favoriteActions from './favorites.actions';
 import { BookmarksService } from '../services/bookmarks.service';
+import { generateFavoriteIdForAdapter } from './favorites.reducer';
+import { BookmarkFavorite } from '@models/bookmark-favorite.model';
 
 @Injectable()
 export class FavoriteEffects {
@@ -33,6 +36,80 @@ export class FavoriteEffects {
     () => {
       return this.actions$.pipe(
         ofType(favoriteActions.getFavoritesFailure),
+        tap(error => {
+          this.toastr.error(error.error);
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  favoriteBookmark$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(favoriteActions.favoriteBookmark),
+      switchMap(({ bookmark }) =>
+        this.bookmarksService.favoriteBookmark(bookmark.id).pipe(
+          map(favorite => {
+            const favoriteUpdate: Update<BookmarkFavorite> = {
+              // this id is used for EntityAdapter's selectId
+              id: generateFavoriteIdForAdapter(favorite),
+              changes: {
+                // this one is the state
+                id: favorite.id,
+              },
+            };
+            return favoriteActions.favoriteBookmarkSuccess({
+              favorite: favoriteUpdate,
+            });
+          }),
+          catchError(error =>
+            of(
+              favoriteActions.favoriteBookmarkFailure({
+                error: error?.error?.message,
+                bookmark,
+              })
+            )
+          )
+        )
+      )
+    );
+  });
+
+  favoriteBookmarkFailure$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(favoriteActions.favoriteBookmarkFailure),
+        tap(error => {
+          this.toastr.error(error.error);
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  unfavoriteBookmark$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(favoriteActions.unfavoriteBookmark),
+      switchMap(({ favorite }) =>
+        this.bookmarksService.unfavoriteBookmark(favorite.id).pipe(
+          map(_ => favoriteActions.unfavoriteBookmarkSuccess()),
+          catchError(error =>
+            of(
+              favoriteActions.unfavoriteBookmarkFailure({
+                error: error?.error?.message,
+                favorite,
+              })
+            )
+          )
+        )
+      )
+    );
+  });
+
+  unfavoriteBookmarkFailure$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(favoriteActions.unfavoriteBookmarkFailure),
         tap(error => {
           this.toastr.error(error.error);
         })
