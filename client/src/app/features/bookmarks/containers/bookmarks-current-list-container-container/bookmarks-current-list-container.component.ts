@@ -1,10 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
+import { filter, concatMap, withLatestFrom, map } from 'rxjs/operators';
 
 import { Bookmark } from '@models/bookmark.model';
+import { BookmarkFavorite } from '@models/bookmark-favorite.model';
 import * as fromBookmarks from '@app/features/bookmarks/state';
-import { filter, concatMap, withLatestFrom } from 'rxjs/operators';
 
 @Component({
   selector: 'app-bookmarks-current-list-container',
@@ -27,6 +28,7 @@ export class BookmarksCurrentListContainerComponent implements OnInit {
   private page = 1;
 
   bookmarks$: Observable<Bookmark[]>;
+  favorites$: Observable<BookmarkFavorite[]>;
   loading$: Observable<boolean>;
 
   constructor(private store: Store) {
@@ -46,6 +48,8 @@ export class BookmarksCurrentListContainerComponent implements OnInit {
     );
     this.store.dispatch(fromBookmarks.clearBookmarksOnCurrentList());
     this.loadMore();
+
+    this.favorites$ = this.store.pipe(select(fromBookmarks.selectFavorites));
   }
 
   ngOnInit() {}

@@ -3,6 +3,7 @@
     <h2 class="bookmark-list__title mb-4">My Search List</h2>
     <app-bookmarks-collection-container
       [bookmarks]="bookmarks$ | async"
+      [favorites]="favorites$ | async"
     ></app-bookmarks-collection-container>
   </div>
 </section>

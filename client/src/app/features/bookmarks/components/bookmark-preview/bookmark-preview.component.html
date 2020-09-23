@@ -45,7 +45,10 @@
     <!-- action menu -->
     <div class="action-buttons flex justify-between text-gray-700 my-4">
       <div class="status-icons flex">
-        <span class="flex rounded mx-1 bg-yellow-500 text-white" *ngIf="true">
+        <span
+          class="flex rounded mx-1 bg-yellow-500 text-white"
+          *ngIf="favorited"
+        >
           <span class="cdk-visually-hidden">This bookmark is favorited</span>
           <mat-icon>star_rate</mat-icon>
         </span>
@@ -105,8 +108,12 @@
           </button>
           <button
             class="hover:bg-gray-300 hover:text-green-800 flex items-center justify-start p-2"
+            (click)="toggleFavoriteBookmark(bookmark)"
           >
-            <mat-icon class="mr-2">star</mat-icon>
+            <!-- TODO: highlight the star icon -->
+            <mat-icon class="mr-2" [ngClass]="{ 'text-yellow-500': favorited }"
+              >star</mat-icon
+            >
             Favorite
           </button>
           <button

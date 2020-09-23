@@ -6,9 +6,10 @@ import {
 } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, of, Subscription } from 'rxjs';
-import { filter, withLatestFrom, concatMap } from 'rxjs/operators';
+import { filter, withLatestFrom, concatMap, map } from 'rxjs/operators';
 
 import { Bookmark } from '@models/bookmark.model';
+import { BookmarkFavorite } from '@models/bookmark-favorite.model';
 import * as fromBookmarks from '@app/features/bookmarks/state';
 import * as fromRoot from '@app/core/core.state';
 
@@ -23,6 +24,7 @@ export class BookmarkSearchResultsContainerComponent
   private subscription: Subscription;
 
   bookmarks$: Observable<Bookmark[]>;
+  favorites$: Observable<BookmarkFavorite[]>;
 
   constructor(private store: Store) {
     this.bookmarks$ = this.store.pipe(
@@ -39,6 +41,8 @@ export class BookmarkSearchResultsContainerComponent
         )
       )
     );
+
+    this.favorites$ = this.store.pipe(select(fromBookmarks.selectFavorites));
   }
 
   ngOnInit() {

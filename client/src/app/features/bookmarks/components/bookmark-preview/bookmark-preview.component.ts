@@ -36,7 +36,12 @@ export class BookmarkPreviewComponent implements OnInit {
   @Output() delete = new EventEmitter<string>();
   @Output() archive = new EventEmitter<string>();
   @Output() restore = new EventEmitter<string>();
+  @Output() toggleFavorite = new EventEmitter<{
+    bookmark: Bookmark;
+    favorited: boolean;
+  }>();
   @Input() bookmark: Bookmark;
+  @Input() favorited: boolean;
 
   constructor() {}
 
@@ -52,5 +57,12 @@ export class BookmarkPreviewComponent implements OnInit {
 
   restoreBookmark(id: string) {
     this.restore.emit(id);
+  }
+
+  toggleFavoriteBookmark(bookmark: Bookmark) {
+    this.toggleFavorite.emit({
+      bookmark,
+      favorited: this.favorited,
+    });
   }
 }
