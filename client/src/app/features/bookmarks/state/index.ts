@@ -22,7 +22,17 @@ export const selectBookmarksFeatureState = createFeatureSelector<
   BookmarksState
 >('bookmarks');
 
-// get the bookmarks slice out of the Feature BookmarksState
+// favorite state
+export const selectFavoritesState = createSelector(
+  selectBookmarksFeatureState,
+  state => state.favorites
+);
+export const selectFavorites = createSelector(
+  selectFavoritesState,
+  fromFavorites.selectFavorites
+);
+
+// bookmarks state
 export const selectBookmarksState = createSelector(
   selectBookmarksFeatureState,
   state => state.bookmarks
@@ -47,6 +57,16 @@ export const selectArchivedBookmarks = createSelector(
   selectBookmarks,
   bookmarks => bookmarks.filter(b => b.deleted)
 );
+export const selectFavoritedBookmarks = createSelector(
+  selectBookmarks,
+  selectFavorites,
+  (bookmarks, favorites) => {
+    const favoritedBookmarkIds = favorites.map(fav => fav.bookmark_id);
+    return bookmarks.filter(bookmark => {
+      return favoritedBookmarkIds.includes(bookmark.id);
+    });
+  }
+);
 export const selectBookmarksCount = createSelector(
   selectBookmarksState,
   fromBookmarks.selectBookmarksCount
@@ -59,19 +79,6 @@ export const selectBookmarksLoading = createSelector(
 export const selectBookmarksError = createSelector(
   selectBookmarksState,
   state => state.error
-);
-
-// favorited
-export const selectFavoritesFeatureState = createFeatureSelector<
-  BookmarksState
->('favorites');
-export const selectFavoritesState = createSelector(
-  selectBookmarksFeatureState,
-  state => state.favorites
-);
-export const selectFavorites = createSelector(
-  selectFavoritesState,
-  fromFavorites.selectFavorites
 );
 
 export * from './bookmarks.effects';

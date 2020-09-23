@@ -162,9 +162,15 @@ export function reducer(state: State | undefined, action: Action) {
 }
 
 // Selectors
-const { selectEntities, selectAll, selectTotal } = adapter.getSelectors();
+const {
+  selectIds,
+  selectEntities,
+  selectAll,
+  selectTotal,
+} = adapter.getSelectors();
 
 // selector aliases
+export const selectBookmarksIds = selectIds;
 export const selectFavoritesEntities = selectEntities;
 export const selectFavorites = selectAll;
 export const selectFavoritesCount = selectTotal;

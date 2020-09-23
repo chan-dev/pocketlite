@@ -276,8 +276,6 @@ export class BookmarkEffects {
   searchBookmark$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(bookmarkActions.searchBookmarks),
-      tap(_ => console.log('searchBookmark$ runs 🔖')),
-      // NOTE: changing exhaustMap to mergeMap fixes our problem
       mergeMap(action => {
         return of(action).pipe(
           // TODO: reuse, create a reusable operator
@@ -290,7 +288,6 @@ export class BookmarkEffects {
           )
         );
       }),
-      // tap(queryParams => console.log({ queryParams })),
       // NOTE: this doesn't run after 2nd search
       mergeMap(queryParams => {
         console.log('exhaustMap');
@@ -353,6 +350,39 @@ export class BookmarkEffects {
     () => {
       return this.actions$.pipe(
         ofType(bookmarkActions.getArchivedBookmarksFailure),
+        tap(error => {
+          this.toastr.error(error.error);
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  getFavoritedBookmark$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(bookmarkActions.getFavoritedBookmarks),
+      mergeMap(queryParams => {
+        console.log('exhaustMap');
+        return this.bookmarksService.getFavoritedBookmarks().pipe(
+          map(bookmarks =>
+            bookmarkActions.getFavoritedBookmarksSuccess({ bookmarks })
+          ),
+          catchError(error =>
+            of(
+              bookmarkActions.getFavoritedBookmarksFailure({
+                error: error?.error?.message,
+              })
+            )
+          )
+        );
+      })
+    );
+  });
+
+  getFavoritedBookmarkFailure$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(bookmarkActions.getFavoritedBookmarksFailure),
         tap(error => {
           this.toastr.error(error.error);
         })
