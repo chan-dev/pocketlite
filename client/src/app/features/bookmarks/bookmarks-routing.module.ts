@@ -5,6 +5,7 @@ import { BookmarksPageComponent } from './containers/bookmarks-page/bookmarks-pa
 import { BookmarksCurrentListContainerComponent } from './containers/bookmarks-current-list-container-container/bookmarks-current-list-container.component';
 import { BookmarkSearchResultsContainerComponent } from './containers/bookmark-search-results-container/bookmark-search-results-container.component';
 import { BookmarkArchivesContainerComponent } from './containers/bookmark-archives-container/bookmark-archives-container.component';
+import { BookmarkFavoritesContainerComponent } from './containers/bookmark-favorites-container/bookmark-favorites-container.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,10 @@ const routes: Routes = [
       {
         path: 'archives',
         component: BookmarkArchivesContainerComponent,
+      },
+      {
+        path: 'favorites',
+        component: BookmarkFavoritesContainerComponent,
       },
     ],
   },

@@ -62,8 +62,12 @@
             <div class="text-xs font-bold uppercase">filters</div>
 
             <ul class="sidenav__list">
-              <li class="sidenav__items">
-                <a href="#">
+              <li
+                class="sidenav__items"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+              >
+                <a [routerLink]="['/bookmarks/favorites']">
                   <mat-icon class="mr-1">favorites</mat-icon>
                   favorites
                 </a>
