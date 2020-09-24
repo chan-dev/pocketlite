@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
-import { filter, withLatestFrom, concatMap, map } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 import { Bookmark } from '@models/bookmark.model';
 import { BookmarkFavorite } from '@models/bookmark-favorite.model';
@@ -18,19 +18,12 @@ export class BookmarkArchivesContainerComponent implements OnInit {
   favorites$: Observable<BookmarkFavorite[]>;
 
   constructor(private store: Store) {
-    this.bookmarks$ = this.store.pipe(
-      select(fromBookmarks.selectBookmarksLoading),
-      filter(loading => loading === false),
-      concatMap(loading =>
-        of(loading).pipe(
-          withLatestFrom(
-            this.store.select(fromBookmarks.selectArchivedBookmarks),
-            (_, bookmarks) => {
-              return bookmarks;
-            }
-          )
-        )
-      )
+    this.bookmarks$ = combineLatest(
+      this.store.pipe(select(fromBookmarks.selectBookmarksLoading)),
+      this.store.pipe(select(fromBookmarks.selectArchivedBookmarks))
+    ).pipe(
+      filter(([loading, _]) => loading === false),
+      map(([_, bookmarks]) => bookmarks)
     );
 
     this.favorites$ = this.store.pipe(select(fromBookmarks.selectFavorites));
