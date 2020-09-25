@@ -1,77 +1,82 @@
 @tailwind base;
-button:focus {
-  outline: none !important;
-}
-
 @tailwind components;
-
-.sidenav {
-  @apply flex flex-col font-bold text-sm capitalize text-gray-800;
-}
-.sidenav__items {
-  @apply p-3 cursor-pointer rounded-md;
-
-  > a {
-    @apply inline-flex items-center;
-  }
-
-  > button {
-    @apply inline-flex items-center capitalize font-bold;
-  }
-}
-
-.sidenav__items:hover {
-  @apply text-green-700;
-}
-
-.sidenav__items.active {
-  @apply bg-gray-200;
-  @apply text-green-700;
-}
-
-.bookmark-list {
-  @apply max-w-sm mx-auto py-4;
-
-  @screen md {
-    @apply max-w-full;
-  }
-}
-
-.bookmark-list__title {
-  @apply font-medium text-2xl;
-}
-
-.text-img {
-  @apply relative;
-  width: 140%;
-  height: 140%;
-
-  &__wrapper {
-    @apply absolute inset-0 bg-green-200 text-green-800;
-  }
-
-  &__text {
-    @apply absolute font-serif;
-    top: -22%;
-    right: 33%;
-    font-size: 22rem;
-  }
-}
-
 @tailwind utilities;
 
-.center-between {
-  @apply flex items-center justify-between;
+@layer base {
+  button:focus {
+    outline: none !important;
+  }
 }
 
-.center-within {
-  @apply flex items-center justify-center;
+@layer components {
+  .sidenav {
+    @apply flex flex-col font-bold text-sm capitalize text-gray-800;
+  }
+  .sidenav__items {
+    @apply p-3 cursor-pointer rounded-md;
+
+    > a {
+      @apply inline-flex items-center;
+    }
+
+    > button {
+      @apply inline-flex items-center capitalize font-bold;
+    }
+  }
+
+  .sidenav__items:hover {
+    @apply text-green-700;
+  }
+
+  .sidenav__items.active {
+    @apply bg-gray-200;
+    @apply text-green-700;
+  }
+
+  .bookmark-list {
+    @apply max-w-sm mx-auto py-4;
+
+    @screen md {
+      @apply max-w-full;
+    }
+  }
+
+  .bookmark-list__title {
+    @apply font-medium text-2xl;
+  }
+
+  .text-img {
+    @apply relative;
+    width: 140%;
+    height: 140%;
+
+    &__wrapper {
+      @apply absolute inset-0 bg-green-200 text-green-800;
+    }
+
+    &__text {
+      @apply absolute font-serif;
+      top: -22%;
+      right: 33%;
+      font-size: 22rem;
+    }
+  }
 }
 
-.inline-center-between {
-  @apply inline-flex items-center justify-between;
-}
+@layer utilities {
+  .center-between {
+    @apply flex items-center justify-between;
+  }
 
-.inline-center-within {
-  @apply inline-flex items-center justify-center;
+  .center-within {
+    @apply flex items-center justify-center;
+  }
+
+  .inline-center-between {
+    @apply inline-flex items-center justify-between;
+  }
+
+  .inline-center-within {
+    @apply inline-flex items-center justify-center;
+  }
 }
