@@ -18,7 +18,7 @@ import * as fromBookmarks from '@app/features/bookmarks/state';
 
       .bookmark-list {
         height: 100vh;
-        overflow-y: auto;
+        // overflow-y: auto;
       }
     `,
   ],
