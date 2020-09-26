@@ -83,4 +83,10 @@ export class BookmarksService {
       )
       .pipe(map(res => res.favorite));
   }
+
+  getBookmarksByTag(tagName: string) {
+    return this.http
+      .get<{ bookmarks: Bookmark[] }>(`/api/bookmarks/tags/${tagName}`)
+      .pipe(map(res => res.bookmarks));
+  }
 }
