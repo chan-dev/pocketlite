@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 
 import Bookmark, { BookmarkOptions } from '../models/bookmark';
+import Tag from '../models/tag';
 import BookmarkFavorite from '../models/bookmark-favorite';
 import scrapeLink from '../helpers/link-scraper';
 import paginatedResults from '../middlewares/paginate';
@@ -274,4 +275,39 @@ router.delete(
     }
   }
 );
+
+router.get(
+  '/tags/:name',
+  authJwt,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = (req as any).user.id;
+      const tagName = req.params.name;
+
+      // get the associated tag from Tag collection
+      const currentTag = await Tag.find({
+        user_id: userId,
+        name: tagName,
+      }).exec();
+
+      // find bookmark containing that tag
+      const bookmarks = await Bookmark.find({
+        user_id: userId,
+      })
+        .where('tags')
+        .in([currentTag])
+        .exec();
+
+      return res.json({ bookmarks });
+    } catch (err) {
+      console.log({ err });
+      next(
+        ApiError.internalServerError(
+          'Fetching Bookmarks by tag failed unexpectedly'
+        )
+      );
+    }
+  }
+);
+
 export default router;
