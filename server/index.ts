@@ -11,6 +11,7 @@ import googleOauth2Setup from './strategies/google-oauth';
 import jwtSetup from './strategies/jwt';
 import authRoutes from './routes/auth';
 import bookmarkRoutes from './routes/bookmarks';
+import tagRoutes from './routes/tags';
 import * as error from './middlewares/error';
 import csurfHandler from './middlewares/csurf';
 
@@ -73,6 +74,7 @@ jwtSetup();
 
 app.use('/api/auth', authRoutes);
 app.use('/api/bookmarks', bookmarkRoutes);
+app.use('/api/tags', tagRoutes);
 
 // app.get('/', express.static(path.join(__dirname, '../client/dist/pocketlite')));
 
