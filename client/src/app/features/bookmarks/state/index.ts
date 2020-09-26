@@ -6,16 +6,19 @@ import {
 
 import * as fromBookmarks from './bookmarks.reducer';
 import * as fromFavorites from './favorites.reducer';
+import * as fromTags from './tags.reducer';
 
 // TODO: include Tags state here
 interface BookmarksState {
   bookmarks: fromBookmarks.State;
   favorites: fromFavorites.State;
+  tags: fromTags.State;
 }
 
 export const reducers: ActionReducerMap<BookmarksState> = {
   bookmarks: fromBookmarks.reducer,
   favorites: fromFavorites.reducer,
+  tags: fromTags.reducer,
 };
 
 export const selectBookmarksFeatureState = createFeatureSelector<
@@ -81,7 +84,16 @@ export const selectBookmarksError = createSelector(
   state => state.error
 );
 
+// tags state
+export const selectTagsState = createSelector(
+  selectBookmarksFeatureState,
+  state => state.tags
+);
+export const selectTags = createSelector(selectTagsState, fromTags.selectTags);
+
 export * from './bookmarks.effects';
 export * from './bookmarks.actions';
 export * from './favorites.effects';
 export * from './favorites.actions';
+export * from './tags.effects';
+export * from './tags.actions';

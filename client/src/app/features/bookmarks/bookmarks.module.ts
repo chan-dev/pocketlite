@@ -10,7 +10,12 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { BookmarksRoutingModule } from './bookmarks-routing.module';
 
-import { reducers, BookmarkEffects, FavoriteEffects } from './state';
+import {
+  reducers,
+  BookmarkEffects,
+  FavoriteEffects,
+  TagEffects,
+} from './state';
 import { BookmarksPageComponent } from './containers/bookmarks-page/bookmarks-page.component';
 import { HeaderComponent } from './containers/header/header.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
@@ -53,7 +58,7 @@ import { BookmarkFavoritesContainerComponent } from './containers/bookmark-favor
     MaterialModule,
     BookmarksRoutingModule,
     StoreModule.forFeature('bookmarks', reducers),
-    EffectsModule.forFeature([BookmarkEffects, FavoriteEffects]),
+    EffectsModule.forFeature([BookmarkEffects, FavoriteEffects, TagEffects]),
   ],
 })
 export class BookmarksModule {}
