@@ -1,7 +1,15 @@
 <div class="tag h-6 center-between group hover:text-green-700 cursor-pointer">
   <div data-test="tag-show-view" *ngIf="!isEditing" class="w-full">
-    <div class="p-2 center-between w-full edit-tag">
-      <a href="#">{{ tag.name }}</a>
+    <div
+      class="p-2 center-between w-full edit-tag"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <a
+        [routerLink]="['/bookmarks/tags', tag.name]"
+        routerLinkActive="router-link-active"
+        >{{ tag.name }}</a
+      >
       <!-- TODO: convert to button tag mat-button? -->
       <div data-test="tag-edit-button" class="action hidden group-hover:block">
         <mat-icon class="cursor-pointer" (click)="openEdit(tagEditInput)"
