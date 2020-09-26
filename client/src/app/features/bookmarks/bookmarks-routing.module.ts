@@ -6,6 +6,7 @@ import { BookmarksCurrentListContainerComponent } from './containers/bookmarks-c
 import { BookmarkSearchResultsContainerComponent } from './containers/bookmark-search-results-container/bookmark-search-results-container.component';
 import { BookmarkArchivesContainerComponent } from './containers/bookmark-archives-container/bookmark-archives-container.component';
 import { BookmarkFavoritesContainerComponent } from './containers/bookmark-favorites-container/bookmark-favorites-container.component';
+import { BookmarksByTagContainerComponent } from './containers/bookmarks-by-tag-container/bookmarks-by-tag-container.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,10 @@ const routes: Routes = [
       {
         path: 'favorites',
         component: BookmarkFavoritesContainerComponent,
+      },
+      {
+        path: 'tags/:name',
+        component: BookmarksByTagContainerComponent,
       },
     ],
   },

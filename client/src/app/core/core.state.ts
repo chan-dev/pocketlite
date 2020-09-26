@@ -37,3 +37,8 @@ export const selectRouteUrl = createSelector(
   selectRouteState,
   state => state.url
 );
+
+export const selectRouteParams = createSelector(
+  selectRouteState,
+  state => state.params
+);

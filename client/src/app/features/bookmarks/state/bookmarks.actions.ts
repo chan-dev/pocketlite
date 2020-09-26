@@ -120,3 +120,18 @@ export const getFavoritedBookmarksFailure = createAction(
   '[Bookmarks API] Get Favorited Bookmarks Failure',
   props<{ error: string }>()
 );
+
+export const clearBookmarksOnTagFilter = createAction(
+  '[BookmarksByTagContainerComponent] Clear Bookmarks On Tag Filter'
+);
+export const getBookmarksByTag = createAction(
+  '[BookmarksByTagContainerComponent] Get Bookmarks By Tag'
+);
+export const getBookmarksByTagSuccess = createAction(
+  '[Bookmarks API] Get Bookmarks By Tag Success',
+  props<{ bookmarks: Bookmark[] }>()
+);
+export const getBookmarksByTagFailure = createAction(
+  '[Bookmarks API] Get Bookmarks By Tag Failure',
+  props<{ error: string }>()
+);

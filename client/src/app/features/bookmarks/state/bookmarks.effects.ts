@@ -391,6 +391,49 @@ export class BookmarkEffects {
     { dispatch: false }
   );
 
+  getBookmarksByTag$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(bookmarkActions.getBookmarksByTag),
+      mergeMap(action => {
+        return of(action).pipe(
+          // TODO: reuse, create a reusable operator
+          withLatestFrom(
+            this.store.pipe(select(appState.selectRouteParams)),
+            (_, params) => {
+              return params;
+            }
+          )
+        );
+      }),
+      mergeMap(params => {
+        return this.bookmarksService.getBookmarksByTag(params.name).pipe(
+          map(bookmarks =>
+            bookmarkActions.getBookmarksByTagSuccess({ bookmarks })
+          ),
+          catchError(error =>
+            of(
+              bookmarkActions.getBookmarksByTagFailure({
+                error: error?.error?.message,
+              })
+            )
+          )
+        );
+      })
+    );
+  });
+
+  getBookmarksByTagFailure$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(bookmarkActions.getBookmarksByTagFailure),
+        tap(error => {
+          this.toastr.error(error.error);
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
   constructor(
     private router: Router,
     private store: Store,
