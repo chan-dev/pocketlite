@@ -1,7 +1,11 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Input,
+} from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { TagsService } from '../../services/tags.service';
 import { Tag } from '@models/tag.model';
 
 @Component({
@@ -11,14 +15,12 @@ import { Tag } from '@models/tag.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TagsListComponent implements OnInit {
-  tags$: Observable<Tag[]>;
+  @Input() tags: Tag[];
   isEditing = false;
 
-  constructor(private tagsService: TagsService) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    this.tags$ = this.tagsService.fetchAll();
-  }
+  ngOnInit(): void {}
 
   tagsTrackByFn(_: any, tag: Tag) {
     return tag.id;

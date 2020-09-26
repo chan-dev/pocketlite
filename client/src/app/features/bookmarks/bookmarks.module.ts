@@ -31,6 +31,7 @@ import { BookmarksCollectionContainerComponent } from './containers/bookmarks-co
 import { BookmarkSearchResultsContainerComponent } from './containers/bookmark-search-results-container/bookmark-search-results-container.component';
 import { BookmarkArchivesContainerComponent } from './containers/bookmark-archives-container/bookmark-archives-container.component';
 import { BookmarkFavoritesContainerComponent } from './containers/bookmark-favorites-container/bookmark-favorites-container.component';
+import { TagsContainerComponent } from './containers/tags-container/tags-container.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { BookmarkFavoritesContainerComponent } from './containers/bookmark-favor
     BookmarkSearchResultsContainerComponent,
     BookmarkArchivesContainerComponent,
     BookmarkFavoritesContainerComponent,
+    TagsContainerComponent,
   ],
   imports: [
     CommonModule,
