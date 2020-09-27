@@ -5,8 +5,8 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, Subscription, combineLatest } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { Observable, Subscription, of } from 'rxjs';
+import { filter, concatMap, withLatestFrom } from 'rxjs/operators';
 
 import { Bookmark } from '@models/bookmark.model';
 import { BookmarkFavorite } from '@models/bookmark-favorite.model';
@@ -27,12 +27,17 @@ export class BookmarkSearchResultsContainerComponent
   favorites$: Observable<BookmarkFavorite[]>;
 
   constructor(private store: Store) {
-    this.bookmarks$ = combineLatest(
-      this.store.pipe(select(fromBookmarks.selectBookmarksLoading)),
-      this.store.pipe(select(fromBookmarks.selectCurrentBookmarks))
-    ).pipe(
-      filter(([loading, _]) => loading === false),
-      map(([_, bookmarks]) => bookmarks)
+    this.bookmarks$ = this.store.pipe(
+      select(fromBookmarks.selectBookmarksLoading),
+      filter(loading => loading === false),
+      concatMap(loading => {
+        return of(loading).pipe(
+          withLatestFrom(
+            this.store.pipe(select(fromBookmarks.selectCurrentBookmarks)),
+            (_, bookmarks) => bookmarks
+          )
+        );
+      })
     );
 
     this.favorites$ = this.store.pipe(select(fromBookmarks.selectFavorites));
