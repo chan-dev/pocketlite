@@ -14,10 +14,9 @@ module.exports = {
   },
   variants: {
     display: ['responsive', 'hover', 'focus', 'group-hover'],
+    borderColor: ['responsive', 'hover', 'focus', 'focus-within'],
   },
-  plugins: [
-    require('tailwindcss-truncate-multiline')()
-  ],
+  plugins: [require('tailwindcss-truncate-multiline')()],
   future: {
     removeDeprecatedGapUtilities: true,
     purgeLayersByDefault: true,

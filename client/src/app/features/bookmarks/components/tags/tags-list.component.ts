@@ -4,7 +4,6 @@ import {
   ChangeDetectionStrategy,
   Input,
 } from '@angular/core';
-import { Observable } from 'rxjs';
 
 import { Tag } from '@models/tag.model';
 

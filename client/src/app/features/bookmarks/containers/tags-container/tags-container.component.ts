@@ -1,7 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
+import { map, tap, scan } from 'rxjs/operators';
 
+import { UNTAGGED_ITEMS } from '@constants/tags';
 import * as fromTags from '@app/features/bookmarks/state';
 import { Tag } from '@models/tag.model';
 
@@ -12,11 +14,40 @@ import { Tag } from '@models/tag.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TagsContainerComponent implements OnInit {
+  // we need this to be a BehaviorSubject since combineLatest
+  // won't emit any value unless all observales emit a value
+  private readonly searchTerm = new BehaviorSubject<string>('');
+  private untaggedItemsTag: Tag = {
+    name: UNTAGGED_ITEMS,
+    id: '',
+    user_id: '',
+  };
+
   tags$: Observable<Tag[]>;
 
   constructor(private store: Store) {}
 
   ngOnInit() {
-    this.tags$ = this.store.pipe(select(fromTags.selectTags));
+    // prepend the untagged-items tag
+    const currentTags$ = this.store.pipe(
+      select(fromTags.selectTags),
+      // NOTE: we append the untaggedItems to the current tags
+      // we use scan() here instead of reduce() because reduce needs
+      // the source observable to complete w/c is not the case for ngrx
+      // selectors
+      scan((acc, cur) => [...acc, ...cur], [this.untaggedItemsTag])
+    );
+
+    this.tags$ = combineLatest([
+      currentTags$,
+      this.searchTerm.asObservable(),
+    ]).pipe(
+      tap(values => console.log({ values })),
+      map(([tags, term]) => tags.filter(tag => tag.name.indexOf(term) > -1))
+    );
+  }
+
+  search(term: string) {
+    this.searchTerm.next(term);
   }
 }

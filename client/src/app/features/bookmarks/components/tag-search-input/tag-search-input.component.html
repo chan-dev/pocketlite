@@ -1,0 +1,13 @@
+<div
+  class="focus-within:border-green-700 flex items-center justify-between p-2 rounded text-sm border"
+>
+  <mat-icon>search</mat-icon>
+  <input
+    class="flex-1 focus:outline-none border-0 ml-1"
+    type="text"
+    name="term"
+    id="term"
+    #searchInput
+    (input)="searchTag(searchInput.value)"
+  />
+</div>
