@@ -86,7 +86,7 @@ const BookmarkSchema = new mongoose.Schema(
 BookmarkSchema.index({ created_at: 1, type: -1 });
 BookmarkSchema.index({ title: 'text', description: 'text' });
 
-type BookmarkDocumentQuery<
+export type BookmarkDocumentQuery<
   T extends mongoose.Document = BookmarkDocument
 > = mongoose.DocumentQuery<T[], T>;
 
