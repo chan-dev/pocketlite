@@ -70,6 +70,16 @@ export const selectFavoritedBookmarks = createSelector(
     });
   }
 );
+export const selectBookmarkTagIds = (id: string) => {
+  return createSelector(selectBookmarksEntities, state => state[id]?.tags);
+};
+export const selectBookmarkTags = (id: string) => {
+  return createSelector(
+    selectTags,
+    selectBookmarkTagIds(id),
+    (allTags, tagIds) => allTags.filter(tag => tagIds.includes(tag.id))
+  );
+};
 export const selectBookmarksCount = createSelector(
   selectBookmarksState,
   fromBookmarks.selectBookmarksCount
