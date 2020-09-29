@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
 
 import { Bookmark } from '@models/bookmark.model';
+import { Tag } from '@models/tag.model';
 
 export const getBookmarkItems = createAction(
   '[BookmarksContainerComponent] Get Bookmark Items',
@@ -133,5 +134,27 @@ export const getBookmarksByTagSuccess = createAction(
 );
 export const getBookmarksByTagFailure = createAction(
   '[Bookmarks API] Get Bookmarks By Tag Failure',
+  props<{ error: string }>()
+);
+
+export const openTagsModal = createAction(
+  '[BookmarksCollectionContainerComponent ] Open Tags Modal',
+  props<{ bookmark: Bookmark }>()
+);
+export const closeTagsModal = createAction(
+  '[BookmarkEffects] Close Tags Modal'
+);
+export const updateBookmarkTags = createAction(
+  '[BookmarkEffects] Update Bookmark Tags',
+  props<{ bookmarkId: string; selectedTags: string[] }>()
+);
+// 1. updateBookmarkTagsSuccess({ tagIds: string[] })
+// 2. updateTags({ tags: Tag[] })
+export const updateBookmarkTagsSuccess = createAction(
+  '[BookmarkEffects] Update Bookmark Tags Success',
+  props<{ bookmark: Update<Bookmark>; newTags: Tag[] }>()
+);
+export const updateBookmarkTagsFailure = createAction(
+  '[BookmarkEffects] Update Bookmark Tags Failure',
   props<{ error: string }>()
 );

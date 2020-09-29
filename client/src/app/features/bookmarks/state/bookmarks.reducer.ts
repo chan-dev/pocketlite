@@ -231,6 +231,20 @@ const bookmarksReducer = createReducer(
       error,
       loading: false,
     };
+  }),
+  on(bookmarkActions.updateBookmarkTagsSuccess, (state, { bookmark }) => {
+    return adapter.updateOne(bookmark, {
+      ...state,
+      loading: false,
+      error: null,
+    });
+  }),
+  on(bookmarkActions.updateBookmarkTagsFailure, (state, { error }) => {
+    return {
+      ...state,
+      loading: false,
+      error,
+    };
   })
 );
 

@@ -3,6 +3,7 @@ import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 
 import { Tag } from '@models/tag.model';
 import * as tagActions from './tags.actions';
+import * as bookmarkActions from './bookmarks.actions';
 
 export interface State extends EntityState<Tag> {
   loading: boolean;
@@ -37,6 +38,13 @@ const tagsReducer = createReducer(
       error,
       loading: false,
     };
+  }),
+  on(bookmarkActions.updateBookmarkTagsSuccess, (state, { newTags }) => {
+    return adapter.addMany(newTags, {
+      ...state,
+      loading: false,
+      error: null,
+    });
   })
 );
 
