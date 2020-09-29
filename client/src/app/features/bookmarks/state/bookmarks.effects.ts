@@ -457,6 +457,7 @@ export class BookmarkEffects {
 
         const dialogRef = this.dialog.open(TagsModalComponent, {
           panelClass: 'full-width-dialog',
+          ariaLabel: 'tags modal',
           data: {
             bookmarkTags: bookmarkTagNames || [],
             allTags: allTagNames || [],

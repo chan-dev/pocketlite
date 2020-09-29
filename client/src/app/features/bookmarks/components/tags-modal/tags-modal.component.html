@@ -1,5 +1,10 @@
 <div class="tags-modal">
-  <button class="flex ml-auto mb-3" type="button" (click)="cancel()">
+  <button
+    aria-label="close dialog"
+    class="focus:bg-gray-300 hover:bg-gray-300 flex ml-auto rounded-full mb-3"
+    type="button"
+    (click)="cancel()"
+  >
     <mat-icon>close</mat-icon>
   </button>
   <app-tags-chips
