@@ -56,7 +56,6 @@ export class AuthEffects {
       return this.actions$.pipe(
         ofType(authActions.loginFailure),
         tap(error => {
-          console.error(error);
           this.router.navigate([this.redirects.login.failure]);
         })
       );
@@ -114,7 +113,6 @@ export class AuthEffects {
       return this.actions$.pipe(
         ofType(authActions.logoutFailure),
         tap(error => {
-          console.error(error);
           this.router.navigate([this.redirects.logout.failure]);
         })
       );

@@ -11,7 +11,6 @@ export class ErrorService {
 
   // tslint:disable-next-line
   log(error: any): void {
-    console.log('Logged by: ErrorService');
     const rollbar: Rollbar = this.injector.get(RollbarService);
 
     // TODO: check if date is included in rollbar logs

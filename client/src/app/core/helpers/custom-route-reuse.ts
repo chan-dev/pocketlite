@@ -17,10 +17,6 @@ export class CustomRouteReuseStrategy extends RouteReuseStrategy {
    * @returns boolean determines if we store the current route snapshot
    */
   shouldDetach(route: ActivatedRouteSnapshot): boolean {
-    // console.log('🚩🚩🚩🚩🚩🚩🚩🚩🚩');
-    // console.log('shouldDetach runs');
-    // this.displayStoredRouteHandles();
-    // this.displayCurrentPath(route);
     return !!route.routeConfig && this.shouldReuse(route);
   }
 
@@ -31,11 +27,7 @@ export class CustomRouteReuseStrategy extends RouteReuseStrategy {
    * @param handle the route handle we're storing
    */
   store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle): void {
-    // console.log('🚩🚩🚩🚩🚩🚩🚩🚩🚩');
-    // console.log('store runs');
     this.storedRouteHandles.set(this.getKey(route), handle);
-    // this.displayStoredRouteHandles();
-    // this.displayCurrentPath(route);
   }
 
   /**
@@ -45,21 +37,9 @@ export class CustomRouteReuseStrategy extends RouteReuseStrategy {
    * @returns boolean indicates whether to use any matching stored route handle
    */
   shouldAttach(route: ActivatedRouteSnapshot): boolean {
-    // console.log('🚩🚩🚩🚩🚩🚩🚩🚩🚩');
-    // console.log('SHOULDATTACH RUNS');
-    // this.displayStoredRouteHandles();
-    // this.displayCurrentPath(route);
-
     if (this.resetRoute(route)) {
-      // this.displayCurrentPath(route);
-
-      console.log('Cleanup stored route handles');
-      console.log('BEFORE');
       this.displayStoredRouteHandles();
-
       this.deleteAllRouteHandles();
-
-      console.log('AFTER');
       this.displayStoredRouteHandles();
       return false;
     }
@@ -75,10 +55,6 @@ export class CustomRouteReuseStrategy extends RouteReuseStrategy {
    * @returns DetachedRouteHandle
    */
   retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle | null {
-    // console.log('🚩🚩🚩🚩🚩🚩🚩🚩🚩');
-    // console.log('retrieve runs');
-    // this.displayStoredRouteHandles();
-    // this.displayCurrentPath(route);
     return route.routeConfig
       ? this.storedRouteHandles.get(this.getKey(route))
       : null;
@@ -95,16 +71,6 @@ export class CustomRouteReuseStrategy extends RouteReuseStrategy {
     future: ActivatedRouteSnapshot,
     curr: ActivatedRouteSnapshot
   ): boolean {
-    // console.log('🚩🚩🚩🚩🚩🚩🚩🚩🚩');
-    // console.log('shouldReuseRoute runs');
-
-    // this.displayStoredRouteHandles();
-
-    // console.log(
-    //   'shouldReuseRoute value: ',
-    //   future.routeConfig === curr.routeConfig
-    // );
-
     return future.routeConfig === curr.routeConfig;
   }
 
@@ -185,9 +151,7 @@ export class CustomRouteReuseStrategy extends RouteReuseStrategy {
   }
 
   private displayStoredRouteHandles() {
-    console.log('current route handle keys');
     console.log([...this.storedRouteHandles.keys()]);
-    console.log('current route handles values');
     console.log([...this.storedRouteHandles.values()]);
   }
 }

@@ -63,7 +63,6 @@ describe('GuestGuard', () => {
     const localGuard = new GuestGuard(fakeAuthService as AuthService, router);
 
     localGuard.canActivate().subscribe(isGuest => {
-      console.log({ testingGuest: isGuest });
       expect(isGuest).toBe(true);
       expect(router.navigateByUrl).not.toHaveBeenCalled();
     });
@@ -85,7 +84,6 @@ describe('GuestGuard', () => {
     const localGuard = new GuestGuard(fakeAuthService as AuthService, router);
 
     localGuard.canActivate().subscribe(isGuest => {
-      console.log({ isGuest });
       expect(isGuest).toBe(false);
       expect(router.navigateByUrl).toHaveBeenCalled();
       expect(router.navigateByUrl).toHaveBeenCalledWith('/');

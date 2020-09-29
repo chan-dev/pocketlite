@@ -25,6 +25,5 @@ export class AppErrorHandlerService extends ErrorHandler {
     }
 
     errorService.log(error);
-    console.error(error);
   }
 }

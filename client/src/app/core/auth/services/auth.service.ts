@@ -37,7 +37,6 @@ export class AuthService {
       .pipe(
         map(resp => resp.user),
         catchError((err: HttpErrorResponse) => {
-          console.log({ err });
           return err.status === 401 ? of(null) : throwError(err);
         }),
         // TODO: should we remove this since only AuthEffect will use this

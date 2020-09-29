@@ -42,7 +42,6 @@ export class TagsContainerComponent implements OnInit {
       currentTags$,
       this.searchTerm.asObservable(),
     ]).pipe(
-      tap(values => console.log({ values })),
       map(([tags, term]) => tags.filter(tag => tag.name.indexOf(term) > -1))
     );
   }

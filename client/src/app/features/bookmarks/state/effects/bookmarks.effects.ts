@@ -287,7 +287,6 @@ export class BookmarkEffects {
           withLatestFrom(
             this.store.pipe(select(appState.selectQueryParams)),
             (_, queryParams) => {
-              console.log('withLatestFrom runs');
               return queryParams;
             }
           )
@@ -295,10 +294,7 @@ export class BookmarkEffects {
       }),
       // NOTE: this doesn't run after 2nd search
       mergeMap(queryParams => {
-        console.log('exhaustMap');
         return this.bookmarksService.searchBookmarks(queryParams.query).pipe(
-          // TODO: check if this happens after interceptor
-          tap(_ => console.log('searchBookmark$ http request started 🔖')),
           map(bookmarks =>
             bookmarkActions.searchBookmarksSuccess({ bookmarks })
           ),
@@ -308,8 +304,7 @@ export class BookmarkEffects {
                 error: error?.error?.message,
               })
             )
-          ),
-          tap(value => console.log('searchBookmark$ has finished'))
+          )
         );
       })
     );
@@ -331,10 +326,7 @@ export class BookmarkEffects {
     return this.actions$.pipe(
       ofType(bookmarkActions.getArchivedBookmarks),
       mergeMap(queryParams => {
-        console.log('exhaustMap');
         return this.bookmarksService.getArchivedBookmarks().pipe(
-          // TODO: check if this happens after interceptor
-          tap(_ => console.log('getArchivedBookmark$ http request started 🔖')),
           map(bookmarks =>
             bookmarkActions.getArchivedBookmarksSuccess({ bookmarks })
           ),
@@ -344,8 +336,7 @@ export class BookmarkEffects {
                 error: error?.error?.message,
               })
             )
-          ),
-          tap(value => console.log('getArchivedBookmark$ has finished'))
+          )
         );
       })
     );
@@ -367,7 +358,6 @@ export class BookmarkEffects {
     return this.actions$.pipe(
       ofType(bookmarkActions.getFavoritedBookmarks),
       mergeMap(queryParams => {
-        console.log('exhaustMap');
         return this.bookmarksService.getFavoritedBookmarks().pipe(
           map(bookmarks =>
             bookmarkActions.getFavoritedBookmarksSuccess({ bookmarks })

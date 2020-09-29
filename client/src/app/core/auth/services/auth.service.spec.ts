@@ -75,13 +75,11 @@ describe('AuthService', () => {
     service.currentUser$.subscribe(
       // successfully caught error and map it to "null"
       res => {
-        console.log('success response');
         expect(res).toBe(null);
       },
       (err: HttpErrorResponse) => {
         // this won't execute since in AuthService we caught 401 error
         // and map them to 'null' value
-        console.log('error response');
         expect(err.status).toBe(401);
       }
     );
@@ -106,7 +104,6 @@ describe('AuthService', () => {
     service.currentUser$.subscribe(
       res => fail('should have failed here'),
       (err: HttpErrorResponse) => {
-        console.log('error response');
         expect(err.status).toBe(500);
         expect(err.error).toEqual(jsonResponse);
         expect(err.error.message).toEqual(jsonResponse.message);
