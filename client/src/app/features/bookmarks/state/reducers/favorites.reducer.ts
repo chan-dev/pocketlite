@@ -3,7 +3,7 @@ import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 
 import { BookmarkFavorite } from '@models/bookmark-favorite.model';
 import { Bookmark } from '@models/bookmark.model';
-import * as bookmarkFavoriteActions from './favorites.actions';
+import * as bookmarkFavoriteActions from '../actions/favorites.actions';
 
 function isBookmark(model: BookmarkFavorite | Bookmark): model is Bookmark {
   return (model as Bookmark).title !== undefined;

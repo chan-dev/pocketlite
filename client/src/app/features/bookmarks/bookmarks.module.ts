@@ -10,12 +10,10 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { BookmarksRoutingModule } from './bookmarks-routing.module';
 
-import {
-  reducers,
-  BookmarkEffects,
-  FavoriteEffects,
-  TagEffects,
-} from './state';
+import { reducers } from './state/bookmarks.state';
+import { BookmarkEffects } from './state/effects/bookmarks.effects';
+import { TagEffects } from './state/effects/tags.effects';
+import { FavoriteEffects } from './state/effects/favorites.effects';
 import { BookmarksPageComponent } from './containers/bookmarks-page/bookmarks-page.component';
 import { HeaderComponent } from './containers/header/header.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';

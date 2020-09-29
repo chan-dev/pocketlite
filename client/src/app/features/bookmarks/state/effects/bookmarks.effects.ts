@@ -20,11 +20,12 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { Bookmark } from '@models/bookmark.model';
 import * as appState from '@app/core/core.state';
-import * as bookmarkActions from './bookmarks.actions';
-import * as fromBookmarks from '@app/features/bookmarks/state';
-import { BookmarksService } from '../services/bookmarks.service';
+import * as bookmarkActions from '../actions/bookmarks.actions';
+import * as bookmarksSelectors from '@app/features/bookmarks/state/selectors/bookmarks.selectors';
+import * as tagsSelectors from '@app/features/bookmarks/state/selectors/tags.selectors';
 import { ConfirmDialogService } from '@app/shared/confirm-dialog/confirm-dialog.service';
-import { TagsModalComponent } from '../components/tags-modal/tags-modal.component';
+import { BookmarksService } from '../../services/bookmarks.service';
+import { TagsModalComponent } from '../../components/tags-modal/tags-modal.component';
 
 @Injectable()
 export class BookmarkEffects {
@@ -444,9 +445,9 @@ export class BookmarkEffects {
       switchMap(({ bookmark }) => {
         return of(bookmark).pipe(
           withLatestFrom(
-            this.store.pipe(select(fromBookmarks.selectTags)),
+            this.store.pipe(select(tagsSelectors.selectTags)),
             this.store.pipe(
-              select(fromBookmarks.selectBookmarkTags(bookmark.id))
+              select(bookmarksSelectors.selectBookmarkTags(bookmark.id))
             )
           )
         );

@@ -3,8 +3,8 @@ import { createEffect, ofType, Actions } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { map, catchError, mergeMap } from 'rxjs/operators';
 
-import * as tagsActions from './tags.actions';
-import { TagsService } from '../services/tags.service';
+import * as tagsActions from '../actions/tags.actions';
+import { TagsService } from '../../services/tags.service';
 import { Action } from '@ngrx/store';
 
 @Injectable()

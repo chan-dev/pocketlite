@@ -9,7 +9,9 @@ import { Subscription, Observable, of } from 'rxjs';
 import { filter, tap, concatMap, withLatestFrom } from 'rxjs/operators';
 
 import * as fromRoot from '@app/core/core.state';
-import * as fromBookmarks from '@app/features/bookmarks/state';
+import * as bookmarksSelectors from '@app/features/bookmarks/state/selectors/bookmarks.selectors';
+import * as favoritesSelectors from '@app/features/bookmarks/state/selectors/favorites.selectors';
+import * as bookmarksActions from '@app/features/bookmarks/state/actions/bookmarks.actions';
 import { Bookmark } from '@models/bookmark.model';
 import { BookmarkFavorite } from '@models/bookmark-favorite.model';
 
@@ -30,19 +32,21 @@ export class BookmarksByTagContainerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.bookmarks$ = this.store.pipe(
-      select(fromBookmarks.selectBookmarksLoading),
+      select(bookmarksSelectors.selectBookmarksLoading),
       filter(loading => loading === false),
       concatMap(loading => {
         return of(loading).pipe(
           withLatestFrom(
-            this.store.pipe(select(fromBookmarks.selectBookmarks)),
+            this.store.pipe(select(bookmarksSelectors.selectBookmarks)),
             (_, bookmarks) => bookmarks
           )
         );
       })
     );
 
-    this.favorites$ = this.store.pipe(select(fromBookmarks.selectFavorites));
+    this.favorites$ = this.store.pipe(
+      select(favoritesSelectors.selectFavorites)
+    );
 
     this.subscription = this.store
       .pipe(
@@ -52,8 +56,8 @@ export class BookmarksByTagContainerComponent implements OnInit, OnDestroy {
         tap(params => (this.header = params.name))
       )
       .subscribe(params => {
-        this.store.dispatch(fromBookmarks.clearBookmarksOnTagFilter());
-        this.store.dispatch(fromBookmarks.getBookmarksByTag());
+        this.store.dispatch(bookmarksActions.clearBookmarksOnTagFilter());
+        this.store.dispatch(bookmarksActions.getBookmarksByTag());
       });
   }
 

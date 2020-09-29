@@ -8,7 +8,8 @@ import { Store } from '@ngrx/store';
 
 import { Bookmark } from '@models/bookmark.model';
 import { BookmarkFavorite } from '@models/bookmark-favorite.model';
-import * as fromBookmarks from '@app/features/bookmarks/state';
+import * as bookmarksActions from '@app/features/bookmarks/state/actions/bookmarks.actions';
+import * as favoritesActions from '@app/features/bookmarks/state/actions/favorites.actions';
 
 @Component({
   selector: 'app-bookmarks-collection-container',
@@ -27,15 +28,15 @@ export class BookmarksCollectionContainerComponent implements OnInit {
   ngOnInit() {}
 
   deleteBookmark(id: string) {
-    this.store.dispatch(fromBookmarks.deleteBookmark({ id }));
+    this.store.dispatch(bookmarksActions.deleteBookmark({ id }));
   }
 
   archiveBookmark(id: string) {
-    this.store.dispatch(fromBookmarks.archiveBookmark({ id }));
+    this.store.dispatch(bookmarksActions.archiveBookmark({ id }));
   }
 
   restoreBookmark(id: string) {
-    this.store.dispatch(fromBookmarks.restoreBookmark({ id }));
+    this.store.dispatch(bookmarksActions.restoreBookmark({ id }));
   }
 
   toggleFavoriteBookmark({
@@ -47,17 +48,17 @@ export class BookmarksCollectionContainerComponent implements OnInit {
   }) {
     if (favorited) {
       this.store.dispatch(
-        fromBookmarks.unfavoriteBookmark({
+        favoritesActions.unfavoriteBookmark({
           favorite: this.getBookmarkFavorite(bookmark),
         })
       );
     } else {
-      this.store.dispatch(fromBookmarks.favoriteBookmark({ bookmark }));
+      this.store.dispatch(favoritesActions.favoriteBookmark({ bookmark }));
     }
   }
 
   updateBookmarkTags(bookmark: Bookmark) {
-    this.store.dispatch(fromBookmarks.openTagsModal({ bookmark }));
+    this.store.dispatch(bookmarksActions.openTagsModal({ bookmark }));
   }
 
   isFavorited(bookmarkId: string) {

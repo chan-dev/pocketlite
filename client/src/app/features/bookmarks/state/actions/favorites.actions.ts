@@ -4,6 +4,8 @@ import { Update } from '@ngrx/entity';
 import { BookmarkFavorite } from '@models/bookmark-favorite.model';
 import { Bookmark } from '@models/bookmark.model';
 
+// TODO: rename Bookmarks to BookmarkFavorite API
+// create a separate route for bookmark favorite
 export const getFavorites = createAction('[FavoriteEffects] Get Favorites Ids');
 export const getFavoritesSuccess = createAction(
   '[Bookmarks API] Get Favorites Success',

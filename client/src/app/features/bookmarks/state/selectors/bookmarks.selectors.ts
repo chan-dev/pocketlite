@@ -1,45 +1,10 @@
-import {
-  createFeatureSelector,
-  createSelector,
-  ActionReducerMap,
-} from '@ngrx/store';
+import { createSelector } from '@ngrx/store';
 
-import * as fromBookmarks from './bookmarks.reducer';
-import * as fromFavorites from './favorites.reducer';
-import * as fromTags from './tags.reducer';
+import { selectBookmarksState } from '../bookmarks.state';
+import * as fromBookmarks from '../reducers/bookmarks.reducer';
+import * as tagsSelectors from '../selectors/tags.selectors';
+import * as favoritesSelectors from '../selectors/favorites.selectors';
 
-// TODO: include Tags state here
-interface BookmarksState {
-  bookmarks: fromBookmarks.State;
-  favorites: fromFavorites.State;
-  tags: fromTags.State;
-}
-
-export const reducers: ActionReducerMap<BookmarksState> = {
-  bookmarks: fromBookmarks.reducer,
-  favorites: fromFavorites.reducer,
-  tags: fromTags.reducer,
-};
-
-export const selectBookmarksFeatureState = createFeatureSelector<
-  BookmarksState
->('bookmarks');
-
-// favorite state
-export const selectFavoritesState = createSelector(
-  selectBookmarksFeatureState,
-  state => state.favorites
-);
-export const selectFavorites = createSelector(
-  selectFavoritesState,
-  fromFavorites.selectFavorites
-);
-
-// bookmarks state
-export const selectBookmarksState = createSelector(
-  selectBookmarksFeatureState,
-  state => state.bookmarks
-);
 export const selectBookmarksIds = createSelector(
   selectBookmarksState,
   fromBookmarks.selectBookmarksIds
@@ -62,7 +27,7 @@ export const selectArchivedBookmarks = createSelector(
 );
 export const selectFavoritedBookmarks = createSelector(
   selectBookmarks,
-  selectFavorites,
+  favoritesSelectors.selectFavorites,
   (bookmarks, favorites) => {
     const favoritedBookmarkIds = favorites.map(fav => fav.bookmark_id);
     return bookmarks.filter(bookmark => {
@@ -75,7 +40,7 @@ export const selectBookmarkTagIds = (id: string) => {
 };
 export const selectBookmarkTags = (id: string) => {
   return createSelector(
-    selectTags,
+    tagsSelectors.selectTags,
     selectBookmarkTagIds(id),
     (allTags, tagIds) => allTags.filter(tag => tagIds.includes(tag.id))
   );
@@ -93,17 +58,3 @@ export const selectBookmarksError = createSelector(
   selectBookmarksState,
   state => state.error
 );
-
-// tags state
-export const selectTagsState = createSelector(
-  selectBookmarksFeatureState,
-  state => state.tags
-);
-export const selectTags = createSelector(selectTagsState, fromTags.selectTags);
-
-export * from './bookmarks.effects';
-export * from './bookmarks.actions';
-export * from './favorites.effects';
-export * from './favorites.actions';
-export * from './tags.effects';
-export * from './tags.actions';

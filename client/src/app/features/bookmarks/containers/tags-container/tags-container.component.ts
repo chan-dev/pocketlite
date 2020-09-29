@@ -4,8 +4,8 @@ import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
 import { map, tap, scan } from 'rxjs/operators';
 
 import { UNTAGGED_ITEMS } from '@constants/tags';
-import * as fromTags from '@app/features/bookmarks/state';
 import { Tag } from '@models/tag.model';
+import * as tagsSelectors from '@app/features/bookmarks/state/selectors/tags.selectors';
 
 @Component({
   selector: 'app-tags-container',
@@ -30,7 +30,7 @@ export class TagsContainerComponent implements OnInit {
   ngOnInit() {
     // prepend the untagged-items tag
     const currentTags$ = this.store.pipe(
-      select(fromTags.selectTags),
+      select(tagsSelectors.selectTags),
       // NOTE: we append the untaggedItems to the current tags
       // we use scan() here instead of reduce() because reduce needs
       // the source observable to complete w/c is not the case for ngrx

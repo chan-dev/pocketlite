@@ -5,7 +5,9 @@ import { filter, map } from 'rxjs/operators';
 
 import { Bookmark } from '@models/bookmark.model';
 import { BookmarkFavorite } from '@models/bookmark-favorite.model';
-import * as fromBookmarks from '@app/features/bookmarks/state';
+import * as bookmarksSelectors from '@app/features/bookmarks/state/selectors/bookmarks.selectors';
+import * as favoritesSelectors from '@app/features/bookmarks/state/selectors/favorites.selectors';
+import * as bookmarksActions from '@app/features/bookmarks/state/actions/bookmarks.actions';
 
 @Component({
   selector: 'app-bookmarks-current-list-container',
@@ -31,19 +33,22 @@ export class BookmarksCurrentListContainerComponent implements OnInit {
   favorites$: Observable<BookmarkFavorite[]>;
   loading$: Observable<boolean>;
 
+  // TODO: move all logic inside ngOnInit
   constructor(private store: Store) {
-    this.bookmarks$ = combineLatest(
-      this.store.pipe(select(fromBookmarks.selectBookmarksLoading)),
-      this.store.pipe(select(fromBookmarks.selectCurrentBookmarks))
-    ).pipe(
+    this.bookmarks$ = combineLatest([
+      this.store.pipe(select(bookmarksSelectors.selectBookmarksLoading)),
+      this.store.pipe(select(bookmarksSelectors.selectCurrentBookmarks)),
+    ]).pipe(
       filter(([loading, _]) => loading === false),
       map(([_, bookmarks]) => bookmarks)
     );
 
-    this.store.dispatch(fromBookmarks.clearBookmarksOnCurrentList());
+    this.store.dispatch(bookmarksActions.clearBookmarksOnCurrentList());
     this.loadMore();
 
-    this.favorites$ = this.store.pipe(select(fromBookmarks.selectFavorites));
+    this.favorites$ = this.store.pipe(
+      select(favoritesSelectors.selectFavorites)
+    );
   }
 
   ngOnInit() {}
@@ -55,7 +60,7 @@ export class BookmarksCurrentListContainerComponent implements OnInit {
 
   private loadMore() {
     this.store.dispatch(
-      fromBookmarks.getBookmarkItems({
+      bookmarksActions.getBookmarkItems({
         page: this.page,
         limit: 9,
       })

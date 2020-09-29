@@ -10,8 +10,10 @@ import { filter, concatMap, withLatestFrom } from 'rxjs/operators';
 
 import { Bookmark } from '@models/bookmark.model';
 import { BookmarkFavorite } from '@models/bookmark-favorite.model';
-import * as fromBookmarks from '@app/features/bookmarks/state';
 import * as fromRoot from '@app/core/core.state';
+import * as bookmarksSelectors from '@app/features/bookmarks/state/selectors/bookmarks.selectors';
+import * as favoritesSelectors from '@app/features/bookmarks/state/selectors/favorites.selectors';
+import * as bookmarksActions from '@app/features/bookmarks/state/actions/bookmarks.actions';
 
 @Component({
   selector: 'app-bookmark-search-results-container',
@@ -28,19 +30,21 @@ export class BookmarkSearchResultsContainerComponent
 
   constructor(private store: Store) {
     this.bookmarks$ = this.store.pipe(
-      select(fromBookmarks.selectBookmarksLoading),
+      select(bookmarksSelectors.selectBookmarksLoading),
       filter(loading => loading === false),
       concatMap(loading => {
         return of(loading).pipe(
           withLatestFrom(
-            this.store.pipe(select(fromBookmarks.selectCurrentBookmarks)),
+            this.store.pipe(select(bookmarksSelectors.selectCurrentBookmarks)),
             (_, bookmarks) => bookmarks
           )
         );
       })
     );
 
-    this.favorites$ = this.store.pipe(select(fromBookmarks.selectFavorites));
+    this.favorites$ = this.store.pipe(
+      select(favoritesSelectors.selectFavorites)
+    );
   }
 
   ngOnInit() {
@@ -50,8 +54,8 @@ export class BookmarkSearchResultsContainerComponent
         filter(params => params.hasOwnProperty('query'))
       )
       .subscribe(params => {
-        this.store.dispatch(fromBookmarks.clearBookmarksOnSearch());
-        this.store.dispatch(fromBookmarks.searchBookmarks());
+        this.store.dispatch(bookmarksActions.clearBookmarksOnSearch());
+        this.store.dispatch(bookmarksActions.searchBookmarks());
       });
   }
 

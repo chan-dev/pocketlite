@@ -2,7 +2,7 @@ import { createReducer, Action, on } from '@ngrx/store';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 
 import { Bookmark } from '@models/bookmark.model';
-import * as bookmarkActions from './bookmarks.actions';
+import * as bookmarkActions from '../actions/bookmarks.actions';
 
 export interface State extends EntityState<Bookmark> {
   loading: boolean;

@@ -5,7 +5,10 @@ import { filter, map } from 'rxjs/operators';
 
 import { Bookmark } from '@models/bookmark.model';
 import { BookmarkFavorite } from '@models/bookmark-favorite.model';
-import * as fromBookmarks from '@app/features/bookmarks/state';
+
+import * as bookmarksSelectors from '@app/features/bookmarks/state/selectors/bookmarks.selectors';
+import * as favoritesSelectors from '@app/features/bookmarks/state/selectors/favorites.selectors';
+import * as bookmarksActions from '@app/features/bookmarks/state/actions/bookmarks.actions';
 
 @Component({
   selector: 'app-bookmark-archives-container',
@@ -18,19 +21,21 @@ export class BookmarkArchivesContainerComponent implements OnInit {
   favorites$: Observable<BookmarkFavorite[]>;
 
   constructor(private store: Store) {
-    this.bookmarks$ = combineLatest(
-      this.store.pipe(select(fromBookmarks.selectBookmarksLoading)),
-      this.store.pipe(select(fromBookmarks.selectArchivedBookmarks))
-    ).pipe(
+    this.bookmarks$ = combineLatest([
+      this.store.pipe(select(bookmarksSelectors.selectBookmarksLoading)),
+      this.store.pipe(select(bookmarksSelectors.selectArchivedBookmarks)),
+    ]).pipe(
       filter(([loading, _]) => loading === false),
       map(([_, bookmarks]) => bookmarks)
     );
 
-    this.favorites$ = this.store.pipe(select(fromBookmarks.selectFavorites));
+    this.favorites$ = this.store.pipe(
+      select(favoritesSelectors.selectFavorites)
+    );
   }
 
   ngOnInit() {
-    this.store.dispatch(fromBookmarks.clearBookmarksOnArchive());
-    this.store.dispatch(fromBookmarks.getArchivedBookmarks());
+    this.store.dispatch(bookmarksActions.clearBookmarksOnArchive());
+    this.store.dispatch(bookmarksActions.getArchivedBookmarks());
   }
 }

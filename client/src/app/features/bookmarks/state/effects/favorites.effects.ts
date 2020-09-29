@@ -7,9 +7,9 @@ import { tap, map, catchError, mergeMap, switchMap } from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';
 
-import * as favoriteActions from './favorites.actions';
-import { BookmarksService } from '../services/bookmarks.service';
-import { generateFavoriteIdForAdapter } from './favorites.reducer';
+import * as favoriteActions from '../actions/favorites.actions';
+import { BookmarksService } from '../../services/bookmarks.service';
+import { generateFavoriteIdForAdapter } from '../reducers/favorites.reducer';
 import { BookmarkFavorite } from '@models/bookmark-favorite.model';
 
 @Injectable()

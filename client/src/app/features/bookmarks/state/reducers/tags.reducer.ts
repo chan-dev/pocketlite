@@ -2,8 +2,8 @@ import { createReducer, Action, on } from '@ngrx/store';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 
 import { Tag } from '@models/tag.model';
-import * as tagActions from './tags.actions';
-import * as bookmarkActions from './bookmarks.actions';
+import * as tagActions from '../actions/tags.actions';
+import * as bookmarkActions from '../actions/bookmarks.actions';
 
 export interface State extends EntityState<Tag> {
   loading: boolean;

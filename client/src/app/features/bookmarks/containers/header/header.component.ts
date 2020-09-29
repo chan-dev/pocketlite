@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 import * as fromAuth from '@app/core/auth/state';
-import * as fromBookmarks from '@app/features/bookmarks/state/bookmarks.actions';
+import * as fromBookmarks from '@app/features/bookmarks/state/actions/bookmarks.actions';
 import * as fromRoot from '@app/core/core.state';
 import { SidenavService } from '../../services/sidenav.service';
 
