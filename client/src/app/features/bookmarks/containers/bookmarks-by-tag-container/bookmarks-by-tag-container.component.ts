@@ -35,7 +35,7 @@ export class BookmarksByTagContainerComponent implements OnInit, OnDestroy {
       concatMap(loading => {
         return of(loading).pipe(
           withLatestFrom(
-            this.store.pipe(select(fromBookmarks.selectCurrentBookmarks)),
+            this.store.pipe(select(fromBookmarks.selectBookmarks)),
             (_, bookmarks) => bookmarks
           )
         );
