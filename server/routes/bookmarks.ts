@@ -298,15 +298,16 @@ router.get(
           .size(0);
       } else {
         // get the associated tag from Tag collection
-        const currentTag = await Tag.find({
+        const currentTag = await Tag.findOne({
           user_id: userId,
           name: tagName,
         }).exec();
+
         query = Bookmark.find({
           user_id: userId,
         })
           .where('tags')
-          .in(currentTag);
+          .in([currentTag?.id]);
       }
 
       // find bookmark containing that tag
@@ -380,4 +381,75 @@ router.put(
   }
 );
 
+// TODO: this is just for testing
+router.get(
+  '/test-collect',
+  async (req: Request, res: Response, next: NextFunction) => {
+    const urls = [
+      'https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04',
+      'https://www.typescriptlang.org/tsconfig#rootDir',
+      'https://vim.rtorr.com/',
+      'https://www.twilio.com/blog/guide-node-js-logging#:~:text=Your%20Server%20Application%20Logs,User%2DAgent%20is%20being%20used.',
+      'https://stackblitz.com/edit/angular-toggle-observable',
+    ];
+
+    const urlsToTest = urls.map(url => scrapeLink(url));
+
+    try {
+      const data = await Promise.all(urlsToTest);
+      return res.json({
+        data,
+      });
+    } catch (err) {
+      console.log({ err });
+      // TODO: replace with the actual error
+      next(ApiError.internalServerError('Saving Bookmark Failed'));
+    }
+  },
+  (err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.log({
+      err: {
+        ...err,
+      },
+    });
+    // TODO: fix bug in this route-level error handler
+    return next(ApiError.unauthenticated('Jwt authentication error'));
+  }
+);
+
+router.get(
+  '/test',
+  async (req: Request, res: Response, next: NextFunction) => {
+    /* const { url } = req.body; */
+    const articleTypeUrl =
+      'https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04';
+    const nonArticleTypeUrl = 'https://www.typescriptlang.org/tsconfig#rootDir';
+
+    // TODO: just change this variable for testing;
+    const isArticle = true;
+    const testUrl = isArticle ? articleTypeUrl : nonArticleTypeUrl;
+
+    const url = 'https://vim.rtorr.com/';
+
+    try {
+      const data = await scrapeLink(url);
+      return res.json({
+        data,
+      });
+    } catch (err) {
+      console.log({ err });
+      // TODO: replace with the actual error
+      next(ApiError.internalServerError('Saving Bookmark Failed'));
+    }
+  },
+  (err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.log({
+      err: {
+        ...err,
+      },
+    });
+    // TODO: fix bug in this route-level error handler
+    return next(ApiError.unauthenticated('Jwt authentication error'));
+  }
+);
 export default router;
