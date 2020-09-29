@@ -1,0 +1,11 @@
+<div class="tags-modal">
+  <button class="flex ml-auto mb-3" type="button" (click)="cancel()">
+    <mat-icon>close</mat-icon>
+  </button>
+  <app-tags-chips
+    [currentTags]="data.allTags"
+    [bookmarkTags]="data.bookmarkTags"
+    (selectTags)="updateTags($event)"
+    class="flex-1 mr-2"
+  ></app-tags-chips>
+</div>

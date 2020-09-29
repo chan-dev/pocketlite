@@ -3,7 +3,6 @@ import {
   OnInit,
   ChangeDetectionStrategy,
   Input,
-  Output,
 } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 

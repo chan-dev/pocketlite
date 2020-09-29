@@ -56,6 +56,10 @@ export class BookmarksCollectionContainerComponent implements OnInit {
     }
   }
 
+  updateBookmarkTags(bookmark: Bookmark) {
+    this.store.dispatch(fromBookmarks.openTagsModal({ bookmark }));
+  }
+
   isFavorited(bookmarkId: string) {
     return !!this.favorites.find(
       favorite => favorite.bookmark_id === bookmarkId

@@ -40,6 +40,7 @@ export class BookmarkPreviewComponent implements OnInit {
     bookmark: Bookmark;
     favorited: boolean;
   }>();
+  @Output() updateBookmarkTags = new EventEmitter<Bookmark>();
   @Input() bookmark: Bookmark;
   @Input() favorited: boolean;
 
@@ -64,5 +65,9 @@ export class BookmarkPreviewComponent implements OnInit {
       bookmark,
       favorited: this.favorited,
     });
+  }
+
+  openTagsModal() {
+    this.updateBookmarkTags.emit(this.bookmark);
   }
 }

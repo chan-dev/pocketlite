@@ -6,6 +6,18 @@
   button:focus {
     outline: none !important;
   }
+
+  .full-width-dialog {
+    @apply w-full;
+
+    .mat-dialog-container {
+      @apply p-3;
+    }
+
+    @screen md {
+      @apply mx-auto w-1/2;
+    }
+  }
 }
 
 @layer components {
