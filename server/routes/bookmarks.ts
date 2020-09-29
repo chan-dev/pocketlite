@@ -324,4 +324,60 @@ router.get(
   }
 );
 
+router.put(
+  '/:id/tags',
+  authJwt,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = (req as any).user.id;
+      const bookmarkId = req.params.id;
+      const { selectedTags }: { selectedTags: string[] } = req.body;
+
+      /* Step 1: Find all existing tags from Tag collection */
+      const foundTags = await Tag.find({
+        user_id: userId,
+        name: {
+          $in: selectedTags,
+        },
+      }).exec();
+
+      /* Step 2: Find all new unsaved tags */
+      const foundTagNames = foundTags.map(tag => tag.name);
+      const unsavedTags = selectedTags.filter(
+        tag => !foundTagNames.includes(tag)
+      );
+
+      /* Step 3: Save all unsaved tags in Tag collection */
+      const newTags = await Tag.insertMany(
+        unsavedTags.map(tag => ({
+          user_id: userId,
+          name: tag,
+        }))
+      );
+
+      /* Step 4: Merge foundTags and newTags */
+      const bookmarkTagIds = [...foundTags, ...newTags].map(tag => tag.id);
+
+      /* Step 5: Update current bookmark tags */
+      const bookmark = await Bookmark.findOneAndUpdate(
+        { _id: bookmarkId },
+        {
+          $set: {
+            tags: bookmarkTagIds,
+          },
+        },
+        // IMPORTANT: we need to return the modified document
+        { new: true }
+      ).exec();
+
+      return res.json({ bookmark, newTags });
+    } catch (err) {
+      console.log({ err });
+      next(
+        ApiError.internalServerError('Saving Bookmark Tags failed unexpectedly')
+      );
+    }
+  }
+);
+
 export default router;
