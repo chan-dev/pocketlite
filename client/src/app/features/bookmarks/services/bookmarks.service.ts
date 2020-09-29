@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Bookmark } from '@models/bookmark.model';
 import { BookmarkFavorite } from '@models/bookmark-favorite.model';
 import { map } from 'rxjs/operators';
+import { Tag } from '@models/tag.model';
 
 @Injectable({
   providedIn: 'root',
@@ -88,5 +89,14 @@ export class BookmarksService {
     return this.http
       .get<{ bookmarks: Bookmark[] }>(`/api/bookmarks/tags/${tagName}`)
       .pipe(map(res => res.bookmarks));
+  }
+
+  updateBookmarkTags(bookmarkId: string, selectedTags: string[]) {
+    return this.http.put<{ bookmark: Bookmark; newTags: Tag[] }>(
+      `/api/bookmarks/${bookmarkId}/tags`,
+      {
+        selectedTags,
+      }
+    );
   }
 }
