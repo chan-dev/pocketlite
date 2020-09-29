@@ -5,7 +5,8 @@
     "paths": {
       "@app/*": ["./src/app/*"],
       "@models/*": ["../shared/models/*"],
-      "@constants/*": ["../shared/constants/*"]
+      "@constants/*": ["../shared/constants/*"],
+      "@helpers/*": ["../shared/helpers/*"]
     },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,

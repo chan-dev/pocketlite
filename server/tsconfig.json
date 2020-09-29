@@ -3,7 +3,8 @@
     "baseUrl": ".",
     "paths": {
       "@models/*": ["../shared/models/*"],
-      "@constants/*": ["../shared/constants/*"]
+      "@constants/*": ["../shared/constants/*"],
+      "@helpers/*": ["../shared/helpers/*"]
     },
     "target": "es2018",
     "module": "commonjs",
