@@ -1,5 +1,6 @@
 import puppeteer from 'puppeteer-extra';
-import pluginStealth from 'puppeteer-extra-plugin-stealth';
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
+import AdblockerPlugin from 'puppeteer-extra-plugin-adblocker';
 import { JSDOM } from 'jsdom';
 import TurndownService from 'turndown';
 import DOMPurify from 'isomorphic-dompurify';
@@ -9,6 +10,9 @@ import { Readability } from '@mozilla/readability';
 import * as turndownPluginGfm from 'turndown-plugin-gfm';
 
 import { Bookmark } from '@models/bookmark.model';
+
+puppeteer.use(StealthPlugin());
+puppeteer.use(AdblockerPlugin({ blockTrackers: true }));
 
 const extractDomain = (uri: string) => {
   if (!uri) {
@@ -27,9 +31,14 @@ const extractDomain = (uri: string) => {
  */
 const getImg = async (page: any, uri: string) => {
   const img: string | null = await page.evaluate(async () => {
-    const ogImg: HTMLMetaElement | null = document.querySelector(
+    let ogImg: HTMLMetaElement | null = document.querySelector(
       'meta[property="og:image"]'
     );
+
+    if (!ogImg) {
+      ogImg = document.querySelector('meta[name="og:image"]');
+    }
+
     if (ogImg?.content?.length) {
       return ogImg.content;
     }
@@ -85,9 +94,14 @@ const getImg = async (page: any, uri: string) => {
  */
 const getTitle = async (page: any) => {
   const title: string | null = await page.evaluate(() => {
-    const ogTitle: HTMLMetaElement | null = document.querySelector(
+    let ogTitle: HTMLMetaElement | null = document.querySelector(
       'meta[property="og:title"]'
     );
+
+    if (!ogTitle) {
+      ogTitle = document.querySelector('meta[name="og:title"]');
+    }
+
     if (ogTitle?.content?.length) {
       return ogTitle.content;
     }
@@ -116,9 +130,14 @@ const getTitle = async (page: any) => {
 
 const getDescription = async (page: any) => {
   const description: string | null = await page.evaluate(() => {
-    const ogDescription: HTMLMetaElement | null = document.querySelector(
+    let ogDescription: HTMLMetaElement | null = document.querySelector(
       'meta[property="og:description"]'
     );
+
+    if (!ogDescription) {
+      ogDescription = document.querySelector('meta[name="og:description"]');
+    }
+
     if (ogDescription?.content?.length) {
       return ogDescription.content;
     }
@@ -160,9 +179,14 @@ const getDescription = async (page: any) => {
 
 const getOgType = async (page: any, uri: string) => {
   const type: string | null = await page.evaluate(() => {
-    const ogType: HTMLMetaElement | null = document.querySelector(
+    let ogType: HTMLMetaElement | null = document.querySelector(
       'meta[property="og:type"]'
     );
+
+    if (!ogType) {
+      ogType = document.querySelector('meta[name="og:type"]');
+    }
+
     if (ogType?.content?.length) {
       return ogType.content;
     }
@@ -188,93 +212,103 @@ const getCanonicalUrl = async (page: any, uri: string) => {
 // make sure it's only invoked once
 const scrapeLink = async (
   uri: string,
-  puppeteerArgs = [],
+  puppeteerArgs: string[] = [],
   puppeteerAgent = 'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)'
 ) => {
-  puppeteer.use(pluginStealth());
+  let browser;
 
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: [...puppeteerArgs],
-  });
-  const page = await browser.newPage();
-  page.setUserAgent(puppeteerAgent);
-  await page.setRequestInterception(true);
+  try {
+    browser = await puppeteer.launch({
+      headless: true,
+      ignoreHTTPSErrors: true,
+      args: [...puppeteerArgs],
+    });
+    const page = await browser.newPage();
+    await page.setUserAgent(puppeteerAgent);
+    await page.setRequestInterception(true);
 
-  let followsRedirect = false;
-  // @ts-ignore
-  /* page.on('console', (msg: any) => console[msg._type]('PAGE LOG:', msg._text)); */
-  page.on('request', request => {
-    if (request.isNavigationRequest() && request.redirectChain().length) {
-      followsRedirect = true;
+    page.removeAllListeners();
+
+    let followsRedirect = false;
+    // @ts-ignore
+    /* page.on('console', (msg: any) => console[msg._type]('PAGE LOG:', msg._text)); */
+    page.on('request', request => {
+      const skipResourceTypes = ['image', 'stylesheet'];
+
+      if (request.isNavigationRequest() && request.redirectChain().length) {
+        followsRedirect = true;
+      }
+
+      if (skipResourceTypes.includes(request.resourceType())) {
+        request.abort();
+      } else {
+        request.continue();
+      }
+    });
+
+    await page.goto(uri, {
+      waitUntil: 'domcontentloaded',
+    });
+
+    const [title, description, image, type, canonicalUrl] = await Promise.all([
+      getTitle(page),
+      getDescription(page),
+      getImg(page, uri),
+      getOgType(page, uri),
+      getCanonicalUrl(page, uri),
+    ]);
+
+    let contentInMarkdown = '';
+    if (type === 'article' && (!followsRedirect || !canonicalUrl)) {
+      // get the serialized version of DOM including the DocType
+      // because @moz/readability requires it
+      const docString = await page.evaluate(() => {
+        // we have to stringify the document in this way because it
+        // returns an circular error using JSON.stringify
+        const documentString =
+          new XMLSerializer().serializeToString(document.doctype as any) +
+          document.documentElement.outerHTML;
+
+        // we can't just return the document object here because
+        // puppeteer calls JSON.stringify in the background when passing the
+        // document object to `page.exposeFunction`
+        // so we have to pass the stringified version of document here
+        // const article = window.getReadability(docString);
+        return documentString;
+      });
+
+      const doc = new JSDOM(docString);
+
+      const article = new Readability(doc.window.document).parse();
+
+      const turndownService = new TurndownService();
+      turndownService.use(turndownPluginGfm.gfm);
+
+      const cleanMarkup = DOMPurify.sanitize(article.content);
+      contentInMarkdown = turndownService.turndown(cleanMarkup);
     }
-    if (request.url().endsWith('.png') || request.url().endsWith('.jpg')) {
-      request.abort();
-    } else {
-      request.continue();
-    }
-  });
 
-  const response = await page.goto(uri, {
-    waitUntil: 'networkidle2',
-  });
+    const obj: Partial<Bookmark> = {
+      title: title || '',
+      description: description || '',
+      url: uri || '',
+      domain: extractDomain(uri),
+      canonicalUrl: canonicalUrl || '',
+      image: image || '',
+      contentInMarkdown,
+      type: type || '',
+      followsRedirect,
+    };
 
-  // get the serialized version of DOM including the DocType
-  // because @moz/readability requires it
-  const docString = await page.evaluate(() => {
-    // we have to stringify the document in this way because it
-    // returns an circular error using JSON.stringify
-    const docString =
-      new XMLSerializer().serializeToString(document.doctype as any) +
-      document.documentElement.outerHTML;
-
-    // we can't just return the document object here because
-    // puppeteer calls JSON.stringify in the background when passing the
-    // document object to `page.exposeFunction`
-    // so we have to pass the stringified version of document here
-    // const article = window.getReadability(docString);
-    return docString;
-  });
-
-  const doc = new JSDOM(docString, {
-    // TODO: rename uri to url
-    url: uri,
-  });
-  const article = new Readability(doc.window.document).parse();
-
-  const [title, description, image, type, canonicalUrl] = await Promise.all([
-    getTitle(page),
-    getDescription(page),
-    getImg(page, uri),
-    getOgType(page, uri),
-    getCanonicalUrl(page, uri),
-  ]);
-
-  // TODO: convert to markdown
-  const turndownService = new TurndownService();
-  turndownService.use(turndownPluginGfm.gfm);
-
-  let contentInMarkdown = '';
-  if (type === 'article' && (!followsRedirect || !canonicalUrl)) {
-    const cleanMarkup = DOMPurify.sanitize(article.content);
-    contentInMarkdown = turndownService.turndown(cleanMarkup);
+    browser.close();
+    return obj;
+  } catch (err) {
+    console.log('Puppeteer error');
+    console.log({ err });
+    throw new Error('Puppeteer scraping error');
+  } finally {
+    browser && (await browser.close());
   }
-
-  const obj: Partial<Bookmark> = {
-    title: title || '',
-    description: description || '',
-    url: uri || '',
-    domain: extractDomain(uri),
-    canonicalUrl: canonicalUrl || '',
-    image: image || '',
-    contentInMarkdown,
-    type: type || '',
-    followsRedirect,
-  };
-
-  await browser.close();
-
-  return obj;
 };
 
 export default scrapeLink;

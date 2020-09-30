@@ -55,6 +55,7 @@
     "passport-jwt": "^4.0.0",
     "puppeteer": "^5.2.1",
     "puppeteer-extra": "^3.1.15",
+    "puppeteer-extra-plugin-adblocker": "^2.11.6",
     "puppeteer-extra-plugin-stealth": "^2.6.1",
     "turndown": "^6.0.0",
     "turndown-plugin-gfm": "^1.0.2"
