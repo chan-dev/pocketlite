@@ -1,5 +1,3 @@
-import { Tag } from './tag.model';
-
 export interface Bookmark {
   id: string;
   title: string;
@@ -20,4 +18,5 @@ export interface Bookmark {
   updatedAt: string;
   // fields added by mongoose_delete plugin
   deleted?: boolean;
+  deletedAt: string;
 }

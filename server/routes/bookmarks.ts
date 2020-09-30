@@ -170,6 +170,7 @@ router.get(
       const bookmarks = await Bookmark.find()
         .byUser(userId)
         .findArchived(true)
+        .sort({ deletedAt: -1 })
         .exec();
 
       return res.json({ bookmarks });

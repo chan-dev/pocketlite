@@ -170,7 +170,7 @@ type bookmarkInstanceType = typeof bookmarkInstanceMethods;
 
 // plugin must be called after we add our own static, instance or query
 // helpers methods since plugins override those
-BookmarkSchema.plugin(mongoose_delete);
+BookmarkSchema.plugin(mongoose_delete, { deletedAt: true });
 
 // we omit the id on Bookmark interface because
 // id is of type string in Bookmark interface while id is of type ObjectId
