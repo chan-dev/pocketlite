@@ -20,7 +20,7 @@ router.get(
   '/',
   authJwt,
   paginatedResults(Bookmark, {
-    sortBy: 'created_at',
+    sortBy: 'createdAt',
     sortOrder: -1,
     archived: false,
     favorited: false,

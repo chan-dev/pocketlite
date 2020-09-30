@@ -76,14 +76,11 @@ const BookmarkSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: {
-      createdAt: 'created_at',
-      updatedAt: 'updated_at',
-    },
+    timestamps: true,
   }
 );
 
-BookmarkSchema.index({ created_at: 1, type: -1 });
+BookmarkSchema.index({ createdAt: 1, type: -1 });
 BookmarkSchema.index({ title: 'text', description: 'text' });
 
 export type BookmarkDocumentQuery<

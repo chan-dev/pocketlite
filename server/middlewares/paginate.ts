@@ -63,7 +63,7 @@ const paginatedResults = (
       userId,
       limit,
       offset: startIndex,
-      sortBy: options.sortBy || 'created_at',
+      sortBy: options.sortBy || 'createdAt',
       sortOrder: options.sortOrder || -1,
       archived: options.archived || false,
       favorited: options.favorited || false,

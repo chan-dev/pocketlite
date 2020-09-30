@@ -13,7 +13,7 @@ export function sortByCreateDate(a: Bookmark, b: Bookmark): number {
   // NOTE: we have to use Date.parse here rather than other
   // methods to convert because the strings are in the timestamp format
   // w/c returns NaN on other methods
-  return Date.parse(b.created_at) - Date.parse(a.created_at);
+  return Date.parse(b.createdAt) - Date.parse(a.createdAt);
 }
 
 export const adapter: EntityAdapter<Bookmark> = createEntityAdapter<Bookmark>({
