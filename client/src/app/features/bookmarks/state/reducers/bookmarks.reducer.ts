@@ -17,7 +17,7 @@ export function sortByCreateDate(a: Bookmark, b: Bookmark): number {
 }
 
 export const adapter: EntityAdapter<Bookmark> = createEntityAdapter<Bookmark>({
-  sortComparer: sortByCreateDate,
+  // sortComparer: sortByCreateDate,
 });
 export const initialState: State = adapter.getInitialState({
   loading: false,
