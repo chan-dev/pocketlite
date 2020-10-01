@@ -13,16 +13,28 @@ export const selectBookmarksEntities = createSelector(
   selectBookmarksState,
   fromBookmarks.selectBookmarksEntities
 );
+// unsorted default order
 export const selectBookmarks = createSelector(
   selectBookmarksState,
   fromBookmarks.selectBookmarks
 );
-export const selectCurrentBookmarks = createSelector(
+// sorted bookmaks
+export const selectBookmarksSortedByCreatedAt = createSelector(
   selectBookmarks,
+  state =>
+    state.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))
+);
+export const selectBookmarksSortedByDeletedAt = createSelector(
+  selectBookmarks,
+  state =>
+    state.sort((a, b) => Date.parse(b.deletedAt) - Date.parse(a.deletedAt))
+);
+export const selectCurrentBookmarks = createSelector(
+  selectBookmarksSortedByCreatedAt,
   bookmarks => bookmarks.filter(b => !b.deleted)
 );
 export const selectArchivedBookmarks = createSelector(
-  selectBookmarks,
+  selectBookmarksSortedByDeletedAt,
   bookmarks => bookmarks.filter(b => b.deleted)
 );
 export const selectFavoritedBookmarks = createSelector(
