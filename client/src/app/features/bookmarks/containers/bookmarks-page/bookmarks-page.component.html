@@ -3,4 +3,6 @@
   mode="indeterminate"
   *ngIf="loading$ | async"
 ></mat-progress-bar>
-<app-sidenav></app-sidenav>
+<!-- NOTE: it's important that this is set to flex so the ngx-infinite-scroll
+package will work correctly -->
+<app-sidenav class="flex flex-col flex-1 overflow-y-auto"></app-sidenav>

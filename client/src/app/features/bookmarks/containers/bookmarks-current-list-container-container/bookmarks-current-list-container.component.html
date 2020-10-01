@@ -1,13 +1,14 @@
 <section class="bookmarks text-gray-900">
-  <!--   this serves as our container and add spacing with padding -->
+  <!-- query the "infinite-scroll-container" starting from the root element
+    and listen to the "window" scroll event instead of this element -->
   <div
-    class="bookmark-list"
+    class="flex flex-col overflow-hidden bookmark-list"
     infiniteScroll
     [infiniteScrollDistance]="5"
-    [infiniteScrollThrottle]="50"
-    [infiniteScrollContainer]=""
-    [scrollWindow]="false"
-    [fromRoot]="false"
+    [infiniteScrollThrottle]="150"
+    [infiniteScrollContainer]="'.infinite-scroll-container'"
+    [scrollWindow]="true"
+    [fromRoot]="true"
     (scrolled)="onScroll()"
   >
     <h2 class="bookmark-list__title mb-4">My List</h2>

@@ -121,7 +121,10 @@
     </div>
   </mat-sidenav>
 
-  <mat-sidenav-content>
+  <!-- NOTE: the "infinite-scroll-container" class is required because it serves as the hook for
+    the ngx-infinite-scroll package. This class is queried by the package as
+    the infinite scroll container -->
+  <mat-sidenav-content class="infinite-scroll-container overflow-x-hidden">
     <!-- NOTE: this should match with the header styles so they would always be aligned -->
     <!-- we removed the padding-right on larger screen so the scrollbar
       will move to the right of the screen -->

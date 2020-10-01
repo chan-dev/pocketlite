@@ -31,7 +31,6 @@ import { SidenavService } from '../../services/sidenav.service';
       }
 
       .mat-sidenav-container {
-        height: 100%;
         background: none;
       }
 
