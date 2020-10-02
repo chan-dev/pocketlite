@@ -22,12 +22,12 @@ export const selectBookmarks = createSelector(
 export const selectBookmarksSortedByCreatedAt = createSelector(
   selectBookmarks,
   state =>
-    state.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))
+    [...state].sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))
 );
 export const selectBookmarksSortedByDeletedAt = createSelector(
   selectBookmarks,
   state =>
-    state.sort((a, b) => Date.parse(b.deletedAt) - Date.parse(a.deletedAt))
+    [...state].sort((a, b) => Date.parse(b.deletedAt) - Date.parse(a.deletedAt))
 );
 export const selectCurrentBookmarks = createSelector(
   selectBookmarksSortedByCreatedAt,
