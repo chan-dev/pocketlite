@@ -1,8 +1,8 @@
-const purgecss = require("@fullhuman/postcss-purgecss")({
+const purgecss = require('@fullhuman/postcss-purgecss')({
   // Specify the paths to all of the template files in your project
-  content: ["./src/**/*.html", "./src/**/*.component.ts"],
+  content: ['./src/**/*.html', './src/**/*.ts'],
   // Include any special characters you're using in this regular expression
-  defaultExtractor: (content) => content.match(/[\w-/:]+(?<!:)/g) || [],
+  defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || [],
 });
 
 module.exports = (config, options) => {
@@ -11,12 +11,12 @@ module.exports = (config, options) => {
     test: /tailwind\.scss$/,
     use: [
       {
-        loader: "postcss-loader",
+        loader: 'postcss-loader',
         options: {
           plugins: [
-            require("tailwindcss")("./tailwind.config.js"),
-            require("autoprefixer"),
-            ...(config.mode === "production" ? [purgecss] : []),
+            require('tailwindcss')('./tailwind.config.js'),
+            require('autoprefixer'),
+            ...(config.mode === 'production' ? [purgecss] : []),
           ],
         },
       },
