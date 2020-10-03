@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "_moduleAliases": {
+    "@models": "build/shared/models",
+    "@constants": "build/shared/constants",
+    "@helpers": "build/shared/helpers"
+  },
   "scripts": {
     "start:prod": "export NODE_ENV=production && node build/server/index.js",
     "start:staging": "export NODE_ENV=staging && nodemon -r tsconfig-paths/register index.ts",
@@ -49,6 +54,7 @@
     "isomorphic-dompurify": "^0.6.0",
     "jsdom": "^16.4.0",
     "jsonwebtoken": "^8.5.1",
+    "module-alias": "^2.2.2",
     "mongoose": "^5.9.28",
     "mongoose-delete": "^0.5.2",
     "passport": "^0.4.1",
