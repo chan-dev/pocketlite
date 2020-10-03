@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "export NODE_ENV=production && nodemon -r tsconfig-paths/register index.ts",
-    "dev": "export NODE_ENV=development && nodemon -r tsconfig-paths/register index.ts",
+    "start:prod": "export NODE_ENV=production && node build/server/index.js",
+    "start:staging": "export NODE_ENV=staging && nodemon -r tsconfig-paths/register index.ts",
+    "start:dev": "export NODE_ENV=development && nodemon -r tsconfig-paths/register index.ts",
     "build": "tsc -p ./",
     "lint": "eslint . --ext .ts",
     "csrf": "npx http-server -c-1 -d false -o /csrf-test"

@@ -1,3 +1,4 @@
+import * as dotenv from 'dotenv';
 import path from 'path';
 import express from 'express';
 import cookieParser from 'cookie-parser';
@@ -5,6 +6,14 @@ import passport from 'passport';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import csurf from 'csurf';
+
+if (process.env.NODE_ENV !== 'production') {
+  // either loads .env.development or .env.staging
+  const envFile = `.env.${process.env.NODE_ENV}`;
+  dotenv.config({
+    path: envFile,
+  });
+}
 
 import config from './config/keys';
 import googleOauth2Setup from './strategies/google-oauth';
@@ -41,7 +50,7 @@ mongoose.connect(config.mongoose.dbUrl, {
   useUnifiedTopology: true,
   useCreateIndex: true,
 });
-mongoose.set('debug', NODE_ENV === 'development');
+mongoose.set('debug', NODE_ENV !== 'production');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
