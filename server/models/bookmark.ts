@@ -4,6 +4,7 @@ import mongoose_delete, {
   SoftDeleteModel,
 } from 'mongoose-delete';
 
+// @ts-ignore
 import { Bookmark } from '@models/bookmark.model';
 import { validateUrl } from '../helpers/validators';
 

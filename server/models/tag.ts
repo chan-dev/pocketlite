@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
+// @ts-ignore
 import { Tag } from '@models/tag.model';
 
 const TagSchema = new mongoose.Schema({

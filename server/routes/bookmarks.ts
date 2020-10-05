@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import mongoose, { DocumentQuery } from 'mongoose';
 
+// @ts-ignore
 import { UNTAGGED_ITEMS } from '@constants/tags';
 import Bookmark, {
   BookmarkOptions,

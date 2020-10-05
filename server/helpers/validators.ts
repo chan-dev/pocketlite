@@ -1,3 +1,4 @@
+// @ts-ignore
 import { reUrl } from '@constants/patterns';
 
 export const validateUrl = (v: string) => {

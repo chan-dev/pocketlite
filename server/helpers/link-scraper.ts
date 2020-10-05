@@ -9,6 +9,7 @@ import { Readability } from '@mozilla/readability';
 // @ts-ignore
 import * as turndownPluginGfm from 'turndown-plugin-gfm';
 
+// @ts-ignore
 import { Bookmark } from '@models/bookmark.model';
 
 puppeteer.use(StealthPlugin());

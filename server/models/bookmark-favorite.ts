@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
+// @ts-ignore
 import { BookmarkFavorite } from '@models/bookmark-favorite.model';
 
 const BookmarkFavoriteSchema = new mongoose.Schema({
