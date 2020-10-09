@@ -19,7 +19,7 @@
             *ngIf="!mediaQuery.matches"
           >
             <div class="h-12 center-between">
-              <button class="inline-flex" (click)="toggleSidenav($event)">
+              <button class="inline-flex" (click)="toggleSidenav()">
                 <mat-icon>keyboard_arrow_left</mat-icon>
               </button>
               <button
@@ -40,7 +40,7 @@
               [routerLinkActiveOptions]="{ exact: true }"
               class="sidenav__items"
             >
-              <a [routerLink]="['/bookmarks']">
+              <a [routerLink]="['/bookmarks']" (click)="toggleSidenav()">
                 <mat-icon class="mr-1">home</mat-icon>
                 my list
               </a>
@@ -50,7 +50,10 @@
               [routerLinkActiveOptions]="{ exact: true }"
               class="sidenav__items"
             >
-              <a [routerLink]="['/bookmarks/archives']">
+              <a
+                [routerLink]="['/bookmarks/archives']"
+                (click)="toggleSidenav()"
+              >
                 <mat-icon class="mr-1">archive</mat-icon>
                 archive
               </a>
@@ -67,7 +70,10 @@
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: true }"
               >
-                <a [routerLink]="['/bookmarks/favorites']">
+                <a
+                  [routerLink]="['/bookmarks/favorites']"
+                  (click)="toggleSidenav()"
+                >
                   <mat-icon class="mr-1">favorites</mat-icon>
                   favorites
                 </a>

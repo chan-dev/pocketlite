@@ -46,6 +46,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
   private sub: Subscription;
   private queryListener;
+  private mediaQueryCondition = '(min-width: 1280px)';
 
   mediaQuery: MediaQueryList;
   isChildNav = false;
@@ -56,7 +57,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
     private sidenavService: SidenavService
   ) {
     // NOTE: same with tailwind (xl) media query class
-    this.mediaQuery = this.media.matchMedia('(min-width: 1280px)');
+    this.mediaQuery = this.media.matchMedia(this.mediaQueryCondition);
     this.queryListener = () => this.cd.detectChanges();
     this.mediaQuery.addEventListener('change', this.queryListener);
   }
@@ -77,9 +78,14 @@ export class SidenavComponent implements OnInit, OnDestroy {
     }
   }
 
-  toggleSidenav(event) {
-    event.stopPropagation();
-    this.sidenav.close();
+  toggleSidenav() {
+    // 1. Disable toggle functionality on larger screens, no need
+    // to toggle since sidebar should be always visible
+    // 2. On smaller screen sizes, we should close the sidenav on
+    // every navigation, so we need this functionality enabled
+    if (!this.mediaQuery.matches) {
+      this.sidenav.close();
+    }
   }
 
   openChildNav() {
