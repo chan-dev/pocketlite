@@ -8,6 +8,7 @@
       <a
         [routerLink]="['/bookmarks/tags', tag.name]"
         routerLinkActive="router-link-active"
+        (click)="open()"
         >{{ tag.name }}</a
       >
       <!-- TODO: convert to button tag mat-button? -->

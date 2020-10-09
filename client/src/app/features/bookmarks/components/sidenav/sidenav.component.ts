@@ -64,7 +64,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.sub = this.sidenavService.toggle$.subscribe(() => {
-      this.sidenav.toggle();
+      this.toggleSidenav();
       // TODO: search why we need to do this
       this.cd.detectChanges();
     });
@@ -84,7 +84,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
     // 2. On smaller screen sizes, we should close the sidenav on
     // every navigation, so we need this functionality enabled
     if (!this.mediaQuery.matches) {
-      this.sidenav.close();
+      this.sidenav.toggle();
     }
   }
 

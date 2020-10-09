@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 
 import { Tag } from '@models/tag.model';
+import { SidenavService } from '../../services/sidenav.service';
 
 @Component({
   selector: 'app-tags-list',
@@ -17,11 +18,15 @@ export class TagsListComponent implements OnInit {
   @Input() tags: Tag[];
   isEditing = false;
 
-  constructor() {}
+  constructor(private sidenavService: SidenavService) {}
 
   ngOnInit(): void {}
 
   tagsTrackByFn(_: any, tag: Tag) {
     return tag.id;
+  }
+
+  closeSidenav() {
+    this.sidenavService.toggle();
   }
 }

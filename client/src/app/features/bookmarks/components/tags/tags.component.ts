@@ -3,6 +3,8 @@ import {
   OnInit,
   ChangeDetectionStrategy,
   Input,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
@@ -16,6 +18,7 @@ import { Tag } from '@models/tag.model';
 })
 export class TagsComponent implements OnInit {
   @Input() tag: Tag;
+  @Output() openTag = new EventEmitter<void>();
 
   isEditing = false;
   tagControl = new FormControl('', Validators.required);
@@ -39,5 +42,9 @@ export class TagsComponent implements OnInit {
 
   closeEdit() {
     this.isEditing = false;
+  }
+
+  open() {
+    this.openTag.emit();
   }
 }
