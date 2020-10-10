@@ -13,7 +13,6 @@ export class GuestGuard implements CanActivate, CanLoad {
   private isLoggedIn$ = this.store.select(fromAuth.selectIsLoggedIn);
 
   private isGuest$ = this.isLoggedIn$.pipe(
-    take(1),
     map(isLoggedIn => {
       if (isLoggedIn) {
         this.router.navigateByUrl(this.redirectUrl);
@@ -21,6 +20,7 @@ export class GuestGuard implements CanActivate, CanLoad {
       }
       return true;
     }),
+    take(1),
     catchError(() => {
       this.router.navigateByUrl(this.redirectUrl);
       return of(false);

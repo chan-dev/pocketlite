@@ -16,7 +16,7 @@ const routes: Routes = [
       import('./features/bookmarks/bookmarks.module').then(
         m => m.BookmarksModule
       ),
-    canActivate: [AuthGuard],
+    canLoad: [AuthGuard],
   },
   {
     path: '**',
