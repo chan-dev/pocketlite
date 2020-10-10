@@ -18,7 +18,7 @@ export default {
     refreshTokenCookieName: process.env.JWT_REFRESH_TOKEN_COOKIE || '',
   },
   csurf: {
-    cookieName: process.env.CSURF_COOKIE_NAME || '',
+    cookieName: 'XSRF-TOKEN',
     csrfTokenExpiry,
   },
   mongoose: {
