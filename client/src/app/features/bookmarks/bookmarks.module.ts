@@ -16,7 +16,7 @@ import { TagEffects } from './state/effects/tags.effects';
 import { FavoriteEffects } from './state/effects/favorites.effects';
 import { BookmarksPageComponent } from './containers/bookmarks-page/bookmarks-page.component';
 import { HeaderComponent } from './containers/header/header.component';
-import { SidenavComponent } from './components/sidenav/sidenav.component';
+import { MainContentComponent } from './components/main-content/main-content.component';
 import { TagsComponent } from './components/tags/tags.component';
 import { TagsListComponent } from './components/tags/tags-list.component';
 import { SearchBoxComponent } from './components/search-box/search-box.component';
@@ -39,7 +39,7 @@ import { TagsChipsComponent } from './components/tags-chips/tags-chips.component
   declarations: [
     BookmarksPageComponent,
     HeaderComponent,
-    SidenavComponent,
+    MainContentComponent,
     TagsComponent,
     TagsListComponent,
     SearchBoxComponent,

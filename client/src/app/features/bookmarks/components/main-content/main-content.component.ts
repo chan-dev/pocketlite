@@ -13,8 +13,8 @@ import { Subscription } from 'rxjs';
 import { SidenavService } from '../../services/sidenav.service';
 
 @Component({
-  selector: 'app-sidenav',
-  templateUrl: './sidenav.component.html',
+  selector: 'app-main-content',
+  templateUrl: './main-content.component.html',
   styles: [
     `
       /* Sidenav */
@@ -41,7 +41,7 @@ import { SidenavService } from '../../services/sidenav.service';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SidenavComponent implements OnInit, OnDestroy {
+export class MainContentComponent implements OnInit, OnDestroy {
   @ViewChild(MatSidenav) sidenav: MatSidenav;
 
   private sub: Subscription;
