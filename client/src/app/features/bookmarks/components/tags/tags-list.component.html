@@ -4,11 +4,7 @@
     class="normal-case tags space-y-2 ml-3 py-2 text-gray-700 font-normal"
   >
     <li *ngFor="let tag of tags; trackBy: tagsTrackByFn">
-      <app-tags
-        class="w-full"
-        [tag]="tag"
-        (openTag)="closeSidenav()"
-      ></app-tags>
+      <app-tag class="w-full" [tag]="tag" (openTag)="closeSidenav()"></app-tag>
     </li>
   </ul>
 </div>

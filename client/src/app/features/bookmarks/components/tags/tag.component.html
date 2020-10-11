@@ -12,7 +12,10 @@
         >{{ tag.name }}</a
       >
       <!-- TODO: convert to button tag mat-button? -->
-      <div data-test="tag-edit-button" class="action hidden group-hover:block">
+      <div
+        data-test="tag-edit-button"
+        class="action hidden group-hover:inline-block"
+      >
         <mat-icon class="cursor-pointer" (click)="openEdit(tagEditInput)"
           >create</mat-icon
         >

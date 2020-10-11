@@ -17,7 +17,7 @@ import { FavoriteEffects } from './state/effects/favorites.effects';
 import { BookmarksPageComponent } from './containers/bookmarks-page/bookmarks-page.component';
 import { HeaderComponent } from './containers/header/header.component';
 import { MainContentComponent } from './components/main-content/main-content.component';
-import { TagsComponent } from './components/tags/tags.component';
+import { TagComponent } from './components/tags/tag.component';
 import { TagsListComponent } from './components/tags/tags-list.component';
 import { SearchBoxComponent } from './components/search-box/search-box.component';
 import { AddLinkFormComponent } from './components/add-link-form/add-link-form.component';
@@ -40,7 +40,7 @@ import { TagsChipsComponent } from './components/tags-chips/tags-chips.component
     BookmarksPageComponent,
     HeaderComponent,
     MainContentComponent,
-    TagsComponent,
+    TagComponent,
     TagsListComponent,
     SearchBoxComponent,
     AddLinkFormComponent,

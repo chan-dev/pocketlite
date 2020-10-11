@@ -11,12 +11,12 @@ import { FormControl, Validators } from '@angular/forms';
 import { Tag } from '@models/tag.model';
 
 @Component({
-  selector: 'app-tags',
-  templateUrl: './tags.component.html',
+  selector: 'app-tag',
+  templateUrl: './tag.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TagsComponent implements OnInit {
+export class TagComponent implements OnInit {
   @Input() tag: Tag;
   @Output() openTag = new EventEmitter<void>();
 
