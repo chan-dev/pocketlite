@@ -54,7 +54,23 @@ export class BookmarkEffects {
       ofType(bookmarkActions.saveBookmark),
       exhaustMap(({ url }) =>
         this.bookmarksService.saveBookmark(url).pipe(
-          map(bookmark => bookmarkActions.saveBookmarkSuccess({ bookmark })),
+          mergeMap(bookmark => {
+            return of(bookmark).pipe(
+              withLatestFrom(
+                this.store.pipe(select(appState.selectRouteUrl)),
+                (_, currentUrl) => currentUrl
+              ),
+              map(currentUrl => {
+                // When saving a new bookmark, only add the newly saved
+                // bookmark if we're on the /bookmarks page w/c is the default
+                // route
+                if (currentUrl === '/bookmarks') {
+                  return bookmarkActions.saveBookmarkSuccess({ bookmark });
+                }
+                return bookmarkActions.noOpAction();
+              })
+            );
+          }),
           catchError(error =>
             of(
               bookmarkActions.saveBookmarkFailure({
@@ -70,7 +86,7 @@ export class BookmarkEffects {
   saveBookmarkSuccess$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(bookmarkActions.saveBookmarkSuccess),
+        ofType(bookmarkActions.noOpAction),
         tap(_ => {
           this.toastr.success('Bookmark has been saved');
         })

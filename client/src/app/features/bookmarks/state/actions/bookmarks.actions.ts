@@ -158,3 +158,5 @@ export const updateBookmarkTagsFailure = createAction(
   '[BookmarkEffects] Update Bookmark Tags Failure',
   props<{ error: string }>()
 );
+
+export const noOpAction = createAction('[BookmarkEffects] No Op Action');
