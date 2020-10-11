@@ -9,6 +9,7 @@ import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+import { MediaMatcher } from '@angular/cdk/layout';
 
 import { ToastrService } from 'ngx-toastr';
 
@@ -25,7 +26,10 @@ import { SidenavService } from '../../services/sidenav.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
+  private queryListener;
+  private mediaQueryCondition = '(min-width: 1280px)';
 
+  mediaQuery: MediaQueryList;
   searchboxVisible = false;
   addLinkFormVisible = false;
 
@@ -34,8 +38,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private store: Store,
     private router: Router,
     private toastr: ToastrService,
-    private cd: ChangeDetectorRef
-  ) {}
+    private cd: ChangeDetectorRef,
+    private media: MediaMatcher
+  ) {
+    this.mediaQuery = this.media.matchMedia(this.mediaQueryCondition);
+    this.queryListener = () => this.cd.detectChanges();
+    this.mediaQuery.addEventListener('change', this.queryListener);
+  }
 
   ngOnInit(): void {
     this.subscription = this.store
@@ -61,6 +70,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.mediaQuery.removeEventListener('change', this.queryListener);
+
     if (this.subscription) {
       this.subscription.unsubscribe();
     }

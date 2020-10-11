@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
 import { reUrl } from '@constants/patterns';
@@ -9,6 +9,7 @@ import { reUrl } from '@constants/patterns';
   styles: [],
 })
 export class AddLinkFormComponent implements OnInit {
+  @Input() minimal: boolean;
   @Output() save = new EventEmitter<FormControl>();
   @Output() cancel = new EventEmitter<void>();
 

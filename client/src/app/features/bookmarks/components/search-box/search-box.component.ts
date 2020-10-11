@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
 @Component({
@@ -7,6 +7,7 @@ import { FormControl, Validators } from '@angular/forms';
   styles: [],
 })
 export class SearchBoxComponent implements OnInit {
+  @Input() minimal: boolean;
   @Output() search = new EventEmitter<FormControl>();
   @Output() cancel = new EventEmitter<void>();
 

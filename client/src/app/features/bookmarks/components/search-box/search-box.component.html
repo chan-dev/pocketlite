@@ -10,7 +10,7 @@
         (keyup.enter)="searchBookmarks(query.value)"
       />
     </div>
-    <div class="px-2">
+    <div class="px-2" *ngIf="!minimal; else minimalUi">
       <div class="search-box__action inline-flex items-center space-x-2">
         <button
           type="button"
@@ -28,5 +28,14 @@
         </button>
       </div>
     </div>
+    <ng-template #minimalUi>
+      <button
+        type="button"
+        class="add-link-form__cancel flex hover:bg-gray-200 bg-transparent rounded-md p-2 text-gray-900 font-bold"
+        (click)="cancel.emit()"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </ng-template>
   </div>
 </div>

@@ -4,7 +4,14 @@
   >
     <!-- logo -->
     <!-- with should be equal to the width of the mat-sidenav -->
-    <div class="flex items-center xl:w-64 xl:-mr-2 py-1">
+    <div
+      class="flex items-center xl:w-64 xl:-mr-2 py-1"
+      [ngClass]="{
+        hidden:
+          !mediaQuery.matches &&
+          (this.searchboxVisible || this.addLinkFormVisible)
+      }"
+    >
       <!-- header toggle button -->
       <button
         data-test="menu-toggle"
@@ -20,12 +27,20 @@
     </div>
     <div class="search-box-container flex-1" *ngIf="searchboxVisible">
       <app-search-box
+        [minimal]="
+          !mediaQuery.matches &&
+          (this.searchboxVisible || this.addLinkFormVisible)
+        "
         (search)="searchBookmarks($event)"
         (cancel)="cancelSearch()"
       ></app-search-box>
     </div>
     <div class="search-box-container flex-1" *ngIf="addLinkFormVisible">
       <app-add-link-form
+        [minimal]="
+          !mediaQuery.matches &&
+          (this.searchboxVisible || this.addLinkFormVisible)
+        "
         (save)="saveUrl($event)"
         (cancel)="cancelAddLink()"
       ></app-add-link-form>
