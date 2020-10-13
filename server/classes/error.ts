@@ -50,6 +50,10 @@ export class ApiError extends Error {
   static refreshTokenExpired(message: string): RefreshTokenExpired {
     return new RefreshTokenExpired(message);
   }
+
+  static jwtTokenExpired(message: string): JwtTokenExpired {
+    return new JwtTokenExpired(message);
+  }
 }
 
 export class HttpBadRequest extends ApiError {
@@ -151,11 +155,23 @@ export class InvalidCsrfToken extends ApiError {
 export class RefreshTokenExpired extends ApiError {
   constructor(
     public message: string,
-    public statusCode: HTTP_STATUS_CODES = HTTP_STATUS_CODES.UNAUTHENTICATED,
+    public statusCode: HTTP_STATUS_CODES = HTTP_STATUS_CODES.FORBIDDEN,
     public name: string = 'ApiError.RefreshTokenExpired',
-    public errorCode: ERROR_CODES = ERROR_CODES.REFRESH_TOKEN
+    public errorCode: ERROR_CODES = ERROR_CODES.REFRESH_TOKEN_EXPIRED
   ) {
     super(message, statusCode, name, errorCode);
     Error.captureStackTrace(this, RefreshTokenExpired);
+  }
+}
+
+export class JwtTokenExpired extends ApiError {
+  constructor(
+    public message: string,
+    public statusCode: HTTP_STATUS_CODES = HTTP_STATUS_CODES.UNAUTHENTICATED,
+    public name: string = 'ApiError.JwtTokenExpired',
+    public errorCode: ERROR_CODES = ERROR_CODES.JWT_TOKEN_EXPIRED
+  ) {
+    super(message, statusCode, name, errorCode);
+    Error.captureStackTrace(this, JwtTokenExpired);
   }
 }

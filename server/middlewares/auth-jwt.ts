@@ -6,7 +6,12 @@ import { ApiError } from '../classes/error';
 const authJwt = (req: Request, res: Response, next: NextFunction) => {
   passport.authenticate('jwt', function (err, user, info) {
     if (err) return next(err);
-    if (!user) throw ApiError.unauthenticated('User is not authenticated');
+    if (!user) {
+      if (info.name === 'TokenExpiredError') {
+        return next(ApiError.jwtTokenExpired('Jwt Token Expired'));
+      }
+      return next(ApiError.unauthenticated('User is not authenticated'));
+    }
     req.user = user;
     next();
   })(req, res, next);

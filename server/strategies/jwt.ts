@@ -1,6 +1,6 @@
 import { Request } from 'express';
 import passport from 'passport';
-import { Strategy as JwtStrategy } from 'passport-jwt';
+import { Strategy as JwtStrategy, StrategyOptions } from 'passport-jwt';
 
 import config from '../config/keys';
 
@@ -14,12 +14,13 @@ export default (): void => {
     return token;
   };
 
-  const opts = {
+  const opts: StrategyOptions = {
     // we validate using the jwt from the cookie
     // no need to attach Authorization header for each client
     jwtFromRequest: cookieExtractor,
     secretOrKey: config.jwt.secretKey,
     passReqToCallback: true,
+    ignoreExpiration: false,
   };
   passport.use(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

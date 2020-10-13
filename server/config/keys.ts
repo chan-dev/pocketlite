@@ -1,5 +1,8 @@
-const accessTokenExpiry = 24 * 60 * 1000;
+// 30 min (expiresIn in jwt is in seconds)
+const accessTokenExpiry = 1800;
+// 1 day (in ms)
 const refreshTokenExpiry = 24 * 60 * 60 * 1000;
+// 1 day (in ms)
 const csrfTokenExpiry = 24 * 60 * 60 * 1000;
 
 export default {
