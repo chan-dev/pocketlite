@@ -1,10 +1,10 @@
 import express, { Request, Response, NextFunction } from 'express';
 import passport from 'passport';
-import jwt from 'jsonwebtoken';
 import mongodb from 'mongodb';
 
 import config from '../config/keys';
 import { ApiError } from '../classes/error';
+import jwtSignAndCreate from 'helpers/jwt-sign-and-create';
 
 const router = express.Router();
 
@@ -35,7 +35,7 @@ router.get(
 
     // NOTE: req.user here is Mongoose document w/c is extracted from
     // the passport google's serializerUser done(null, user) callback
-    const token = jwt.sign((req.user as any).toJSON(), secretKey);
+    const token = jwtSignAndCreate((req.user as any).toJSON(), secretKey);
 
     res.cookie(config.jwt.cookieName, token, {
       httpOnly: true,
@@ -70,7 +70,7 @@ router.post('/refresh', (req: Request, res: Response, next: NextFunction) => {
       jwt: { secretKey },
     } = config;
 
-    const token = jwt.sign(refreshToken.toJSON(), secretKey);
+    const token = jwtSignAndCreate(refreshToken.toJSON(), secretKey);
 
     res.cookie(config.jwt.cookieName, token, {
       httpOnly: true,
