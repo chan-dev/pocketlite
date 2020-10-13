@@ -15,6 +15,7 @@ module.exports = {
   variants: {
     display: ['responsive', 'hover', 'focus', 'group-hover'],
     borderColor: ['responsive', 'hover', 'focus', 'focus-within'],
+    backgroundColor: ['responsive', 'hover', 'focus', 'disabled'],
   },
   plugins: [require('tailwindcss-truncate-multiline')()],
   future: {

@@ -7,15 +7,11 @@
     outline: none !important;
   }
 
-  .full-width-dialog {
-    @apply w-full;
+  .mat-chip-list-wrapper {
+    @apply border rounded;
 
-    .mat-dialog-container {
-      @apply p-3;
-    }
-
-    @screen md {
-      @apply mx-auto w-1/2;
+    &:focus-within {
+      @apply border-gray-500;
     }
   }
 }
@@ -77,6 +73,18 @@
   .tag {
     .active {
       @apply bg-green-100 text-green-700 rounded;
+    }
+  }
+
+  .full-width-dialog {
+    @apply mx-auto;
+
+    .mat-dialog-container {
+      @apply p-3;
+    }
+
+    @screen md {
+      @apply w-1/2 max-w-lg !important;
     }
   }
 }

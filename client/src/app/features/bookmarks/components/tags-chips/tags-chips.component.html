@@ -11,7 +11,7 @@
         <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
       </mat-chip>
       <input
-        class="p-1"
+        class="outline-none"
         placeholder="New tag..."
         #tagInput
         [formControl]="tagCtrl"
@@ -31,7 +31,8 @@
     </mat-autocomplete>
   </div>
   <button
-    class="hover:bg-blue-700 focus:bg-blue-700 bg-blue-400 hover:bg-blue-600 ml-auto px-4 py-1 rounded font-medium text-lg text-white"
+    class="disabled:bg-gray-400 hover:bg-blue-700 focus:bg-blue-700 bg-blue-400 ml-auto px-4 py-1 rounded font-medium text-lg text-white"
+    [disabled]="tagCtrl.pristine || !selectedTags.length"
     (click)="updateTags()"
   >
     Save
