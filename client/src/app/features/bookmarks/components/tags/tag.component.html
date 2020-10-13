@@ -1,7 +1,7 @@
 <div class="tag h-6 center-between group hover:text-green-700 cursor-pointer">
   <div data-test="tag-show-view" *ngIf="!isEditing" class="w-full">
     <div
-      class="p-2 center-between w-full edit-tag"
+      class="relative p-2 center-between w-full edit-tag"
       routerLinkActive="active"
       [routerLinkActiveOptions]="{ exact: true }"
     >
@@ -14,7 +14,7 @@
       <!-- TODO: convert to button tag mat-button? -->
       <div
         data-test="tag-edit-button"
-        class="action hidden group-hover:inline-block"
+        class="absolute right-0 action hidden leading-none group-hover:inline-block"
       >
         <mat-icon class="cursor-pointer" (click)="openEdit(tagEditInput)"
           >create</mat-icon
@@ -24,9 +24,9 @@
   </div>
 
   <div data-test="tag-edit-view" [hidden]="!isEditing" class="w-full">
-    <div class="p-2 bg-gray-200 center-between edit-tag">
+    <div class="bg-gray-200 center-between edit-tag">
       <input
-        class="bg-gray-200 flex-1 focus:outline-none"
+        class="p-2 bg-gray-200 flex-1 focus:outline-none"
         type="text"
         [formControl]="tagControl"
         name="tag"
