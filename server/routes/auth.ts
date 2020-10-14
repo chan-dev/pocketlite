@@ -39,7 +39,6 @@ router.get(
 
     res.cookie(config.jwt.cookieName, token, {
       httpOnly: true,
-      maxAge: config.jwt.accessTokenExpiry,
     });
 
     const refreshToken = req.user;
@@ -74,7 +73,6 @@ router.post('/refresh', (req: Request, res: Response, next: NextFunction) => {
 
     res.cookie(config.jwt.cookieName, token, {
       httpOnly: true,
-      maxAge: config.jwt.accessTokenExpiry,
     });
     res.status(200).json({
       token,
@@ -96,7 +94,6 @@ router.post('/logout', (req: Request, res: Response) => {
   // as when you set the cookie
   res.clearCookie(config.jwt.cookieName, {
     httpOnly: true,
-    maxAge: 0,
   });
   res.clearCookie(config.csurf.cookieName, {
     maxAge: 0,
