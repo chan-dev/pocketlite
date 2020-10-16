@@ -1,8 +1,8 @@
 import {
+  OnInit,
   Component,
   ContentChild,
   Input,
-  OnInit,
   TemplateRef,
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -16,6 +16,7 @@ import { RouteOrRedirectLinkContentDirective } from './route-or-redirect-content
   styles: [],
 })
 export class RouteOrRedirectComponent implements OnInit {
+  @Input() styleClass: string[];
   @Input() route = '/';
   @Input() ariaLabel: string;
   @Input() externalLinkTarget: string;

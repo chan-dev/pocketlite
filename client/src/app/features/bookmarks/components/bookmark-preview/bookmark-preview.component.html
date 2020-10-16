@@ -4,7 +4,7 @@
       <header>
         <h3>
           <app-router-or-redirect
-            class="block truncate text-left antialiased"
+            [styleClass]="['block', 'truncate', 'text-left', 'antialiased']"
             [bookmark]="bookmark"
             [redirect]="!bookmark.contentInMarkdown.length"
             [externalLink]="bookmark.url"
