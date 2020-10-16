@@ -70,4 +70,8 @@ export class BookmarkPreviewComponent implements OnInit {
   openTagsModal() {
     this.updateBookmarkTags.emit(this.bookmark);
   }
+
+  forImgPlaceholder(title: string) {
+    return title.slice(0, 1);
+  }
 }

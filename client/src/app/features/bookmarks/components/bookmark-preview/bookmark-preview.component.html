@@ -2,39 +2,47 @@
   <div class="border-b">
     <article class="max-w-xs">
       <header>
-        <h1>
-          <a
+        <h3>
+          <app-router-or-redirect
             class="block truncate text-left antialiased"
-            [attr.href]="bookmark.url"
+            [bookmark]="bookmark"
+            [redirect]="!bookmark.contentInMarkdown.length"
+            [externalLink]="bookmark.url"
+            externalLinkTarget="_blank"
+            [ariaLabel]="bookmark.title"
+            route="/bookmarks/reader/{{ bookmark.id }}"
           >
-            <div
-              *ngIf="bookmark.image"
-              class="md:h-48 overflow-hidden w-full h-64 rounded bg-cover bg-center"
-              aria-hidden="true"
-              [ngStyle]="{ 'background-image': 'url(' + bookmark.image + ')' }"
-            ></div>
-            <!-- TODO: convert to component -->
-            <div
-              *ngIf="!bookmark.image"
-              class="md:h-48 overflow-hidden w-full h-64 rounded object-fit object-center"
-              aria-hidden="true"
-            >
-              <app-text-img [text]="bookmark.title | slice: 0:1"></app-text-img>
+            <div *appLinkContent="let item">
+              <div
+                *ngIf="item.image"
+                class="md:h-48 overflow-hidden w-full h-64 rounded bg-cover bg-center"
+                aria-hidden="true"
+                [ngStyle]="{ 'background-image': 'url(' + item.image + ')' }"
+              ></div>
+              <div
+                *ngIf="!item.image"
+                class="md:h-48 overflow-hidden w-full h-64 rounded object-fit object-center"
+                aria-hidden="true"
+              >
+                <app-text-img
+                  [text]="forImgPlaceholder(item.title)"
+                ></app-text-img>
+              </div>
+              <span class="block truncate text-xl mt-2 font-semibold">
+                {{ item.title }}
+              </span>
             </div>
-
-            <span class="block truncate text-xl mt-2 font-semibold">
-              {{ bookmark.title }}
-            </span>
-          </a>
-        </h1>
+          </app-router-or-redirect>
+        </h3>
       </header>
 
       <a
         class="block mb-3 font-normal"
+        target="_blank"
         [attr.aria-label]="bookmark.domain"
         [attr.href]="bookmark.url"
       >
-        <cite class="not-italic text-gray-700 text-md">
+        <cite class="hover:text-blue-500 not-italic text-gray-700 text-md">
           {{ bookmark.domain }}
         </cite>
       </a>
