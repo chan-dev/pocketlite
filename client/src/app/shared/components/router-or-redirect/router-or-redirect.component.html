@@ -1,0 +1,17 @@
+<a [routerLink]="route" *ngIf="!redirect; else redirectLink">
+  <ng-container
+    *ngTemplateOutlet="linkContent; context: { $implicit: bookmark }"
+  ></ng-container>
+</a>
+
+<ng-template #redirectLink>
+  <a
+    [attr.href]="safeUrl"
+    [attr.target]="externalLinkTarget ? externalLinkTarget : null"
+    [attr.aria-label]="ariaLabel ? ariaLabel : null"
+  >
+    <ng-container
+      *ngTemplateOutlet="linkContent; context: { $implicit: bookmark }"
+    ></ng-container>
+  </a>
+</ng-template>
