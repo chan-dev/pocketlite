@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { MarkdownModule } from 'ngx-markdown';
 
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MaterialModule } from 'src/app/shared/material.module';
@@ -34,6 +35,9 @@ import { BookmarksByTagContainerComponent } from './containers/bookmarks-by-tag-
 import { TagSearchInputComponent } from './components/tag-search-input/tag-search-input.component';
 import { TagsModalComponent } from './components/tags-modal/tags-modal.component';
 import { TagsChipsComponent } from './components/tags-chips/tags-chips.component';
+import { BookmarkReaderViewBodyComponent } from './components/bookmark-reader-view-body/bookmark-reader-view-body.component';
+import { BookmarkReaderViewPageComponent } from './containers/bookmark-reader-view-page/bookmark-reader-view-page.component';
+import { BookmarkReaderViewHeaderComponent } from './components/bookmark-reader-view-header/bookmark-reader-view-header.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +60,9 @@ import { TagsChipsComponent } from './components/tags-chips/tags-chips.component
     TagSearchInputComponent,
     TagsModalComponent,
     TagsChipsComponent,
+    BookmarkReaderViewBodyComponent,
+    BookmarkReaderViewPageComponent,
+    BookmarkReaderViewHeaderComponent,
   ],
   imports: [
     CommonModule,
@@ -65,6 +72,7 @@ import { TagsChipsComponent } from './components/tags-chips/tags-chips.component
     SharedModule,
     MaterialModule,
     BookmarksRoutingModule,
+    MarkdownModule.forChild(),
     StoreModule.forFeature('bookmarks', reducers),
     EffectsModule.forFeature([BookmarkEffects, FavoriteEffects, TagEffects]),
   ],

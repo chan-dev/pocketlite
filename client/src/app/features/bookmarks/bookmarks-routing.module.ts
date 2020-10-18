@@ -7,6 +7,7 @@ import { BookmarkSearchResultsContainerComponent } from './containers/bookmark-s
 import { BookmarkArchivesContainerComponent } from './containers/bookmark-archives-container/bookmark-archives-container.component';
 import { BookmarkFavoritesContainerComponent } from './containers/bookmark-favorites-container/bookmark-favorites-container.component';
 import { BookmarksByTagContainerComponent } from './containers/bookmarks-by-tag-container/bookmarks-by-tag-container.component';
+import { BookmarkReaderViewPageComponent } from './containers/bookmark-reader-view-page/bookmark-reader-view-page.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,10 @@ const routes: Routes = [
         component: BookmarksByTagContainerComponent,
       },
     ],
+  },
+  {
+    path: 'reader/:id',
+    component: BookmarkReaderViewPageComponent,
   },
 ];
 

@@ -19,6 +19,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { localStorageSync } from 'ngrx-store-localstorage';
 import { ToastrModule } from 'ngx-toastr';
+import { MarkdownModule } from 'ngx-markdown';
 
 import { AuthModule } from './auth/auth.module';
 import { ConfirmDialogModule } from '@app/shared/confirm-dialog/confirm-dialog.module';
@@ -51,6 +52,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     RouterModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MarkdownModule.forRoot(),
     // intercepts XSRF-TOKEN value and sends back a custom header
     // named X-XSRF-TOKEN on every unsafe HTTP request
     HttpClientXsrfModule.withOptions({
