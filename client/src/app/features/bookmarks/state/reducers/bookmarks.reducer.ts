@@ -6,6 +6,7 @@ import * as bookmarkActions from '../actions/bookmarks.actions';
 
 export interface State extends EntityState<Bookmark> {
   loading: boolean;
+  loaded: boolean;
   error: string | null;
 }
 
@@ -21,6 +22,7 @@ export const adapter: EntityAdapter<Bookmark> = createEntityAdapter<Bookmark>({
 });
 export const initialState: State = adapter.getInitialState({
   loading: false,
+  loaded: false,
   error: null,
 });
 
