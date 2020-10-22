@@ -19,6 +19,10 @@ const routes: Routes = [
     canLoad: [AuthGuard],
   },
   {
+    path: 'not-found',
+    component: NotFoundComponent,
+  },
+  {
     path: '**',
     component: NotFoundComponent,
   },
