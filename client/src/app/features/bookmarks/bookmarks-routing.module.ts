@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { BookmarkMustExistGuard } from './guards/bookmark-must-exist.guard';
 import { BookmarksPageComponent } from './containers/bookmarks-page/bookmarks-page.component';
 import { BookmarksCurrentListContainerComponent } from './containers/bookmarks-current-list-container-container/bookmarks-current-list-container.component';
 import { BookmarkSearchResultsContainerComponent } from './containers/bookmark-search-results-container/bookmark-search-results-container.component';
@@ -42,6 +43,7 @@ const routes: Routes = [
   {
     path: 'reader/:id',
     component: BookmarkReaderViewPageComponent,
+    canActivate: [BookmarkMustExistGuard],
   },
 ];
 
