@@ -65,8 +65,15 @@ export const selectBookmarksLoading = createSelector(
   selectBookmarksState,
   state => state.loading
 );
+export const selectBookmarksLoaded = createSelector(
+  selectBookmarksState,
+  state => state.loaded
+);
 
 export const selectBookmarksError = createSelector(
   selectBookmarksState,
   state => state.error
 );
+
+export const selectCurrentBookmark = (id: string) =>
+  createSelector(selectBookmarksEntities, entities => entities[id]);

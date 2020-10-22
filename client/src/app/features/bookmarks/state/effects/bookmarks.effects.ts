@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { createEffect, ofType, Actions } from '@ngrx/effects';
-import { of } from 'rxjs';
+import { of, iif } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
 import {
@@ -512,6 +512,45 @@ export class BookmarkEffects {
               )
             )
           );
+      })
+    );
+  });
+
+  selectOrLoadBookmark$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(bookmarkActions.selectOrLoadBookmark),
+      switchMap(({ id }) => {
+        return of(id).pipe(
+          withLatestFrom(
+            this.store.select(bookmarksSelectors.selectCurrentBookmark(id))
+          )
+        );
+      }),
+      switchMap(([id, bookmarkInStore]) => {
+        const bookmarkFromApi$ = this.bookmarksService.getBookmark(id).pipe(
+          map(({ bookmark }) => {
+            return bookmarkActions.loadBookmarkFromApiSuccess({
+              bookmark,
+            });
+          }),
+          catchError(error =>
+            of(
+              bookmarkActions.loadBookmarkFromApiFailure({
+                error: error?.error?.message,
+              })
+            )
+          )
+        );
+
+        const bookmarkFromStore = bookmarkActions.selectBookmarkInStoreSuccess({
+          bookmark: bookmarkInStore,
+        });
+
+        return iif(
+          () => !!bookmarkInStore,
+          of(bookmarkFromStore),
+          bookmarkFromApi$
+        );
       })
     );
   });

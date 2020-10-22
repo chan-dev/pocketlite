@@ -160,3 +160,24 @@ export const updateBookmarkTagsFailure = createAction(
 );
 
 export const noOpAction = createAction('[BookmarkEffects] No Op Action');
+
+export const selectOrLoadBookmark = createAction(
+  '[BookmarkMustExistGuard] Select Or Load Bookmark',
+  props<{ id: string }>()
+);
+
+export const selectBookmarkInStoreSuccess = createAction(
+  '[BookmarkEffects] Select Bookmark In Store Success',
+  props<{ bookmark: Bookmark }>()
+);
+export const loadBookmarkFromApi = createAction(
+  '[BookmarkEffects] Load Bookmark From Api'
+);
+export const loadBookmarkFromApiSuccess = createAction(
+  '[BookmarkEffects] Load Bookmark From Api Success',
+  props<{ bookmark: Bookmark }>()
+);
+export const loadBookmarkFromApiFailure = createAction(
+  '[BookmarkEffects] Load Bookmark From Api Failure',
+  props<{ error: string }>()
+);

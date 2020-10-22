@@ -247,6 +247,36 @@ const bookmarksReducer = createReducer(
       loading: false,
       error,
     };
+  }),
+  on(bookmarkActions.loadBookmarkFromApi, state => {
+    return {
+      ...state,
+      loading: true,
+      error: null,
+    };
+  }),
+  on(bookmarkActions.loadBookmarkFromApiSuccess, (state, { bookmark }) => {
+    return adapter.upsertOne(bookmark, {
+      ...state,
+      loading: false,
+      loaded: true,
+    });
+  }),
+  on(bookmarkActions.loadBookmarkFromApiFailure, (state, { error }) => {
+    return {
+      ...state,
+      loading: false,
+      loaded: false,
+      error,
+    };
+  }),
+  on(bookmarkActions.selectBookmarkInStoreSuccess, (state, { bookmark }) => {
+    return {
+      ...state,
+      loading: false,
+      loaded: true,
+      error: null,
+    };
   })
 );
 
