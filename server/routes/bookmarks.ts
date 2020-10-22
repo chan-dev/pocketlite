@@ -383,6 +383,29 @@ router.put(
   }
 );
 
+router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+
+  try {
+    const isValid = mongoose.isValidObjectId(id);
+
+    if (!isValid) {
+      return next(ApiError.resourceNotFound('Bookmark not found'));
+    }
+
+    const bookmark = await Bookmark.findById(id).exec();
+
+    if (!bookmark) {
+      return next(ApiError.resourceNotFound('Bookmark not found'));
+    }
+
+    return res.json({ bookmark });
+  } catch (err) {
+    console.log({ err });
+    next(ApiError.internalServerError('Fetching Bookmark failed unexpectedly'));
+  }
+});
+
 // TODO: this is just for testing
 router.get(
   '/test-collect',
