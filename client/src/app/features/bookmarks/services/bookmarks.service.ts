@@ -99,4 +99,8 @@ export class BookmarksService {
       }
     );
   }
+
+  getBookmark(id: string) {
+    return this.http.get<{ bookmark: Bookmark }>(`/api/bookmarks/${id}`);
+  }
 }
