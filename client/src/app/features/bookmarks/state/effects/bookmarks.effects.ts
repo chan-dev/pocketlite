@@ -175,19 +175,31 @@ export class BookmarkEffects {
 
   archiveBookmark$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(bookmarkActions.archiveBookmark),
-      exhaustMap(({ id }) =>
-        this.bookmarksService.archiveBookmark(id).pipe(
+      ofType(
+        bookmarkActions.archiveBookmark,
+        bookmarkActions.archiveBookmarkInReaderPage
+      ),
+      exhaustMap(action =>
+        this.bookmarksService.archiveBookmark(action.id).pipe(
           map(bookmark => {
             const updatedBookmark: Update<Bookmark> = {
-              id,
+              id: action.id,
               changes: {
                 deleted: true,
               },
             };
-            return bookmarkActions.archiveBookmarkSuccess({
-              bookmark: updatedBookmark,
-            });
+
+            if (
+              action.type === bookmarkActions.archiveBookmarkInReaderPage.type
+            ) {
+              return bookmarkActions.archiveBookmarkSuccessInReaderPage({
+                bookmark: updatedBookmark,
+              });
+            } else {
+              return bookmarkActions.archiveBookmarkSuccess({
+                bookmark: updatedBookmark,
+              });
+            }
           }),
           catchError(error =>
             of(
@@ -207,6 +219,18 @@ export class BookmarkEffects {
         ofType(bookmarkActions.archiveBookmarkSuccess),
         tap(_ => {
           this.toastr.success('Bookmark has been archived');
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  archiveBookmarkSuccessInReaderPage$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(bookmarkActions.archiveBookmarkSuccessInReaderPage),
+        tap(_ => {
+          this.router.navigate(['/bookmarks']);
         })
       );
     },

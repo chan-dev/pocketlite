@@ -110,4 +110,8 @@ export class BookmarkReaderViewPageComponent implements OnInit {
       bookmarkActions.openTagsModalInReaderPage({ bookmark })
     );
   }
+
+  archiveBookmark(id: string) {
+    this.store.dispatch(bookmarkActions.archiveBookmarkInReaderPage({ id }));
+  }
 }

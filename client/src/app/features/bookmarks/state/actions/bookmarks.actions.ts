@@ -72,6 +72,14 @@ export const archiveBookmark = createAction(
   '[BookmarkPreviewsContainerComponent] Archive Bookmark',
   props<{ id: string }>()
 );
+export const archiveBookmarkInReaderPage = createAction(
+  '[BookmarkReaderViewPageComponent] Archive Bookmark In Reader Page',
+  props<{ id: string }>()
+);
+export const archiveBookmarkSuccessInReaderPage = createAction(
+  '[Bookmarks API] Archive Bookmark Success In Reader Page',
+  props<{ bookmark: Update<Bookmark> }>()
+);
 export const archiveBookmarkSuccess = createAction(
   '[Bookmarks API] Archive Bookmark Success',
   props<{ bookmark: Update<Bookmark> }>()
