@@ -18,6 +18,7 @@ import { BookmarkFavorite } from '@models/bookmark-favorite.model';
 })
 export class BookmarkReaderViewHeaderComponent implements OnInit {
   @Output() archive = new EventEmitter<string>();
+  @Output() delete = new EventEmitter<string>();
   @Output() restore = new EventEmitter<string>();
   @Output() updateBookmarkTags = new EventEmitter<Bookmark>();
   @Output() toggleFavorite = new EventEmitter<{
@@ -44,6 +45,10 @@ export class BookmarkReaderViewHeaderComponent implements OnInit {
 
   archiveBookmark() {
     this.archive.emit(this.bookmark.id);
+  }
+
+  deleteBookmark() {
+    this.delete.emit(this.bookmark.id);
   }
 
   restoreBookmark() {

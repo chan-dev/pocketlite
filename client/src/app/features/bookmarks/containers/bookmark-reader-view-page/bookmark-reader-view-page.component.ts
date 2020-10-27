@@ -115,6 +115,10 @@ export class BookmarkReaderViewPageComponent implements OnInit {
     this.store.dispatch(bookmarkActions.archiveBookmarkInReaderPage({ id }));
   }
 
+  deleteBookmark(id: string) {
+    this.store.dispatch(bookmarkActions.deleteBookmarkInReaderPage({ id }));
+  }
+
   restoreBookmark(id: string) {
     this.store.dispatch(bookmarkActions.restoreBookmarkInReaderPage({ id }));
   }

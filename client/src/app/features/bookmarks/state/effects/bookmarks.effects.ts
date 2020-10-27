@@ -109,8 +109,11 @@ export class BookmarkEffects {
 
   deleteBookmark$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(bookmarkActions.deleteBookmark),
-      exhaustMap(({ id }) => {
+      ofType(
+        bookmarkActions.deleteBookmark,
+        bookmarkActions.deleteBookmarkInReaderPage
+      ),
+      exhaustMap(action => {
         this.confirmDialogService.open({
           title: 'Confirm Delete',
           message: 'Are you sure you want to delete?',
@@ -120,9 +123,12 @@ export class BookmarkEffects {
 
         return this.confirmDialogService.confirmed().pipe(
           map(confirm => {
-            return confirm
-              ? bookmarkActions.deleteConfirm({ id })
-              : bookmarkActions.deleteCancel();
+            const confirmAction =
+              action.type === bookmarkActions.deleteBookmarkInReaderPage.type
+                ? bookmarkActions.deleteConfirmInReaderPage({ id: action.id })
+                : bookmarkActions.deleteConfirm({ id: action.id });
+
+            return confirm ? confirmAction : bookmarkActions.deleteCancel();
           })
         );
       })
@@ -131,12 +137,21 @@ export class BookmarkEffects {
 
   deleteConfirm$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(bookmarkActions.deleteConfirm),
-      exhaustMap(({ id }) =>
-        this.bookmarksService.deleteBookmark(id).pipe(
-          map(bookmarkId =>
-            bookmarkActions.deleteBookmarkSuccess({ id: bookmarkId })
-          ),
+      ofType(
+        bookmarkActions.deleteConfirm,
+        bookmarkActions.deleteConfirmInReaderPage
+      ),
+      exhaustMap(action =>
+        this.bookmarksService.deleteBookmark(action.id).pipe(
+          map(bookmarkId => {
+            const successAction =
+              action.type === bookmarkActions.deleteConfirmInReaderPage.type
+                ? bookmarkActions.deleteBookmarkSuccessInReaderPage({
+                    id: bookmarkId,
+                  })
+                : bookmarkActions.deleteBookmarkSuccess({ id: bookmarkId });
+            return successAction;
+          }),
           catchError(error =>
             of(
               bookmarkActions.deleteBookmarkFailure({
@@ -155,6 +170,18 @@ export class BookmarkEffects {
         ofType(bookmarkActions.deleteBookmarkSuccess),
         tap(_ => {
           this.toastr.success('Bookmark has been deleted');
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  deleteBookmarkSuccessInReaderPage$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(bookmarkActions.deleteBookmarkSuccessInReaderPage),
+        tap(_ => {
+          this.router.navigate(['/bookmarks']);
         })
       );
     },

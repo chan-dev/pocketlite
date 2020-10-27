@@ -77,13 +77,17 @@ const bookmarksReducer = createReducer(
       error: null,
     };
   }),
-  on(bookmarkActions.deleteBookmarkSuccess, (state, { id }) => {
-    return adapter.removeOne(id, {
-      ...state,
-      loading: false,
-      error: null,
-    });
-  }),
+  on(
+    bookmarkActions.deleteBookmarkSuccess,
+    bookmarkActions.deleteBookmarkSuccessInReaderPage,
+    (state, { id }) => {
+      return adapter.removeOne(id, {
+        ...state,
+        loading: false,
+        error: null,
+      });
+    }
+  ),
   on(bookmarkActions.deleteBookmarkFailure, (state, { error }) => {
     return {
       ...state,

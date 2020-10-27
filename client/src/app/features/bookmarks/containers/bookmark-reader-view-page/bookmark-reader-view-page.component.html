@@ -10,6 +10,7 @@
     [bookmarkFavorite]="bookmarkFavorite$ | async"
     (toggleFavorite)="toggleFavoriteBookmark($event)"
     (archive)="archiveBookmark($event)"
+    (delete)="deleteBookmark($event)"
     (restore)="restoreBookmark($event)"
     (updateBookmarkTags)="updateBookmarkTags($event)"
   ></app-bookmark-reader-view-header>

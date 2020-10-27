@@ -32,8 +32,16 @@ export const deleteBookmark = createAction(
   '[BookmarkPreviewsContainerComponent] Delete Bookmark',
   props<{ id: string }>()
 );
+export const deleteBookmarkInReaderPage = createAction(
+  '[BookmarkReaderViewPageComponent] Delete Bookmark In Reader Page',
+  props<{ id: string }>()
+);
 export const deleteConfirm = createAction(
   '[ConfirmDialogComponent] Delete Confirm',
+  props<{ id: string }>()
+);
+export const deleteConfirmInReaderPage = createAction(
+  '[ConfirmDialogComponent] Delete Confirm in Reader Page',
   props<{ id: string }>()
 );
 export const deleteCancel = createAction(
@@ -41,6 +49,10 @@ export const deleteCancel = createAction(
 );
 export const deleteBookmarkSuccess = createAction(
   '[Bookmarks API] Delete Bookmark Success',
+  props<{ id: string }>()
+);
+export const deleteBookmarkSuccessInReaderPage = createAction(
+  '[Bookmarks API] Delete Bookmark Success In Reader Page',
   props<{ id: string }>()
 );
 export const deleteBookmarkFailure = createAction(
