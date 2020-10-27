@@ -14,6 +14,7 @@ import { BookmarkFavorite } from '@models/bookmark-favorite.model';
 import * as appSelectors from '@app/core/core.state';
 import * as bookmarkSelectors from '@app/features/bookmarks/state/selectors/bookmarks.selectors';
 import * as favoritesSelectors from '@app/features/bookmarks/state/selectors/favorites.selectors';
+import * as tagsSelectors from '@app/features/bookmarks/state/selectors/tags.selectors';
 import * as favoritesActions from '@app/features/bookmarks/state/actions/favorites.actions';
 import * as bookmarkActions from '@app/features/bookmarks/state/actions/bookmarks.actions';
 
@@ -54,16 +55,15 @@ export class BookmarkReaderViewPageComponent implements OnInit {
       })
     );
 
-    this.bookmarkTags$ = routerParam$.pipe(
-      concatMap(params => {
-        return of(params).pipe(
-          withLatestFrom(
-            this.store.pipe(
-              select(bookmarkSelectors.selectBookmarkTags(params.id))
-            ),
-            (_, tags) => tags
-          )
-        );
+    this.bookmarkTags$ = combineLatest([
+      routerParam$,
+      this.store.pipe(select(bookmarkSelectors.selectBookmarksEntities)),
+      this.store.pipe(select(tagsSelectors.selectTags)),
+    ]).pipe(
+      map(([params, entities, tags]) => {
+        const { id } = params;
+        const bookmark = entities[id];
+        return tags.filter(tag => bookmark.tags.includes(tag.id));
       })
     );
 
