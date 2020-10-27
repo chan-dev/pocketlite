@@ -5,13 +5,16 @@ import {
   HostListener,
 } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable, of, Subject } from 'rxjs';
-import { concatMap, shareReplay, withLatestFrom } from 'rxjs/operators';
+import { combineLatest, Observable, of, Subject } from 'rxjs';
+import { concatMap, map, shareReplay, withLatestFrom } from 'rxjs/operators';
 
 import { Bookmark } from '@models/bookmark.model';
 import { Tag } from '@models/tag.model';
+import { BookmarkFavorite } from '@models/bookmark-favorite.model';
 import * as appSelectors from '@app/core/core.state';
 import * as bookmarkSelectors from '@app/features/bookmarks/state/selectors/bookmarks.selectors';
+import * as favoritesSelectors from '@app/features/bookmarks/state/selectors/favorites.selectors';
+import * as favoritesActions from '@app/features/bookmarks/state/actions/favorites.actions';
 
 @Component({
   selector: 'app-bookmark-reader-view-page',
@@ -24,7 +27,7 @@ export class BookmarkReaderViewPageComponent implements OnInit {
 
   bookmark$: Observable<Bookmark>;
   bookmarkTags$: Observable<Tag[]>;
-  isFavorited$: Observable<boolean>;
+  bookmarkFavorite$: Observable<BookmarkFavorite>;
 
   relativeScrollPosition$ = this.relativeScrollSubject.asObservable();
 
@@ -63,16 +66,12 @@ export class BookmarkReaderViewPageComponent implements OnInit {
       })
     );
 
-    this.isFavorited$ = routerParam$.pipe(
-      concatMap(params => {
-        return of(params).pipe(
-          withLatestFrom(
-            this.store.pipe(
-              select(bookmarkSelectors.selectIfBookmarkFavorited(params.id))
-            ),
-            (_, isFavorited) => isFavorited
-          )
-        );
+    this.bookmarkFavorite$ = combineLatest([
+      routerParam$,
+      this.store.pipe(select(favoritesSelectors.selectFavorites)),
+    ]).pipe(
+      map(([params, favorites]) => {
+        return favorites.find(favorite => favorite.bookmark_id === params.id);
       })
     );
   }
@@ -83,5 +82,23 @@ export class BookmarkReaderViewPageComponent implements OnInit {
     const unscrolledArea = scrollHeight - clientHeight;
     const relativeScrollPosition = (scrollTop / unscrolledArea) * 100;
     this.relativeScrollSubject.next(relativeScrollPosition);
+  }
+
+  toggleFavoriteBookmark({
+    bookmark,
+    favorited,
+  }: {
+    bookmark: Bookmark;
+    favorited: BookmarkFavorite;
+  }) {
+    if (favorited) {
+      this.store.dispatch(
+        favoritesActions.unfavoriteBookmark({
+          favorite: favorited,
+        })
+      );
+    } else {
+      this.store.dispatch(favoritesActions.favoriteBookmark({ bookmark }));
+    }
   }
 }

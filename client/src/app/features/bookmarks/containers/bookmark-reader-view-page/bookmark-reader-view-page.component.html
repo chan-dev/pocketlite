@@ -5,7 +5,11 @@
       [value]="relativeScrollPosition"
     ></mat-progress-bar>
   </div>
-  <app-bookmark-reader-view-header></app-bookmark-reader-view-header>
+  <app-bookmark-reader-view-header
+    [bookmark]="bookmark$ | async"
+    [bookmarkFavorite]="bookmarkFavorite$ | async"
+    (toggleFavorite)="toggleFavoriteBookmark($event)"
+  ></app-bookmark-reader-view-header>
 </div>
 <app-bookmark-reader-view-body
   [bookmark]="bookmark$ | async"

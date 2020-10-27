@@ -6,11 +6,13 @@
     <ul class="flex-1 flex justify-center items-center space-x-4 mx-3">
       <li>
         <button
+          (click)="toggleFavoriteBookmark()"
           type="button"
           aria-label="Favorite"
           matTooltipPosition="below"
           matTooltip="Favorite"
           class="leading-none"
+          [ngClass]="{ 'text-yellow-400': !!bookmarkFavorite }"
         >
           <mat-icon class="w-full h-full text-4xl">star</mat-icon>
         </button>

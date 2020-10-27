@@ -77,8 +77,3 @@ export const selectBookmarksError = createSelector(
 
 export const selectCurrentBookmark = (id: string) =>
   createSelector(selectBookmarksEntities, entities => entities[id]);
-export const selectIfBookmarkFavorited = (id: string) =>
-  createSelector(
-    selectFavoritedBookmarks,
-    bookmarks => !!bookmarks.find(bookmark => bookmark.id === id)
-  );

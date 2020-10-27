@@ -1,16 +1,41 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
+
+import { Bookmark } from '@models/bookmark.model';
+import { BookmarkFavorite } from '@models/bookmark-favorite.model';
 
 @Component({
   selector: 'app-bookmark-reader-view-header',
   templateUrl: './bookmark-reader-view-header.component.html',
   styles: [],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookmarkReaderViewHeaderComponent implements OnInit {
+  @Output() toggleFavorite = new EventEmitter<{
+    bookmark: Bookmark;
+    favorited: BookmarkFavorite;
+  }>();
+  @Input() bookmarkFavorite: BookmarkFavorite;
+  @Input() bookmark: Bookmark;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  toggleFavoriteBookmark() {
+    this.toggleFavorite.emit({
+      bookmark: this.bookmark,
+      favorited: this.bookmarkFavorite,
+    });
   }
 
+  isFavorited() {
+    return !!this.bookmarkFavorite;
+  }
 }
