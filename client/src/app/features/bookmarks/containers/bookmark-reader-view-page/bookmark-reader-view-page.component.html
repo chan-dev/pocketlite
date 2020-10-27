@@ -9,6 +9,7 @@
     [bookmark]="bookmark$ | async"
     [bookmarkFavorite]="bookmarkFavorite$ | async"
     (toggleFavorite)="toggleFavoriteBookmark($event)"
+    (updateBookmarkTags)="updateBookmarkTags($event)"
   ></app-bookmark-reader-view-header>
 </div>
 <app-bookmark-reader-view-body

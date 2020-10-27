@@ -447,7 +447,10 @@ export class BookmarkEffects {
 
   openTagsModal$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(bookmarkActions.openTagsModal),
+      ofType(
+        bookmarkActions.openTagsModal,
+        bookmarkActions.openTagsModalInReaderPage
+      ),
       switchMap(({ bookmark }) => {
         return of(bookmark).pipe(
           withLatestFrom(

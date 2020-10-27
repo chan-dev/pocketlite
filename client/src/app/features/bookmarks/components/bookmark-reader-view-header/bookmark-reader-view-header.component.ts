@@ -17,6 +17,7 @@ import { BookmarkFavorite } from '@models/bookmark-favorite.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookmarkReaderViewHeaderComponent implements OnInit {
+  @Output() updateBookmarkTags = new EventEmitter<Bookmark>();
   @Output() toggleFavorite = new EventEmitter<{
     bookmark: Bookmark;
     favorited: BookmarkFavorite;
@@ -33,6 +34,10 @@ export class BookmarkReaderViewHeaderComponent implements OnInit {
       bookmark: this.bookmark,
       favorited: this.bookmarkFavorite,
     });
+  }
+
+  openTagsModal() {
+    this.updateBookmarkTags.emit(this.bookmark);
   }
 
   isFavorited() {

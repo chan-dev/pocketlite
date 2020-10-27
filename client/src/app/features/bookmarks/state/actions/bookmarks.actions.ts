@@ -141,6 +141,10 @@ export const openTagsModal = createAction(
   '[BookmarksCollectionContainerComponent ] Open Tags Modal',
   props<{ bookmark: Bookmark }>()
 );
+export const openTagsModalInReaderPage = createAction(
+  '[BookmarkReaderViewPageComponent] Open Tags Modal in Reader Page',
+  props<{ bookmark: Bookmark }>()
+);
 export const closeTagsModal = createAction(
   '[BookmarkEffects] Close Tags Modal'
 );

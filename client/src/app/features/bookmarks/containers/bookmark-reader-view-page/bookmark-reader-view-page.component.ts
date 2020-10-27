@@ -15,6 +15,7 @@ import * as appSelectors from '@app/core/core.state';
 import * as bookmarkSelectors from '@app/features/bookmarks/state/selectors/bookmarks.selectors';
 import * as favoritesSelectors from '@app/features/bookmarks/state/selectors/favorites.selectors';
 import * as favoritesActions from '@app/features/bookmarks/state/actions/favorites.actions';
+import * as bookmarkActions from '@app/features/bookmarks/state/actions/bookmarks.actions';
 
 @Component({
   selector: 'app-bookmark-reader-view-page',
@@ -102,5 +103,11 @@ export class BookmarkReaderViewPageComponent implements OnInit {
         favoritesActions.favoriteBookmarkInReaderPage({ bookmark })
       );
     }
+  }
+
+  updateBookmarkTags(bookmark: Bookmark) {
+    this.store.dispatch(
+      bookmarkActions.openTagsModalInReaderPage({ bookmark })
+    );
   }
 }
