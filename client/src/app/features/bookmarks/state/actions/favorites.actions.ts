@@ -20,6 +20,10 @@ export const favoriteBookmark = createAction(
   '[BookmarksCollectionContainerComponent] Favorite Bookmark',
   props<{ bookmark: Bookmark }>()
 );
+export const favoriteBookmarkInReaderPage = createAction(
+  '[BookmarkReaderViewPageComponent] Favorite Bookmark In Reader Page',
+  props<{ bookmark: Bookmark }>()
+);
 export const favoriteBookmarkSuccess = createAction(
   '[Bookmarks API] Favorite Bookmark Success',
   props<{ favorite: Update<BookmarkFavorite> }>()
@@ -31,6 +35,10 @@ export const favoriteBookmarkFailure = createAction(
 
 export const unfavoriteBookmark = createAction(
   '[BookmarksCollectionContainerComponent] UnFavorite Bookmark',
+  props<{ favorite: BookmarkFavorite }>()
+);
+export const unfavoriteBookmarkInReaderPage = createAction(
+  '[BookmarkReaderViewPageComponent] UnFavorite Bookmark In Reader Page',
   props<{ favorite: BookmarkFavorite }>()
 );
 export const unfavoriteBookmarkSuccess = createAction(

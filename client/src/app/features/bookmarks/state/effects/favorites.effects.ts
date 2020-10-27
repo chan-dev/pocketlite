@@ -46,7 +46,10 @@ export class FavoriteEffects {
 
   favoriteBookmark$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(favoriteActions.favoriteBookmark),
+      ofType(
+        favoriteActions.favoriteBookmark,
+        favoriteActions.favoriteBookmarkInReaderPage
+      ),
       mergeMap(({ bookmark }) =>
         this.bookmarksService.favoriteBookmark(bookmark.id).pipe(
           map(favorite => {
@@ -89,7 +92,10 @@ export class FavoriteEffects {
 
   unfavoriteBookmark$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(favoriteActions.unfavoriteBookmark),
+      ofType(
+        favoriteActions.unfavoriteBookmark,
+        favoriteActions.unfavoriteBookmarkInReaderPage
+      ),
       mergeMap(({ favorite }) =>
         this.bookmarksService.unfavoriteBookmark(favorite.id).pipe(
           map(_ => favoriteActions.unfavoriteBookmarkSuccess()),

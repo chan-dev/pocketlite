@@ -79,21 +79,25 @@ const favoritesReducer = createReducer(
     };
   }),
   // It's important to use switchMap here
-  on(bookmarkFavoriteActions.favoriteBookmark, (state, { bookmark }) => {
-    // optimistic save
-    // update the state immediately
-    const favorite: BookmarkFavorite = {
-      id: '', // update this on favoriteSuccess action
-      user_id: bookmark.user_id,
-      bookmark_id: bookmark.id,
-    };
+  on(
+    bookmarkFavoriteActions.favoriteBookmark,
+    bookmarkFavoriteActions.favoriteBookmarkInReaderPage,
+    (state, { bookmark }) => {
+      // optimistic save
+      // update the state immediately
+      const favorite: BookmarkFavorite = {
+        id: '', // update this on favoriteSuccess action
+        user_id: bookmark.user_id,
+        bookmark_id: bookmark.id,
+      };
 
-    return adapter.addOne(favorite, {
-      ...state,
-      loading: true,
-      error: null,
-    });
-  }),
+      return adapter.addOne(favorite, {
+        ...state,
+        loading: true,
+        error: null,
+      });
+    }
+  ),
   on(bookmarkFavoriteActions.favoriteBookmarkSuccess, (state, { favorite }) => {
     /**
      * override the model we added on favoriteBookmark action with
@@ -118,18 +122,22 @@ const favoritesReducer = createReducer(
       });
     }
   ),
-  on(bookmarkFavoriteActions.unfavoriteBookmark, (state, { favorite }) => {
-    // optimistic delete
-    // update the state immediately
-    const favoriteId = generateFavoriteIdForAdapter(favorite);
+  on(
+    bookmarkFavoriteActions.unfavoriteBookmark,
+    bookmarkFavoriteActions.unfavoriteBookmarkInReaderPage,
+    (state, { favorite }) => {
+      // optimistic delete
+      // update the state immediately
+      const favoriteId = generateFavoriteIdForAdapter(favorite);
 
-    // remove the one we add on favoriteBookmark action
-    return adapter.removeOne(favoriteId, {
-      ...state,
-      loading: true,
-      error: null,
-    });
-  }),
+      // remove the one we add on favoriteBookmark action
+      return adapter.removeOne(favoriteId, {
+        ...state,
+        loading: true,
+        error: null,
+      });
+    }
+  ),
   on(bookmarkFavoriteActions.unfavoriteBookmarkSuccess, state => {
     return {
       ...state,

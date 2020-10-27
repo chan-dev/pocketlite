@@ -93,12 +93,14 @@ export class BookmarkReaderViewPageComponent implements OnInit {
   }) {
     if (favorited) {
       this.store.dispatch(
-        favoritesActions.unfavoriteBookmark({
+        favoritesActions.unfavoriteBookmarkInReaderPage({
           favorite: favorited,
         })
       );
     } else {
-      this.store.dispatch(favoritesActions.favoriteBookmark({ bookmark }));
+      this.store.dispatch(
+        favoritesActions.favoriteBookmarkInReaderPage({ bookmark })
+      );
     }
   }
 }
