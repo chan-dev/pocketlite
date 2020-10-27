@@ -251,19 +251,31 @@ export class BookmarkEffects {
 
   restoreBookmark$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(bookmarkActions.restoreBookmark),
-      exhaustMap(({ id }) =>
-        this.bookmarksService.restoreBookmark(id).pipe(
+      ofType(
+        bookmarkActions.restoreBookmark,
+        bookmarkActions.restoreBookmarkInReaderPage
+      ),
+      exhaustMap(action =>
+        this.bookmarksService.restoreBookmark(action.id).pipe(
           map(bookmark => {
             const updatedBookmark: Update<Bookmark> = {
-              id,
+              id: action.id,
               changes: {
                 deleted: false,
               },
             };
-            return bookmarkActions.restoreBookmarkSuccess({
-              bookmark: updatedBookmark,
-            });
+
+            if (
+              action.type === bookmarkActions.restoreBookmarkInReaderPage.type
+            ) {
+              return bookmarkActions.restoreBookmarkSuccessInReaderPage({
+                bookmark: updatedBookmark,
+              });
+            } else {
+              return bookmarkActions.restoreBookmarkSuccess({
+                bookmark: updatedBookmark,
+              });
+            }
           }),
           catchError(error =>
             of(
@@ -283,6 +295,18 @@ export class BookmarkEffects {
         ofType(bookmarkActions.restoreBookmarkSuccess),
         tap(_ => {
           this.toastr.success('Bookmark has been restored');
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  restoreBookmarkSuccessInReaderPage$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(bookmarkActions.restoreBookmarkSuccessInReaderPage),
+        tap(_ => {
+          this.router.navigate(['/bookmarks']);
         })
       );
     },

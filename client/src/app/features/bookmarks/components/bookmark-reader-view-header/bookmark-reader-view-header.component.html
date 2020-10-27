@@ -31,6 +31,7 @@
       </li>
       <li>
         <button
+          *ngIf="!bookmark.deleted"
           (click)="archiveBookmark()"
           type="button"
           aria-label="Archive"
@@ -39,6 +40,17 @@
           class="leading-none"
         >
           <mat-icon class="w-full h-full text-4xl">archive</mat-icon>
+        </button>
+        <button
+          *ngIf="bookmark.deleted"
+          (click)="restoreBookmark()"
+          type="button"
+          aria-label="Restore Bookmark"
+          matTooltipPosition="below"
+          matTooltip="Re-add"
+          class="leading-none"
+        >
+          <mat-icon class="w-full h-full text-4xl">add</mat-icon>
         </button>
       </li>
       <li>

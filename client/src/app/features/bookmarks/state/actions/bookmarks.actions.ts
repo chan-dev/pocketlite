@@ -92,8 +92,16 @@ export const restoreBookmark = createAction(
   '[BookmarkPreviewsContainerComponent] Restore Bookmark',
   props<{ id: string }>()
 );
+export const restoreBookmarkInReaderPage = createAction(
+  '[BookmarkReaderViewPageComponent] Restore Bookmark In Reader Page',
+  props<{ id: string }>()
+);
 export const restoreBookmarkSuccess = createAction(
   '[Bookmarks API] Restore Bookmark Success',
+  props<{ bookmark: Update<Bookmark> }>()
+);
+export const restoreBookmarkSuccessInReaderPage = createAction(
+  '[BookmarkReaderViewPageComponent] Restore Bookmark Success In Reader Page',
   props<{ bookmark: Update<Bookmark> }>()
 );
 export const restoreBookmarkFailure = createAction(
