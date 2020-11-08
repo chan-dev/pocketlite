@@ -16,7 +16,7 @@
     </ng-container>
     <ng-template #noItems>
       <div class="w-full my-12 text-xl text-center">
-        <p>No items on your Reading List</p>
+        <ng-container *ngTemplateOutlet="emptyMessage"></ng-container>
       </div>
     </ng-template>
   </ng-container>

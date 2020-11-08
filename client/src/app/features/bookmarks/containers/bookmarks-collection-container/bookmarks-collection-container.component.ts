@@ -3,11 +3,14 @@ import {
   OnInit,
   ChangeDetectionStrategy,
   Input,
+  ContentChild,
+  TemplateRef,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { Bookmark } from '@models/bookmark.model';
 import { BookmarkFavorite } from '@models/bookmark-favorite.model';
+import { BookmarksCollectionEmptyMessageDirective } from '@app/features/bookmarks/shared/directives/bookmarks-collection-empty-message.directive';
 import * as bookmarksActions from '@app/features/bookmarks/state/actions/bookmarks.actions';
 import * as favoritesActions from '@app/features/bookmarks/state/actions/favorites.actions';
 
@@ -20,6 +23,9 @@ import * as favoritesActions from '@app/features/bookmarks/state/actions/favorit
 export class BookmarksCollectionContainerComponent implements OnInit {
   @Input() bookmarks: Bookmark[];
   @Input() favorites: BookmarkFavorite[];
+
+  @ContentChild(BookmarksCollectionEmptyMessageDirective, { read: TemplateRef })
+  emptyMessage: TemplateRef<BookmarksCollectionEmptyMessageDirective>;
 
   placeholders = 9;
 

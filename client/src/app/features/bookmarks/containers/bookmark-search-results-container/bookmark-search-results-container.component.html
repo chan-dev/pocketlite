@@ -4,6 +4,16 @@
     <app-bookmarks-collection-container
       [bookmarks]="bookmarks$ | async"
       [favorites]="favorites$ | async"
-    ></app-bookmarks-collection-container>
+    >
+      <div *appEmptyCollectionMessage>
+        <mat-icon [inline]="true" class="text-5xl text-red-600"
+          >search</mat-icon
+        >
+        <p class="font-medium text-2xl">
+          We couldn't find anything that matches your keyword
+        </p>
+        <p class="font-light">Try entering a different keyword</p>
+      </div>
+    </app-bookmarks-collection-container>
   </div>
 </section>

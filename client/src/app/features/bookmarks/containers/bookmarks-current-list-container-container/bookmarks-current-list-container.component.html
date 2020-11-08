@@ -17,6 +17,16 @@
     <app-bookmarks-collection-container
       [bookmarks]="bookmarks$ | async"
       [favorites]="favorites$ | async"
-    ></app-bookmarks-collection-container>
+    >
+      <div *appEmptyCollectionMessage>
+        <mat-icon [inline]="true" class="text-5xl text-red-600"
+          >bookmarks</mat-icon
+        >
+        <p class="font-medium text-2xl">You haven't saved any articles yet</p>
+        <p class="font-light">
+          When you save an item in your List, it'll appear here.
+        </p>
+      </div>
+    </app-bookmarks-collection-container>
   </div>
 </section>

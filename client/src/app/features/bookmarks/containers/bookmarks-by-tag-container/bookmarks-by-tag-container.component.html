@@ -4,6 +4,17 @@
     <app-bookmarks-collection-container
       [bookmarks]="bookmarks$ | async"
       [favorites]="favorites$ | async"
-    ></app-bookmarks-collection-container>
+    >
+      <div *appEmptyCollectionMessage>
+        <mat-icon [inline]="true" class="text-5xl text-red-600">tags</mat-icon>
+        <p class="font-medium text-2xl">
+          You don't have any items under this tag
+        </p>
+        <p class="font-light">
+          Create tags to assign to your stories—they’ll help you easily search
+          or sort your collection by topic or subject.
+        </p>
+      </div>
+    </app-bookmarks-collection-container>
   </div>
 </section>

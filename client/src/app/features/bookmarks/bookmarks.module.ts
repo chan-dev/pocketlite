@@ -38,6 +38,7 @@ import { TagsChipsComponent } from './components/tags-chips/tags-chips.component
 import { BookmarkReaderViewBodyComponent } from './components/bookmark-reader-view-body/bookmark-reader-view-body.component';
 import { BookmarkReaderViewPageComponent } from './containers/bookmark-reader-view-page/bookmark-reader-view-page.component';
 import { BookmarkReaderViewHeaderComponent } from './components/bookmark-reader-view-header/bookmark-reader-view-header.component';
+import { BookmarksCollectionEmptyMessageDirective } from '@app/features/bookmarks/shared/directives/bookmarks-collection-empty-message.directive';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { BookmarkReaderViewHeaderComponent } from './components/bookmark-reader-
     BookmarkReaderViewBodyComponent,
     BookmarkReaderViewPageComponent,
     BookmarkReaderViewHeaderComponent,
+    BookmarksCollectionEmptyMessageDirective,
   ],
   imports: [
     CommonModule,
