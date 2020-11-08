@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { createEffect, ofType, Actions } from '@ngrx/effects';
 import { of, iif } from 'rxjs';
-import { select, Store } from '@ngrx/store';
+import { Action, select, Store } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
 import {
   tap,
@@ -60,14 +60,26 @@ export class BookmarkEffects {
                 this.store.pipe(select(appState.selectRouteUrl)),
                 (_, currentUrl) => currentUrl
               ),
-              map(currentUrl => {
-                // When saving a new bookmark, only add the newly saved
-                // bookmark if we're on the /bookmarks page w/c is the default
-                // route
+              switchMap(currentUrl => {
+                const successActions: Action[] = [
+                  bookmarkActions.saveBookmarkSuccessWithMessage(),
+                ];
+                // When changing the state(thru reducer), only if we're on the /bookmarks page w/c
+                // is the default route.
+                //
+                // We do this because if we're on different page while a saving
+                // operation is in process and it finishes, then we don't want the
+                // current state to change in the particular page.
+                //
+                // Remember that we clear the bookmark state on every navigation
                 if (currentUrl === '/bookmarks') {
-                  return bookmarkActions.saveBookmarkSuccess({ bookmark });
+                  successActions.push(
+                    bookmarkActions.saveBookmarkSuccessWithStateChange({
+                      bookmark,
+                    })
+                  );
                 }
-                return bookmarkActions.noOpAction();
+                return successActions;
               })
             );
           }),
@@ -86,7 +98,7 @@ export class BookmarkEffects {
   saveBookmarkSuccess$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(bookmarkActions.noOpAction),
+        ofType(bookmarkActions.saveBookmarkSuccessWithMessage),
         tap(_ => {
           this.toastr.success('Bookmark has been saved');
         })

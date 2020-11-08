@@ -20,8 +20,11 @@ export const saveBookmark = createAction(
   '[Header] Save Bookmark',
   props<{ url: string }>()
 );
-export const saveBookmarkSuccess = createAction(
-  '[Bookmarks API] Save Bookmark Success',
+export const saveBookmarkSuccessWithMessage = createAction(
+  '[BookmarkEffects] Save Bookmark Success With Message'
+);
+export const saveBookmarkSuccessWithStateChange = createAction(
+  '[Bookmarks API] Save Bookmark Success With State Change',
   props<{ bookmark: Bookmark }>()
 );
 export const saveBookmarkFailure = createAction(
@@ -190,8 +193,6 @@ export const updateBookmarkTagsFailure = createAction(
   '[BookmarkEffects] Update Bookmark Tags Failure',
   props<{ error: string }>()
 );
-
-export const noOpAction = createAction('[BookmarkEffects] No Op Action');
 
 export const selectOrLoadBookmark = createAction(
   '[BookmarkMustExistGuard] Select Or Load Bookmark',

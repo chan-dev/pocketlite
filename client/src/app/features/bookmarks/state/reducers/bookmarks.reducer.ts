@@ -56,13 +56,16 @@ const bookmarksReducer = createReducer(
       error: null,
     };
   }),
-  on(bookmarkActions.saveBookmarkSuccess, (state, { bookmark }) => {
-    return adapter.addOne(bookmark, {
-      ...state,
-      loading: false,
-      error: null,
-    });
-  }),
+  on(
+    bookmarkActions.saveBookmarkSuccessWithStateChange,
+    (state, { bookmark }) => {
+      return adapter.addOne(bookmark, {
+        ...state,
+        loading: false,
+        error: null,
+      });
+    }
+  ),
   on(bookmarkActions.saveBookmarkFailure, (state, { error }) => {
     return {
       ...state,
