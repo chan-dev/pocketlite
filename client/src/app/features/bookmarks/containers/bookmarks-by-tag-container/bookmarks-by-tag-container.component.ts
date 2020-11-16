@@ -5,7 +5,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Subscription, Observable, of } from 'rxjs';
+import { Subscription, Observable, of, BehaviorSubject } from 'rxjs';
 import { filter, tap, concatMap, withLatestFrom } from 'rxjs/operators';
 
 import * as fromRoot from '@app/core/core.state';
@@ -23,8 +23,10 @@ import { BookmarkFavorite } from '@models/bookmark-favorite.model';
 })
 export class BookmarksByTagContainerComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
+  private tagSubject = new BehaviorSubject<string>('');
 
   header: string;
+  selectedTag$ = this.tagSubject.asObservable();
   bookmarks$: Observable<Bookmark[]>;
   favorites$: Observable<BookmarkFavorite[]>;
 
@@ -53,7 +55,10 @@ export class BookmarksByTagContainerComponent implements OnInit, OnDestroy {
         select(fromRoot.selectRouteParams),
         // /tags/:name
         filter(params => params.hasOwnProperty('name')),
-        tap(params => (this.header = params.name))
+        tap(params => (this.header = params.name)),
+        tap(params => {
+          this.tagSubject.next(params.name);
+        })
       )
       .subscribe(params => {
         this.store.dispatch(bookmarksActions.clearBookmarksOnTagFilter());

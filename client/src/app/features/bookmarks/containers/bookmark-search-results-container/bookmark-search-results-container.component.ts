@@ -5,8 +5,8 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, Subscription, of } from 'rxjs';
-import { filter, concatMap, withLatestFrom } from 'rxjs/operators';
+import { Observable, Subscription, of, BehaviorSubject } from 'rxjs';
+import { filter, concatMap, withLatestFrom, tap } from 'rxjs/operators';
 
 import { Bookmark } from '@models/bookmark.model';
 import { BookmarkFavorite } from '@models/bookmark-favorite.model';
@@ -24,7 +24,9 @@ import * as bookmarksActions from '@app/features/bookmarks/state/actions/bookmar
 export class BookmarkSearchResultsContainerComponent
   implements OnInit, OnDestroy {
   private subscription: Subscription;
+  private searchTermSubject = new BehaviorSubject<string>('');
 
+  searchKeyword$ = this.searchTermSubject.asObservable();
   bookmarks$: Observable<Bookmark[]>;
   favorites$: Observable<BookmarkFavorite[]>;
 
@@ -51,7 +53,10 @@ export class BookmarkSearchResultsContainerComponent
     this.subscription = this.store
       .pipe(
         select(fromRoot.selectQueryParams),
-        filter(params => params.hasOwnProperty('query'))
+        filter(params => params.hasOwnProperty('query')),
+        tap(params => {
+          this.searchTermSubject.next(params.query);
+        })
       )
       .subscribe(params => {
         this.store.dispatch(bookmarksActions.clearBookmarksOnSearch());

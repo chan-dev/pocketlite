@@ -7,8 +7,8 @@
     >
       <div *appEmptyCollectionMessage>
         <mat-icon [inline]="true" class="text-5xl text-red-600">tags</mat-icon>
-        <p class="font-medium text-2xl">
-          You don't have any items under this tag
+        <p class="font-medium text-2xl" *ngIf="selectedTag$ | async as tag">
+          You don't have any items under this '{{ tag }}' tag
         </p>
         <p class="font-light">
           Create tags to assign to your stories—they’ll help you easily search
