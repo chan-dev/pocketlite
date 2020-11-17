@@ -18,7 +18,7 @@ export class TagEffects {
           catchError(error =>
             of(
               tagsActions.getTagsFailure({
-                error: error?.error?.message,
+                error,
               })
             )
           )

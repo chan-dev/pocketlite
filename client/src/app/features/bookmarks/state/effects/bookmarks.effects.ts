@@ -40,7 +40,7 @@ export class BookmarkEffects {
           catchError(error =>
             of(
               bookmarkActions.loadBookmarksFailure({
-                error: error?.error?.message,
+                error,
               })
             )
           )
@@ -86,7 +86,7 @@ export class BookmarkEffects {
           catchError(error =>
             of(
               bookmarkActions.saveBookmarkFailure({
-                error: error?.error?.message,
+                error,
               })
             )
           )
@@ -167,7 +167,7 @@ export class BookmarkEffects {
           catchError(error =>
             of(
               bookmarkActions.deleteBookmarkFailure({
-                error: error?.error?.message,
+                error,
               })
             )
           )
@@ -243,7 +243,7 @@ export class BookmarkEffects {
           catchError(error =>
             of(
               bookmarkActions.archiveBookmarkFailure({
-                error: error?.error?.message,
+                error,
               })
             )
           )
@@ -319,7 +319,7 @@ export class BookmarkEffects {
           catchError(error =>
             of(
               bookmarkActions.restoreBookmarkFailure({
-                error: error?.error?.message,
+                error,
               })
             )
           )
@@ -404,7 +404,7 @@ export class BookmarkEffects {
           catchError(error =>
             of(
               bookmarkActions.searchBookmarksFailure({
-                error: error?.error?.message,
+                error,
               })
             )
           )
@@ -433,13 +433,14 @@ export class BookmarkEffects {
           map(bookmarks =>
             bookmarkActions.getArchivedBookmarksSuccess({ bookmarks })
           ),
-          catchError(error =>
-            of(
+          catchError(error => {
+            console.log({ error });
+            return of(
               bookmarkActions.getArchivedBookmarksFailure({
-                error: error?.error?.message,
+                error,
               })
-            )
-          )
+            );
+          })
         );
       })
     );
@@ -468,7 +469,7 @@ export class BookmarkEffects {
           catchError(error =>
             of(
               bookmarkActions.getFavoritedBookmarksFailure({
-                error: error?.error?.message,
+                error,
               })
             )
           )
@@ -511,7 +512,7 @@ export class BookmarkEffects {
           catchError(error =>
             of(
               bookmarkActions.getBookmarksByTagFailure({
-                error: error?.error?.message,
+                error,
               })
             )
           )
@@ -597,7 +598,7 @@ export class BookmarkEffects {
             catchError(error =>
               of(
                 bookmarkActions.updateBookmarkTagsFailure({
-                  error: error?.error?.message,
+                  error,
                 })
               )
             )
@@ -626,7 +627,7 @@ export class BookmarkEffects {
           catchError(error =>
             of(
               bookmarkActions.loadBookmarkFromApiFailure({
-                error: error?.error?.message,
+                error,
               })
             )
           )

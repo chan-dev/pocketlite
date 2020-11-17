@@ -23,7 +23,7 @@ export class FavoriteEffects {
           catchError(error =>
             of(
               favoriteActions.getFavoritesFailure({
-                error: error?.error?.message,
+                error,
               })
             )
           )
@@ -68,7 +68,7 @@ export class FavoriteEffects {
           catchError(error =>
             of(
               favoriteActions.favoriteBookmarkFailure({
-                error: error?.error?.message,
+                error,
                 bookmark,
               })
             )
@@ -102,7 +102,7 @@ export class FavoriteEffects {
           catchError(error =>
             of(
               favoriteActions.unfavoriteBookmarkFailure({
-                error: error?.error?.message,
+                error,
                 favorite,
               })
             )

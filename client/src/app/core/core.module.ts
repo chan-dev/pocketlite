@@ -28,6 +28,7 @@ import { ErrorModule } from '@app/core/error/error.module';
 import { environment } from 'src/environments/environment';
 
 import { reducers } from './core.state';
+import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
 import { HttpRequestInterceptor } from './interceptors/http-request.interceptor';
 import { TokenInterceptor } from './interceptors/token-interceptor';
 import { RollbarService, rollbarFactory } from './rollbar';
@@ -105,6 +106,11 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     {
       provide: RollbarService,
       useFactory: rollbarFactory,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
+      multi: true,
     },
     {
       provide: HTTP_INTERCEPTORS,

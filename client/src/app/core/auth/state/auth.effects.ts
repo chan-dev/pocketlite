@@ -33,9 +33,7 @@ export class AuthEffects {
       exhaustMap(() =>
         this.authService.currentUser$.pipe(
           map(currentUser => authActions.loginSuccess({ currentUser })),
-          catchError(error =>
-            of(authActions.loginFailure({ error: error?.error?.message }))
-          )
+          catchError(error => of(authActions.loginFailure({ error })))
         )
       )
     );
@@ -126,9 +124,7 @@ export class AuthEffects {
       exhaustMap(() =>
         this.authService.refreshToken().pipe(
           map(() => authActions.refreshTokenSuccess()),
-          catchError(error =>
-            of(authActions.refreshTokenFailure({ error: error?.error.message }))
-          )
+          catchError(error => of(authActions.refreshTokenFailure({ error })))
         )
       )
     );
