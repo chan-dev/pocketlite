@@ -10,7 +10,20 @@ module.exports = {
         8: '8',
       },
     },
-    extend: {},
+    extend: {
+      spacing: {
+        '1/4': '25%',
+        '3/4': '75%',
+      },
+      inset: {
+        '1/2': '50%',
+        '1/4': '25%',
+        '3/4': '75%',
+        '-1/2': '-50%',
+        '-1/4': '-25%',
+        '-3/4': '-75%',
+      },
+    },
   },
   variants: {
     display: ['responsive', 'hover', 'focus', 'group-hover'],

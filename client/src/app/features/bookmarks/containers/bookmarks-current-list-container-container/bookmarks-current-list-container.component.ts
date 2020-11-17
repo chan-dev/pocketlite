@@ -1,7 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, combineLatest, Subject } from 'rxjs';
 import { filter, map, share, tap } from 'rxjs/operators';
+
+import { NgxSpinnerService } from 'ngx-spinner';
 
 import { LOADER_DELAY, TIME_AFTER_LOADER_DELAY } from '@app/shared/constants';
 import { Bookmark } from '@models/bookmark.model';
@@ -9,7 +11,10 @@ import { BookmarkFavorite } from '@models/bookmark-favorite.model';
 import * as bookmarksSelectors from '@app/features/bookmarks/state/selectors/bookmarks.selectors';
 import * as favoritesSelectors from '@app/features/bookmarks/state/selectors/favorites.selectors';
 import * as bookmarksActions from '@app/features/bookmarks/state/actions/bookmarks.actions';
-import { LoadingState } from '../../state/reducers/bookmarks.reducer';
+import {
+  LoadingState,
+  ErrorState,
+} from '../../state/reducers/bookmarks.reducer';
 
 import { showLoaderTime } from '@app/shared/helpers/operators/show-loader-time';
 
@@ -39,13 +44,20 @@ export class BookmarksCurrentListContainerComponent implements OnInit {
   showLoader$: Observable<boolean>;
 
   // TODO: move all logic inside ngOnInit
-  constructor(private store: Store) {
+  constructor(private store: Store, private spinnerService: NgxSpinnerService) {
     this.bookmarks$ = combineLatest([
       this.store.pipe(select(bookmarksSelectors.selectBookmarkCallState)),
       this.store.pipe(select(bookmarksSelectors.selectCurrentBookmarks)),
     ]).pipe(
+      tap(([callState, _]) => {
+        const errorState = callState as ErrorState;
+        if (errorState.error) {
+          this.spinnerService.hide();
+        }
+      }),
       filter(([callState, _]) => callState === LoadingState.LOADED),
       map(([_, bookmarks]) => bookmarks),
+      tap(() => this.spinnerService.hide()),
       share()
     );
 
@@ -64,9 +76,10 @@ export class BookmarksCurrentListContainerComponent implements OnInit {
 
   ngOnInit() {}
 
-  onScroll() {
+  loadMoreItems() {
     this.page += 1;
     this.loadMore();
+    this.spinnerService.show();
   }
 
   private loadMore() {

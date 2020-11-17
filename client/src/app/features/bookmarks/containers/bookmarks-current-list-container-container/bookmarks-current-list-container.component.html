@@ -9,7 +9,7 @@
     [infiniteScrollContainer]="'.infinite-scroll-container'"
     [scrollWindow]="true"
     [fromRoot]="true"
-    (scrolled)="onScroll()"
+    (scrolled)="loadMoreItems()"
   >
     <h2 class="bookmark-list__title mb-4">My List</h2>
     <!-- TODO: add empty message -->
@@ -29,5 +29,16 @@
         </p>
       </div>
     </app-bookmarks-collection-container>
+    <!-- NOTE: transform is required for it to work -->
+    <ngx-spinner
+      class="xl:ml-32 transform fixed bottom-0 left-1/2 -translate-x-1/2 z-30 w-full"
+      bdColor="transparent"
+      size="large"
+      color="#3a736b"
+      type="cube-transition"
+      [fullScreen]="false"
+    >
+      <div class="mb-32"></div>
+    </ngx-spinner>
   </div>
 </section>
