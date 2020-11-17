@@ -61,18 +61,14 @@ export const selectBookmarksCount = createSelector(
   selectBookmarksState,
   fromBookmarks.selectBookmarksCount
 );
-export const selectBookmarksLoading = createSelector(
+export const selectBookmarkCallState = createSelector(
   selectBookmarksState,
-  state => state.loading
-);
-export const selectBookmarksLoaded = createSelector(
-  selectBookmarksState,
-  state => state.loaded
+  state => state.callState
 );
 
 export const selectBookmarksError = createSelector(
-  selectBookmarksState,
-  state => state.error
+  selectBookmarkCallState,
+  fromBookmarks.getError
 );
 
 export const selectCurrentBookmark = (id: string) =>

@@ -4,10 +4,20 @@ import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Bookmark } from '@models/bookmark.model';
 import * as bookmarkActions from '../actions/bookmarks.actions';
 
+export enum LoadingState {
+  INIT = 'INITIAL',
+  LOADING = 'LOADING',
+  LOADED = 'LOADED',
+}
+
+export interface ErrorState {
+  error: string;
+}
+
+export type CallState = LoadingState | ErrorState;
+
 export interface State extends EntityState<Bookmark> {
-  loading: boolean;
-  loaded: boolean;
-  error: string | null;
+  callState: CallState;
 }
 
 export function sortByCreateDate(a: Bookmark, b: Bookmark): number {
@@ -17,13 +27,21 @@ export function sortByCreateDate(a: Bookmark, b: Bookmark): number {
   return Date.parse(b.createdAt) - Date.parse(a.createdAt);
 }
 
+export function getError(callState: CallState): string | null {
+  const errorState = callState as ErrorState;
+
+  if (errorState.error !== undefined) {
+    return errorState.error;
+  }
+
+  return null;
+}
+
 export const adapter: EntityAdapter<Bookmark> = createEntityAdapter<Bookmark>({
   // sortComparer: sortByCreateDate,
 });
 export const initialState: State = adapter.getInitialState({
-  loading: false,
-  loaded: false,
-  error: null,
+  callState: LoadingState.INIT,
 });
 
 const bookmarksReducer = createReducer(
@@ -31,29 +49,25 @@ const bookmarksReducer = createReducer(
   on(bookmarkActions.getBookmarkItems, state => {
     return {
       ...state,
-      loading: true,
-      error: null,
+      callState: LoadingState.LOADING,
     };
   }),
   on(bookmarkActions.loadBookmarksSuccess, (state, { bookmarks }) => {
     return adapter.addMany(bookmarks, {
       ...state,
-      loading: false,
-      error: null,
+      callState: LoadingState.LOADED,
     });
   }),
   on(bookmarkActions.loadBookmarksFailure, (state, { error }) => {
     return {
       ...state,
-      error,
-      loading: false,
+      callState: { error },
     };
   }),
   on(bookmarkActions.saveBookmark, state => {
     return {
       ...state,
-      loading: true,
-      error: null,
+      callState: LoadingState.LOADING,
     };
   }),
   on(
@@ -61,16 +75,14 @@ const bookmarksReducer = createReducer(
     (state, { bookmark }) => {
       return adapter.addOne(bookmark, {
         ...state,
-        loading: false,
-        error: null,
+        callState: LoadingState.LOADED,
       });
     }
   ),
   on(bookmarkActions.saveBookmarkFailure, (state, { error }) => {
     return {
       ...state,
-      error,
-      loading: false,
+      callState: { error },
     };
   }),
   on(bookmarkActions.deleteConfirm, state => {
@@ -88,6 +100,7 @@ const bookmarksReducer = createReducer(
         ...state,
         loading: false,
         error: null,
+        callState: LoadingState.LOADED,
       });
     }
   ),
@@ -96,13 +109,13 @@ const bookmarksReducer = createReducer(
       ...state,
       error,
       loading: false,
+      callState: { error },
     };
   }),
   on(bookmarkActions.archiveBookmark, state => {
     return {
       ...state,
-      loading: true,
-      error: null,
+      callState: LoadingState.LOADING,
     };
   }),
   on(
@@ -114,16 +127,14 @@ const bookmarksReducer = createReducer(
       // for us. We'll just replace that particular document
       return adapter.updateOne(bookmark, {
         ...state,
-        loading: false,
-        error: null,
+        callState: LoadingState.LOADED,
       });
     }
   ),
   on(bookmarkActions.archiveBookmarkFailure, (state, { error }) => {
     return {
       ...state,
-      error,
-      loading: false,
+      callState: { error },
     };
   }),
   on(
@@ -132,8 +143,7 @@ const bookmarksReducer = createReducer(
     state => {
       return {
         ...state,
-        loading: true,
-        error: null,
+        callState: LoadingState.LOADING,
       };
     }
   ),
@@ -146,16 +156,14 @@ const bookmarksReducer = createReducer(
       // for us. We'll just replace that particular document
       return adapter.updateOne(bookmark, {
         ...state,
-        loading: false,
-        error: null,
+        callState: LoadingState.LOADED,
       });
     }
   ),
   on(bookmarkActions.restoreBookmarkFailure, (state, { error }) => {
     return {
       ...state,
-      error,
-      loading: false,
+      callState: { error },
     };
   }),
   on(
@@ -172,129 +180,109 @@ const bookmarksReducer = createReducer(
   on(bookmarkActions.searchBookmarks, state => {
     return {
       ...state,
-      loading: true,
-      error: null,
+      callState: LoadingState.LOADING,
     };
   }),
   on(bookmarkActions.searchBookmarksSuccess, (state, { bookmarks }) => {
     return adapter.setAll(bookmarks, {
       ...state,
-      loading: false,
-      error: null,
+      callState: LoadingState.LOADED,
     });
   }),
   on(bookmarkActions.searchBookmarksFailure, (state, { error }) => {
     return {
       ...state,
-      error,
-      loading: false,
+      callState: { error },
     };
   }),
   on(bookmarkActions.getArchivedBookmarks, state => {
     return {
       ...state,
-      loading: true,
-      error: null,
+      callState: LoadingState.LOADING,
     };
   }),
   on(bookmarkActions.getArchivedBookmarksSuccess, (state, { bookmarks }) => {
     return adapter.setAll(bookmarks, {
       ...state,
-      loading: false,
-      error: null,
+      callState: LoadingState.LOADED,
     });
   }),
   on(bookmarkActions.getArchivedBookmarksFailure, (state, { error }) => {
     return {
       ...state,
-      error,
-      loading: false,
+      callState: { error },
     };
   }),
   on(bookmarkActions.getFavoritedBookmarks, state => {
     return {
       ...state,
-      loading: true,
-      error: null,
+      callState: LoadingState.LOADING,
     };
   }),
   on(bookmarkActions.getFavoritedBookmarksSuccess, (state, { bookmarks }) => {
     return adapter.setAll(bookmarks, {
       ...state,
-      loading: false,
-      error: null,
+      callState: LoadingState.LOADED,
     });
   }),
   on(bookmarkActions.getFavoritedBookmarksFailure, (state, { error }) => {
     return {
       ...state,
-      error,
-      loading: false,
+      callState: { error },
     };
   }),
   on(bookmarkActions.getBookmarksByTag, state => {
     return {
       ...state,
-      loading: true,
-      error: null,
+      callState: LoadingState.LOADING,
     };
   }),
   on(bookmarkActions.getBookmarksByTagSuccess, (state, { bookmarks }) => {
     return adapter.setAll(bookmarks, {
       ...state,
-      loading: false,
-      error: null,
+      callState: LoadingState.LOADED,
     });
   }),
   on(bookmarkActions.getBookmarksByTagFailure, (state, { error }) => {
     return {
       ...state,
-      error,
-      loading: false,
+      callState: { error },
     };
   }),
   on(bookmarkActions.updateBookmarkTagsSuccess, (state, { bookmark }) => {
     return adapter.updateOne(bookmark, {
       ...state,
-      loading: false,
-      error: null,
+      callState: LoadingState.LOADED,
     });
   }),
   on(bookmarkActions.updateBookmarkTagsFailure, (state, { error }) => {
     return {
       ...state,
-      loading: false,
-      error,
+      callState: { error },
     };
   }),
   on(bookmarkActions.loadBookmarkFromApi, state => {
     return {
       ...state,
-      loading: true,
-      error: null,
+      callState: LoadingState.LOADING,
     };
   }),
   on(bookmarkActions.loadBookmarkFromApiSuccess, (state, { bookmark }) => {
     return adapter.upsertOne(bookmark, {
       ...state,
-      loading: false,
-      loaded: true,
+      callState: LoadingState.LOADED,
     });
   }),
   on(bookmarkActions.loadBookmarkFromApiFailure, (state, { error }) => {
     return {
       ...state,
-      loading: false,
-      loaded: false,
-      error,
+      callState: { error },
     };
   }),
   on(bookmarkActions.selectBookmarkInStoreSuccess, (state, { bookmark }) => {
     return {
       ...state,
-      loading: false,
-      loaded: true,
-      error: null,
+      callState: LoadingState.LOADED,
     };
   })
 );

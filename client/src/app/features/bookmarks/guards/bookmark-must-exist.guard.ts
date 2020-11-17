@@ -16,6 +16,7 @@ import {
   filter,
 } from 'rxjs/operators';
 
+import { LoadingState } from '../state/reducers/bookmarks.reducer';
 import * as bookmarkActions from '@app/features/bookmarks/state/actions/bookmarks.actions';
 import * as bookmarksSelectors from '@app/features/bookmarks/state/selectors/bookmarks.selectors';
 
@@ -27,8 +28,8 @@ export class BookmarkMustExistGuard implements CanActivate {
 
   isFound(id: string) {
     const isLoaded$ = this.store.pipe(
-      select(bookmarksSelectors.selectBookmarksLoaded),
-      filter(loaded => !!loaded)
+      select(bookmarksSelectors.selectBookmarkCallState),
+      filter(callState => callState === LoadingState.LOADED)
     );
 
     return isLoaded$.pipe(
