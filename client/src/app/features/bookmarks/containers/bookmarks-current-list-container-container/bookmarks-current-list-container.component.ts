@@ -1,13 +1,17 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, combineLatest } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, share, tap } from 'rxjs/operators';
 
+import { LOADER_DELAY, TIME_AFTER_LOADER_DELAY } from '@app/shared/constants';
 import { Bookmark } from '@models/bookmark.model';
 import { BookmarkFavorite } from '@models/bookmark-favorite.model';
 import * as bookmarksSelectors from '@app/features/bookmarks/state/selectors/bookmarks.selectors';
 import * as favoritesSelectors from '@app/features/bookmarks/state/selectors/favorites.selectors';
 import * as bookmarksActions from '@app/features/bookmarks/state/actions/bookmarks.actions';
+import { LoadingState } from '../../state/reducers/bookmarks.reducer';
+
+import { showLoaderTime } from '@app/shared/helpers/operators/show-loader-time';
 
 @Component({
   selector: 'app-bookmarks-current-list-container',
@@ -32,15 +36,17 @@ export class BookmarksCurrentListContainerComponent implements OnInit {
   bookmarks$: Observable<Bookmark[]>;
   favorites$: Observable<BookmarkFavorite[]>;
   loading$: Observable<boolean>;
+  showLoader$: Observable<boolean>;
 
   // TODO: move all logic inside ngOnInit
   constructor(private store: Store) {
     this.bookmarks$ = combineLatest([
-      this.store.pipe(select(bookmarksSelectors.selectBookmarksLoading)),
+      this.store.pipe(select(bookmarksSelectors.selectBookmarkCallState)),
       this.store.pipe(select(bookmarksSelectors.selectCurrentBookmarks)),
     ]).pipe(
-      filter(([loading, _]) => loading === false),
-      map(([_, bookmarks]) => bookmarks)
+      filter(([callState, _]) => callState === LoadingState.LOADED),
+      map(([_, bookmarks]) => bookmarks),
+      share()
     );
 
     this.store.dispatch(bookmarksActions.clearBookmarksOnCurrentList());
@@ -48,6 +54,11 @@ export class BookmarksCurrentListContainerComponent implements OnInit {
 
     this.favorites$ = this.store.pipe(
       select(favoritesSelectors.selectFavorites)
+    );
+
+    this.showLoader$ = this.bookmarks$.pipe(
+      showLoaderTime(LOADER_DELAY, TIME_AFTER_LOADER_DELAY),
+      tap(showLoader => console.log({ loaderCurrentList: showLoader }))
     );
   }
 
@@ -62,7 +73,7 @@ export class BookmarksCurrentListContainerComponent implements OnInit {
     this.store.dispatch(
       bookmarksActions.getBookmarkItems({
         page: this.page,
-        limit: 9,
+        limit: 15,
       })
     );
   }

@@ -22,22 +22,24 @@
   </ng-container>
   <ng-template #loading>
     <!-- TODO: create a shared component for this -->
-    <ng-container *ngFor="let item of generatePlaceholder(placeholders)">
-      <div class="md:w-1/3 w-full p-4">
-        <div class="bookmark-preview">
-          <article class="max-w-xs">
-            <div
-              class="md:h-48 overflow-hidden w-full h-64 rounded bg-cover bg-center"
-            >
-              <ngx-skeleton-loader
-                [theme]="{
-                  height: '100%'
-                }"
-              ></ngx-skeleton-loader>
-            </div>
-          </article>
+    <ng-container *ngIf="showLoader">
+      <ng-container *ngFor="let item of generatePlaceholder(placeholders)">
+        <div class="md:w-1/3 w-full p-4">
+          <div class="bookmark-preview">
+            <article class="max-w-xs">
+              <div
+                class="md:h-48 overflow-hidden w-full h-64 rounded bg-cover bg-center"
+              >
+                <ngx-skeleton-loader
+                  [theme]="{
+                    height: '100%'
+                  }"
+                ></ngx-skeleton-loader>
+              </div>
+            </article>
+          </div>
         </div>
-      </div>
+      </ng-container>
     </ng-container>
   </ng-template>
 </div>

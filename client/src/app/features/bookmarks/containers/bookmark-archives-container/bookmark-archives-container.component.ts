@@ -1,15 +1,16 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, combineLatest } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, share, tap } from 'rxjs/operators';
 
+import { LOADER_DELAY, TIME_AFTER_LOADER_DELAY } from '@app/shared/constants';
+import { showLoaderTime } from '@app/shared/helpers/operators/show-loader-time';
 import { Bookmark } from '@models/bookmark.model';
 import { BookmarkFavorite } from '@models/bookmark-favorite.model';
-
 import * as bookmarksSelectors from '@app/features/bookmarks/state/selectors/bookmarks.selectors';
 import * as favoritesSelectors from '@app/features/bookmarks/state/selectors/favorites.selectors';
 import * as bookmarksActions from '@app/features/bookmarks/state/actions/bookmarks.actions';
-
+import { LoadingState } from '../../state/reducers/bookmarks.reducer';
 @Component({
   selector: 'app-bookmark-archives-container',
   templateUrl: './bookmark-archives-container.component.html',
@@ -19,14 +20,16 @@ import * as bookmarksActions from '@app/features/bookmarks/state/actions/bookmar
 export class BookmarkArchivesContainerComponent implements OnInit {
   bookmarks$: Observable<Bookmark[]>;
   favorites$: Observable<BookmarkFavorite[]>;
+  showLoader$: Observable<boolean>;
 
   constructor(private store: Store) {
     this.bookmarks$ = combineLatest([
-      this.store.pipe(select(bookmarksSelectors.selectBookmarksLoading)),
+      this.store.pipe(select(bookmarksSelectors.selectBookmarkCallState)),
       this.store.pipe(select(bookmarksSelectors.selectArchivedBookmarks)),
     ]).pipe(
-      filter(([loading, _]) => loading === false),
-      map(([_, bookmarks]) => bookmarks)
+      filter(([callState, _]) => callState === LoadingState.LOADED),
+      map(([_, bookmarks]) => bookmarks),
+      share()
     );
 
     this.favorites$ = this.store.pipe(
@@ -35,6 +38,11 @@ export class BookmarkArchivesContainerComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.showLoader$ = this.bookmarks$.pipe(
+      showLoaderTime(LOADER_DELAY, TIME_AFTER_LOADER_DELAY),
+      tap(showLoader => console.log({ loaderArchives: showLoader }))
+    );
+
     this.store.dispatch(bookmarksActions.clearBookmarksOnArchive());
     this.store.dispatch(bookmarksActions.getArchivedBookmarks());
   }

@@ -4,6 +4,7 @@
     <app-bookmarks-collection-container
       [bookmarks]="bookmarks$ | async"
       [favorites]="favorites$ | async"
+      [showLoader]="showLoader$ | async"
     >
       <div *appEmptyCollectionMessage>
         <mat-icon [inline]="true" class="text-5xl text-red-600">tags</mat-icon>

@@ -23,6 +23,7 @@ import * as favoritesActions from '@app/features/bookmarks/state/actions/favorit
 export class BookmarksCollectionContainerComponent implements OnInit {
   @Input() bookmarks: Bookmark[];
   @Input() favorites: BookmarkFavorite[];
+  @Input() showLoader: boolean;
 
   @ContentChild(BookmarksCollectionEmptyMessageDirective, { read: TemplateRef })
   emptyMessage: TemplateRef<BookmarksCollectionEmptyMessageDirective>;
