@@ -69,6 +69,8 @@
     "karma-jasmine": "~3.3.0",
     "karma-jasmine-html-reporter": "^1.5.0",
     "prettier": "^2.1.2",
+    "tailwindcss-dark-mode": "^1.1.7",
+    "tailwindcss-sepia-mode": "^1.0.0",
     "ts-loader": "7.0.5",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
