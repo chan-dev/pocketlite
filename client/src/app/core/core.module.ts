@@ -37,6 +37,7 @@ import { CustomSerializer } from './helpers/custom-serializer';
 import { CustomRouteReuseStrategy } from './helpers/custom-route-reuse';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthEffects } from './auth/state';
+import { UiEffects } from './ui/state';
 
 export function localStorageSyncReducer(
   reducer: ActionReducer<any>
@@ -76,7 +77,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
       serializer: CustomSerializer,
       navigationActionTiming: NavigationActionTiming.PostActivation,
     }),
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot([AuthEffects, UiEffects]),
     StoreDevtoolsModule.instrument({
       name: 'PocketLite',
       logOnly: environment.production,

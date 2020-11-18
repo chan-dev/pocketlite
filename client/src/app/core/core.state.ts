@@ -7,15 +7,17 @@ import {
 
 import { RouterStateUrl } from './helpers/custom-serializer';
 import * as fromAuth from '@app/core/auth/state';
-
+import * as fromUi from '@app/core/ui/state';
 export interface State {
   router: fromRouter.RouterReducerState<any>;
   auth: fromAuth.AuthState;
+  ui: fromUi.UiState;
 }
 
 export const reducers: ActionReducerMap<State> = {
   router: fromRouter.routerReducer,
   auth: fromAuth.reducer,
+  ui: fromUi.reducer,
 };
 
 export const selectRouter = createFeatureSelector<
