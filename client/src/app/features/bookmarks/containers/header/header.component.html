@@ -111,7 +111,9 @@
               alt="avatar"
               aria-hidden="true"
             />
-            Christian M. Austria
+            <span *ngIf="currentUser$ | async as currentUser">
+              {{ currentUser.displayName }}
+            </span>
           </div>
           <button
             class="dark:text-dark-mode-text text-gray-700"

@@ -8,19 +8,19 @@ import {
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { MediaMatcher } from '@angular/cdk/layout';
 
 import { ToastrService } from 'ngx-toastr';
 
+import { User } from '@models/user.model';
+import { Theme } from '@app/core/ui/state';
 import * as fromAuth from '@app/core/auth/state';
 import * as fromBookmarks from '@app/features/bookmarks/state/actions/bookmarks.actions';
 import * as fromRoot from '@app/core/core.state';
 import * as fromUi from '@app/core/ui/state/ui.actions';
 import { SidenavService } from '../../services/sidenav.service';
-
 import { RadioGroupPickerOption } from '@app/shared/components/radio-group-picker/radio-group-picker.component';
-import { Theme } from '@app/core/ui/state';
 
 interface ThemeRadioPickerOption extends RadioGroupPickerOption {
   color: string;
@@ -37,6 +37,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private queryListener;
   private mediaQueryCondition = '(min-width: 1280px)';
   private themePickerSub: Subscription;
+
+  currentUser$: Observable<User>;
 
   themePicker = new FormControl({
     value: null,
@@ -107,6 +109,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
         );
       }
     );
+
+    this.currentUser$ = this.store.pipe(select(fromAuth.selectCurrentUser));
   }
 
   ngOnDestroy() {
