@@ -1,7 +1,7 @@
 <div class="tags-list">
   <ul
     data-test="tags-list"
-    class="normal-case tags space-y-2 py-2 dark:text-gray-300 text-gray-700 font-normal"
+    class="normal-case tags space-y-2 py-2 dark:text-dark-mode-text text-gray-700 font-normal"
   >
     <li *ngFor="let tag of tags; trackBy: tagsTrackByFn">
       <app-tag class="w-full" [tag]="tag" (openTag)="closeSidenav()"></app-tag>

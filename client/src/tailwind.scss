@@ -17,7 +17,6 @@
 
   // ngx-skeleton-loader
   [class*='mode-dark'] ngx-skeleton-loader .loader {
-    background-color: theme('colors.blue.100');
     opacity: theme('opacity.25');
   }
 }
@@ -27,7 +26,7 @@
     @apply flex flex-col font-medium text-sm capitalize text-gray-700;
 
     [class*='mode-dark'] & {
-      @apply text-gray-300;
+      @apply text-dark-mode-text;
     }
   }
   .sidenav__items {
@@ -55,7 +54,7 @@
     @apply text-green-700;
 
     [class*='mode-dark'] & {
-      @apply bg-blue-100 bg-opacity-25 text-gray-200;
+      @apply bg-blue-100 bg-opacity-25 text-dark-mode-text;
     }
   }
 

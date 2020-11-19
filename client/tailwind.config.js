@@ -1,3 +1,5 @@
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 module.exports = {
   important: true,
   purge: [],
@@ -27,7 +29,13 @@ module.exports = {
         '-3/4': '-75%',
       },
       colors: {
-        dark: '#1a1a1a',
+        // list ONLY the shared by multiple ui components
+        'dark-mode': {
+          default: '#1a1a1a',
+          max: defaultTheme.colors.black,
+          text: defaultTheme.colors.gray[300],
+          border: defaultTheme.colors.black
+        }
       },
       opacity: {
         10: '0.10',

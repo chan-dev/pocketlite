@@ -1,5 +1,5 @@
 <div class="bookmark-preview">
-  <div class="dark:border-black border-b">
+  <div class="dark:border-dark-mode-max border-b">
     <article class="max-w-xs">
       <header>
         <h3>
@@ -82,18 +82,18 @@
         #menu="matMenu"
         xPosition="before"
         yPosition="above"
-        class="dark:bg-dark p-0 rounded-none"
+        class="dark:bg-dark-mode p-0 rounded-none"
       >
         <ul class="flex flex-col justify-center w-full h-full">
           <button
-            class="dark-hover:bg-opacity-25 dark:text-gray-200 hover:bg-gray-200 hover:text-green-800 flex items-center justify-start p-2"
+            class="dark-hover:bg-opacity-25 dark:text-dark-mode-text hover:bg-gray-200 hover:text-green-800 flex items-center justify-start p-2"
           >
             <mat-icon class="mr-2">share</mat-icon>
             Share
           </button>
           <button
             *ngIf="!bookmark.deleted"
-            class="dark-hover:bg-opacity-25 dark:text-gray-200 hover:bg-gray-200 hover:text-green-800 flex items-center justify-start p-2"
+            class="dark-hover:bg-opacity-25 dark:text-dark-mode-text hover:bg-gray-200 hover:text-green-800 flex items-center justify-start p-2"
             (click)="archiveBookmark(bookmark.id)"
           >
             <mat-icon class="mr-2">archive</mat-icon>
@@ -101,21 +101,21 @@
           </button>
           <button
             *ngIf="bookmark.deleted"
-            class="dark-hover:bg-opacity-25 dark:text-gray-200 hover:bg-gray-200 hover:text-green-800 flex items-center justify-start p-2"
+            class="dark-hover:bg-opacity-25 dark:text-dark-mode-text hover:bg-gray-200 hover:text-green-800 flex items-center justify-start p-2"
             (click)="restoreBookmark(bookmark.id)"
           >
             <mat-icon class="mr-2">add</mat-icon>
             Re-add
           </button>
           <button
-            class="dark-hover:bg-opacity-25 dark:text-gray-200 hover:bg-gray-200 hover:text-green-800 flex items-center justify-start p-2"
+            class="dark-hover:bg-opacity-25 dark:text-dark-mode-text hover:bg-gray-200 hover:text-green-800 flex items-center justify-start p-2"
             (click)="deleteBookmark(bookmark.id)"
           >
             <mat-icon class="mr-2">delete</mat-icon>
             Delete
           </button>
           <button
-            class="dark-hover:bg-opacity-25 dark:text-gray-200 hover:bg-gray-300 hover:text-green-800 flex items-center justify-start p-2"
+            class="dark-hover:bg-opacity-25 dark:text-dark-mode-text hover:bg-gray-300 hover:text-green-800 flex items-center justify-start p-2"
             (click)="toggleFavoriteBookmark(bookmark)"
           >
             <!-- TODO: highlight the star icon -->
@@ -125,7 +125,7 @@
             Favorite
           </button>
           <button
-            class="dark-hover:bg-opacity-25 dark:text-gray-200 hover:bg-gray-300 hover:text-green-800 flex items-center justify-start p-2"
+            class="dark-hover:bg-opacity-25 dark:text-dark-mode-text hover:bg-gray-300 hover:text-green-800 flex items-center justify-start p-2"
             (click)="openTagsModal()"
           >
             <mat-icon class="mr-2">local_offer</mat-icon>

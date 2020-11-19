@@ -1,17 +1,17 @@
 <mat-sidenav-container
-  class="h-full dark:text-gray-300 text-gray-700"
+  class="h-full dark:text-dark-mode-text text-gray-700"
   [hasBackdrop]="false"
 >
   <!-- TODO: "open" on md (768px) on tailwind size -->
   <mat-sidenav
-    class="dark:bg-dark bg-white w-64"
+    class="dark:bg-dark-mode bg-white w-64"
     data-test="sidenav"
     [fixedInViewport]="!mediaQuery.matches"
     [mode]="mediaQuery.matches ? 'side' : 'over'"
     [opened]="mediaQuery.matches"
   >
     <div
-      class="h-full dark:border-black border border-b-0 border-gray-200 md:border-t-0"
+      class="h-full dark:border-dark-mode-max border border-b-0 border-gray-200 md:border-t-0"
     >
       <div data-test="sidenav-parent-view" class="sidenav" *ngIf="!isChildNav">
         <!-- top section -->
@@ -117,7 +117,7 @@
         <!-- top section -->
         <section class="sidenav__header top-section space-y-3 text-sm">
           <div
-            class="xl:border-b-0 border-b dark:border-black border-gray-300 py-3 px-3"
+            class="xl:border-b-0 border-b dark:border-dark-mode-max border-gray-300 py-3 px-3"
           >
             <div class="h-12 center-between">
               <button class="inline-flex" (click)="closeChildNav()">
