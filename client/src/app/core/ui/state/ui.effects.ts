@@ -10,7 +10,11 @@ export class UiEffects {
   getTagItems$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(uiActions.updateTheme),
+        ofType(
+          uiActions.updateTheme,
+          uiActions.updateThemeFromBrowserStorage,
+          uiActions.updateThemeFromPreferColorSchemeMediaQuery
+        ),
         tap(({ theme }) => {
           this.uiService.updateTheme(theme);
         })

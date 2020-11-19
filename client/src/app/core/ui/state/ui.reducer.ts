@@ -15,12 +15,17 @@ export const initialState: UiState = {
 
 const uiReducer = createReducer(
   initialState,
-  on(uiActions.updateTheme, (state, { theme }) => {
-    return {
-      ...state,
-      theme,
-    };
-  })
+  on(
+    uiActions.updateTheme,
+    uiActions.updateThemeFromBrowserStorage,
+    uiActions.updateThemeFromPreferColorSchemeMediaQuery,
+    (state, { theme }) => {
+      return {
+        ...state,
+        theme,
+      };
+    }
+  )
 );
 
 export function reducer(state: UiState | undefined, action: Action) {

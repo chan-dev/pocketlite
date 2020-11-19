@@ -13,6 +13,6 @@ export class AppComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     // matchMedia doesn't run on page load
     // basically, check on page load the current user preference
-    this.uiService.checkColorSchemePreference();
+    this.uiService.checkThemeOnLoad();
   }
 }
