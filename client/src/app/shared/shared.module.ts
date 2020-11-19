@@ -9,6 +9,8 @@ import { ConfirmDialogModule } from './confirm-dialog/confirm-dialog.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { RouteOrRedirectComponent } from './components/router-or-redirect/router-or-redirect.component';
+import { RadioGroupPickerComponent } from './components/radio-group-picker/radio-group-picker.component';
+import { RadioGroupPickerDirective } from './components/radio-group-picker/radio-group-picker.directive';
 import { RouteOrRedirectLinkContentDirective } from './components/router-or-redirect/route-or-redirect-content.directive';
 
 @NgModule({
@@ -16,6 +18,8 @@ import { RouteOrRedirectLinkContentDirective } from './components/router-or-redi
     AutoFocusDirective,
     RouteOrRedirectComponent,
     RouteOrRedirectLinkContentDirective,
+    RadioGroupPickerComponent,
+    RadioGroupPickerDirective,
   ],
   imports: [
     CommonModule,
@@ -29,6 +33,8 @@ import { RouteOrRedirectLinkContentDirective } from './components/router-or-redi
     AutoFocusDirective,
     RouteOrRedirectComponent,
     RouteOrRedirectLinkContentDirective,
+    RadioGroupPickerComponent,
+    RadioGroupPickerDirective,
     ConfirmDialogModule,
     InfiniteScrollModule,
     NgxSkeletonLoaderModule,

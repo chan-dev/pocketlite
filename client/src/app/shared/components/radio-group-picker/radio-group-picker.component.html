@@ -1,0 +1,36 @@
+<div class="ui-radio-group-picker" [ngClass]="!!styleClass ? styleClass : ''">
+  <p class="ui-radio-group-label" *ngIf="label">
+    {{ label }}
+  </p>
+  <ul
+    class="ui-radio-group-list"
+    role="radiogroup"
+    [attr.aria-label]="ariaLabel || label"
+    [ngClass]="{
+      disabled: isDisabled
+    }"
+  >
+    <ng-container *ngFor="let item of items; index as i">
+      <div
+        class="ui-radio-group-item"
+        role="radio"
+        tabindex="0"
+        [attr.aria-label]="item.label"
+        [attr.aria-checked]="selectedItem == item"
+        (click)="setSelectedItem(item)"
+        (keyup.Space)="setSelectedItem(item)"
+        (keyup)="move($event, i)"
+        [ngClass]="{
+          'ui-radio-group-item--selected': selectedItem == item
+        }"
+        #customRadioItem
+      >
+        <div aria-hidden="true">
+          <ng-container
+            *ngTemplateOutlet="itemTemplate; context: { $implicit: item }"
+          ></ng-container>
+        </div>
+      </div>
+    </ng-container>
+  </ul>
+</div>
