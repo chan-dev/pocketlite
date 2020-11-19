@@ -16,7 +16,15 @@ import { ToastrService } from 'ngx-toastr';
 import * as fromAuth from '@app/core/auth/state';
 import * as fromBookmarks from '@app/features/bookmarks/state/actions/bookmarks.actions';
 import * as fromRoot from '@app/core/core.state';
+import * as fromUi from '@app/core/ui/state/ui.actions';
 import { SidenavService } from '../../services/sidenav.service';
+
+import { RadioGroupPickerOption } from '@app/shared/components/radio-group-picker/radio-group-picker.component';
+import { Theme } from '@app/core/ui/state';
+
+interface ThemeRadioPickerOption extends RadioGroupPickerOption {
+  color: string;
+}
 
 @Component({
   selector: 'app-header',
@@ -28,6 +36,30 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private queryListener;
   private mediaQueryCondition = '(min-width: 1280px)';
+  private themePickerSub: Subscription;
+
+  themePicker = new FormControl({
+    value: null,
+    disabled: false,
+  });
+
+  themes: ThemeRadioPickerOption[] = [
+    {
+      label: 'Light',
+      value: null,
+      color: '#fff',
+    },
+    {
+      label: 'Dark',
+      value: Theme.DARK,
+      color: '#000',
+    },
+    {
+      label: 'Sepia',
+      value: Theme.SEPIA,
+      color: '#f5eddd',
+    },
+  ];
 
   mediaQuery: MediaQueryList;
   searchboxVisible = false;
@@ -67,6 +99,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.cd.detectChanges();
         }
       });
+
+    this.themePickerSub = this.themePicker.valueChanges.subscribe(
+      (theme: ThemeRadioPickerOption) => {
+        this.store.dispatch(
+          fromUi.updateTheme({ theme: theme.value as Theme })
+        );
+      }
+    );
   }
 
   ngOnDestroy() {
@@ -74,6 +114,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     if (this.subscription) {
       this.subscription.unsubscribe();
+    }
+
+    if (this.themePickerSub) {
+      this.themePickerSub.unsubscribe();
     }
   }
 

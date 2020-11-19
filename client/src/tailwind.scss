@@ -14,31 +14,49 @@
       @apply border-gray-500;
     }
   }
+
+  // ngx-skeleton-loader
+  [class*='mode-dark'] ngx-skeleton-loader .loader {
+    background-color: theme('colors.blue.100');
+    opacity: theme('opacity.25');
+  }
 }
 
 @layer components {
   .sidenav {
-    @apply flex flex-col font-bold text-sm capitalize text-gray-800;
+    @apply flex flex-col font-medium text-sm capitalize text-gray-700;
+
+    [class*='mode-dark'] & {
+      @apply text-gray-300;
+    }
   }
   .sidenav__items {
-    @apply p-3 cursor-pointer rounded-md;
+    @apply p-3 cursor-pointer rounded-sm;
 
     > a {
-      @apply inline-flex items-center;
+      @apply flex items-center;
     }
 
     > button {
-      @apply inline-flex items-center capitalize font-bold;
+      @apply inline-flex items-center capitalize font-medium;
     }
   }
 
-  .sidenav__items:hover {
+  .sidenav__items:not(.active):hover {
     @apply text-green-700;
+
+    [class*='mode-dark'] & {
+      @apply text-green-300;
+    }
   }
 
   .sidenav__items.active {
     @apply bg-gray-200;
     @apply text-green-700;
+
+    [class*='mode-dark'] & {
+      @apply bg-blue-100 bg-opacity-25 text-gray-200;
+    }
   }
 
   .bookmark-list {

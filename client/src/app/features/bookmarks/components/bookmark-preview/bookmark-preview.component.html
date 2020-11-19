@@ -1,5 +1,5 @@
 <div class="bookmark-preview">
-  <div class="border-b">
+  <div class="dark:border-black border-b">
     <article class="max-w-xs">
       <header>
         <h3>
@@ -42,16 +42,16 @@
         [attr.aria-label]="bookmark.domain"
         [attr.href]="bookmark.url"
       >
-        <cite class="hover:text-blue-500 not-italic text-gray-700 text-md">
+        <cite class="hover:text-blue-500 not-italic text-md">
           {{ bookmark.domain }}
         </cite>
       </a>
-      <div class="text-md text-gray-700" style="min-height: 4rem">
+      <div class="text-md" style="min-height: 4rem">
         <p class="truncate-2-lines">{{ bookmark.description }}</p>
       </div>
     </article>
     <!-- action menu -->
-    <div class="action-buttons flex justify-between text-gray-700 my-4">
+    <div class="action-buttons flex justify-between my-4">
       <div class="status-icons flex">
         <span
           class="flex rounded mx-1 bg-yellow-500 text-white"
@@ -82,18 +82,18 @@
         #menu="matMenu"
         xPosition="before"
         yPosition="above"
-        class="p-0 rounded-none"
+        class="dark:bg-dark p-0 rounded-none"
       >
         <ul class="flex flex-col justify-center w-full h-full">
           <button
-            class="hover:bg-gray-200 hover:text-green-800 flex items-center justify-start p-2"
+            class="dark-hover:bg-opacity-25 dark:text-gray-200 hover:bg-gray-200 hover:text-green-800 flex items-center justify-start p-2"
           >
             <mat-icon class="mr-2">share</mat-icon>
             Share
           </button>
           <button
             *ngIf="!bookmark.deleted"
-            class="hover:bg-gray-200 hover:text-green-800 flex items-center justify-start p-2"
+            class="dark-hover:bg-opacity-25 dark:text-gray-200 hover:bg-gray-200 hover:text-green-800 flex items-center justify-start p-2"
             (click)="archiveBookmark(bookmark.id)"
           >
             <mat-icon class="mr-2">archive</mat-icon>
@@ -101,21 +101,21 @@
           </button>
           <button
             *ngIf="bookmark.deleted"
-            class="hover:bg-gray-200 hover:text-green-800 flex items-center justify-start p-2"
+            class="dark-hover:bg-opacity-25 dark:text-gray-200 hover:bg-gray-200 hover:text-green-800 flex items-center justify-start p-2"
             (click)="restoreBookmark(bookmark.id)"
           >
             <mat-icon class="mr-2">add</mat-icon>
             Re-add
           </button>
           <button
-            class="hover:bg-gray-200 hover:text-green-800 flex items-center justify-start p-2"
+            class="dark-hover:bg-opacity-25 dark:text-gray-200 hover:bg-gray-200 hover:text-green-800 flex items-center justify-start p-2"
             (click)="deleteBookmark(bookmark.id)"
           >
             <mat-icon class="mr-2">delete</mat-icon>
             Delete
           </button>
           <button
-            class="hover:bg-gray-300 hover:text-green-800 flex items-center justify-start p-2"
+            class="dark-hover:bg-opacity-25 dark:text-gray-200 hover:bg-gray-300 hover:text-green-800 flex items-center justify-start p-2"
             (click)="toggleFavoriteBookmark(bookmark)"
           >
             <!-- TODO: highlight the star icon -->
@@ -125,7 +125,7 @@
             Favorite
           </button>
           <button
-            class="hover:bg-gray-300 hover:text-green-800 flex items-center justify-start p-2"
+            class="dark-hover:bg-opacity-25 dark:text-gray-200 hover:bg-gray-300 hover:text-green-800 flex items-center justify-start p-2"
             (click)="openTagsModal()"
           >
             <mat-icon class="mr-2">local_offer</mat-icon>

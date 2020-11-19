@@ -1,17 +1,23 @@
-<mat-sidenav-container class="h-full" [hasBackdrop]="false">
+<mat-sidenav-container
+  class="h-full dark:text-gray-300 text-gray-700"
+  [hasBackdrop]="false"
+>
   <!-- TODO: "open" on md (768px) on tailwind size -->
   <mat-sidenav
+    class="dark:bg-dark bg-white w-64"
     data-test="sidenav"
     [fixedInViewport]="!mediaQuery.matches"
     [mode]="mediaQuery.matches ? 'side' : 'over'"
     [opened]="mediaQuery.matches"
   >
-    <div class="h-full border border-gray-200 md:border-t-0">
+    <div
+      class="h-full dark:border-black border border-b-0 border-gray-200 md:border-t-0"
+    >
       <div data-test="sidenav-parent-view" class="sidenav" *ngIf="!isChildNav">
         <!-- top section -->
         <section
           data-test="sidenav__header"
-          class="sidenav__header top-section w-64 space-y-3 text-sm"
+          class="sidenav__header top-section space-y-3 text-sm"
           *ngIf="!mediaQuery.matches"
         >
           <div
@@ -32,7 +38,7 @@
         </section>
 
         <!-- main links -->
-        <section class="sidenav__body p-2 w-64 space-y-3 text-sm">
+        <section class="sidenav__body p-4 space-y-3 text-sm">
           <!-- main links -->
           <ul class="sidenav__list">
             <li
@@ -109,8 +115,10 @@
 
       <div data-test="sidenav-child-view" class="sidenav" *ngIf="isChildNav">
         <!-- top section -->
-        <section class="sidenav__header top-section w-64 space-y-3 text-sm">
-          <div class="border-gray-200 py-3 px-3">
+        <section class="sidenav__header top-section space-y-3 text-sm">
+          <div
+            class="xl:border-b-0 border-b dark:border-black border-gray-300 py-3 px-3"
+          >
             <div class="h-12 center-between">
               <button class="inline-flex" (click)="closeChildNav()">
                 <mat-icon>arrow_back</mat-icon>

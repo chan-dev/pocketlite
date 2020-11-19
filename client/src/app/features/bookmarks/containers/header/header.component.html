@@ -1,4 +1,4 @@
-<header class="border-b border-gray-200 text-gray-700 px-5 py-3">
+<header class="dark:border-black border-b border-gray-200 px-5 py-3">
   <div
     class="flex justify-between items-center h-12 max-w-xs md:max-w-screen-md xl:max-w-full mx-auto"
   >
@@ -59,7 +59,8 @@
             matTooltip="search"
             (click)="showSearchBox()"
           >
-            <mat-icon class="w-8 h-8 text-3xl hover:text-gray-900"
+            <mat-icon
+              class="w-8 h-8 text-3xl dark-hover:text-white hover:text-gray-900"
               >search</mat-icon
             >
           </button>
@@ -72,7 +73,8 @@
             matTooltip="add"
             (click)="showAddLinkForm()"
           >
-            <mat-icon class="w-8 h-8 text-3xl hover:text-gray-900"
+            <mat-icon
+              class="w-8 h-8 text-3xl dark-hover:text-white hover:text-gray-900"
               >add</mat-icon
             >
           </button>
@@ -83,46 +85,75 @@
             matTooltipPosition="below"
             matTooltip="edit"
           >
-            <mat-icon class="w-8 h-8 text-3xl hover:text-gray-900"
+            <mat-icon
+              class="w-8 h-8 text-3xl dark-hover:text-white hover:text-gray-900"
               >edit</mat-icon
             >
           </button>
         </li>
-        <!-- TODO: just for testing -->
-        <li class="cursor-pointer inline-flex">
-          <!-- TODO: replace with button and attach a click handler for logout -->
-          <a
-            class="inline-flex"
-            matTooltipPosition="below"
-            matTooltip="login"
-            href="http://localhost:3000/api/auth/google"
+      </ul>
+      <div class="user-menu">
+        <button mat-button [matMenuTriggerFor]="menu" aria-label="user menu">
+          <img
+            class="rounded-full w-6 h-6 cursor-pointer"
+            src="/assets/avatar.png"
+            alt="avatar"
+            aria-hidden="true"
+          />
+        </button>
+        <mat-menu #menu="matMenu" class="dark:bg-dark bg-white">
+          <div
+            class="p-5 flex items-center space-between border-b dark:border-black border-gray-200 font-medium"
           >
-            <mat-icon class="w-8 h-8 text-3xl hover:text-gray-900"
-              >login</mat-icon
-            >
-          </a>
-          <!-- <a href="/api/auth/google">Login</a> -->
-        </li>
-        <li class="cursor-pointer inline-flex">
+            <img
+              class="mr-2 rounded-full w-10 h-10"
+              src="/assets/avatar.png"
+              alt="avatar"
+              aria-hidden="true"
+            />
+            Christian M. Austria
+          </div>
           <button
-            class="inline-flex"
-            matTooltipPosition="below"
-            matTooltip="logout"
+            class="dark:text-gray-300 text-gray-700"
+            mat-menu-item
             type="button"
             (click)="logout($event)"
           >
-            <mat-icon class="w-8 h-8 text-3xl hover:text-gray-900"
-              >logout</mat-icon
-            >
+            logout
           </button>
-        </li>
-      </ul>
-      <div class="account-menu">
-        <img
-          class="rounded-full w-6 h-6 cursor-pointer"
-          src="/assets/avatar.png"
-          alt="avatar"
-        />
+          <div
+            mat-menu-item
+            aria-label="Theme picker"
+            class="hover:bg-transparent p-3 h-auto max-w-full"
+            [disableRipple]="true"
+          >
+            <app-radio-group-picker
+              styleClass="theme-picker"
+              ariaLabel="Choose the theme"
+              [items]="themes"
+              [formControl]="themePicker"
+              (click)="$event.stopPropagation()"
+            >
+              <div *appRadioGroupPicker="let item" [matTooltip]="item.label">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="icon icon-tabler icon-tabler-circle text-gray-500 fill-current"
+                  width="44"
+                  height="44"
+                  viewBox="0 0 24 24"
+                  stroke-width="0.7"
+                  stroke="#a29b8d"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <circle cx="12" cy="12" r="9" [attr.fill]="item.color" />
+                </svg>
+              </div>
+            </app-radio-group-picker>
+          </div>
+        </mat-menu>
       </div>
     </div>
   </div>

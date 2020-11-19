@@ -9,3 +9,33 @@ body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
+
+// Custom radio-picker styles
+.theme-picker.ui-radio-group-picker .ui-radio-group-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.theme-picker.ui-radio-group-picker .ui-radio-group-label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.theme-picker .ui-radio-group-item {
+  border-radius: 50%;
+  cursor: pointer;
+
+  &:hover {
+    background: #c6f6d5;
+  }
+
+  &:focus {
+    outline: 1px dashed #38a169;
+  }
+}
+
+.theme-picker .ui-radio-group-item--selected {
+  border: 2px solid #007a73;
+}
