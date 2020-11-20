@@ -9,6 +9,7 @@ import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { MediaMatcher } from '@angular/cdk/layout';
 
 import { ToastrService } from 'ngx-toastr';
@@ -18,7 +19,7 @@ import { Theme } from '@app/core/ui/state';
 import * as fromAuth from '@app/core/auth/state';
 import * as fromBookmarks from '@app/features/bookmarks/state/actions/bookmarks.actions';
 import * as fromRoot from '@app/core/core.state';
-import * as fromUi from '@app/core/ui/state/ui.actions';
+import * as fromUi from '@app/core/ui/state';
 import { SidenavService } from '../../services/sidenav.service';
 import { RadioGroupPickerOption } from '@app/shared/components/radio-group-picker/radio-group-picker.component';
 
@@ -37,6 +38,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private queryListener;
   private mediaQueryCondition = '(min-width: 1280px)';
   private themePickerSub: Subscription;
+  private selectedThemeSub: Subscription;
 
   currentUser$: Observable<User>;
 
@@ -48,7 +50,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   themes: ThemeRadioPickerOption[] = [
     {
       label: 'Light',
-      value: null,
+      value: Theme.LIGHT,
       color: '#fff',
     },
     {
@@ -111,6 +113,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     );
 
     this.currentUser$ = this.store.pipe(select(fromAuth.selectCurrentUser));
+
+    this.updateActiveOnLoadOrPrefersColorSchemeQuery();
   }
 
   ngOnDestroy() {
@@ -122,6 +126,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     if (this.themePickerSub) {
       this.themePickerSub.unsubscribe();
+    }
+
+    if (this.selectedThemeSub) {
+      this.selectedThemeSub.unsubscribe();
     }
   }
 
@@ -152,7 +160,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  logout(event) {
+  logout() {
     // TODO: dispatch Logout action
     this.store.dispatch(fromAuth.logout());
   }
@@ -174,5 +182,40 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private closeAddLink() {
     this.addLinkFormVisible = false;
+  }
+
+  private updateActiveOnLoadOrPrefersColorSchemeQuery() {
+    // NOTE:
+    // This subscription is needed ONLY for setting the
+    // active css class for the themePicker formControl
+    //
+    // Since this listens to ngrx selector changes, this will cause
+    // an extra action dispatch so we set the emitEvent to false so
+    // formControl valueChanges/statusChanges don't emit values because
+    // we already have 1 subscription on the themePicker formControl that dispatches
+    // updateTheme action
+    //
+    // Sets the active css class for the theme picker form control
+    // on initial load OR changes on user preference thru
+    // prefers-color-scheme media query
+    this.selectedThemeSub = this.store
+      .pipe(
+        select(fromUi.selectTheme),
+        tap(theme => {
+          let savedTheme: ThemeRadioPickerOption;
+
+          savedTheme = this.themes.find(t => (t.value as Theme) === theme);
+
+          this.themePicker.setValue(savedTheme, {
+            // NOTE: we must set this to false so
+            // valueChanges/statusChanges won't emit
+            // we do this to prevent 'extra' dispatch of updateTheme action
+            // since we already have one set by listening to theme picker
+            // changes
+            emitEvent: false,
+          });
+        })
+      )
+      .subscribe();
   }
 }
