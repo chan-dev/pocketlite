@@ -1,0 +1,25 @@
+<app-radio-group-picker
+  styleClass="theme-picker"
+  ariaLabel="Choose the theme"
+  [items]="themes"
+  [formControl]="themePicker"
+  (click)="$event.stopPropagation()"
+>
+  <div *appRadioGroupPicker="let item" [matTooltip]="item.label">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon icon-tabler icon-tabler-circle text-gray-500 fill-current"
+      width="44"
+      height="44"
+      viewBox="0 0 24 24"
+      stroke-width="0.7"
+      stroke="#a29b8d"
+      fill="none"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <circle cx="12" cy="12" r="9" [attr.fill]="item.color" />
+    </svg>
+  </div>
+</app-radio-group-picker>

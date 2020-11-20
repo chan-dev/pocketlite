@@ -39,6 +39,7 @@ import { BookmarkReaderViewBodyComponent } from './components/bookmark-reader-vi
 import { BookmarkReaderViewPageComponent } from './containers/bookmark-reader-view-page/bookmark-reader-view-page.component';
 import { BookmarkReaderViewHeaderComponent } from './components/bookmark-reader-view-header/bookmark-reader-view-header.component';
 import { BookmarksCollectionEmptyMessageDirective } from '@app/features/bookmarks/shared/directives/bookmarks-collection-empty-message.directive';
+import { ThemePickerControlComponent } from './shared/components/theme-picker-control/theme-picker-control.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { BookmarksCollectionEmptyMessageDirective } from '@app/features/bookmark
     BookmarkReaderViewPageComponent,
     BookmarkReaderViewHeaderComponent,
     BookmarksCollectionEmptyMessageDirective,
+    ThemePickerControlComponent,
   ],
   imports: [
     CommonModule,
