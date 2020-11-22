@@ -4,7 +4,7 @@ import mongodb from 'mongodb';
 
 import config from '../config/keys';
 import { ApiError } from '../classes/error';
-import jwtSignAndCreate from 'helpers/jwt-sign-and-create';
+import jwtSignAndCreate from '../helpers/jwt-sign-and-create';
 
 const router = express.Router();
 
