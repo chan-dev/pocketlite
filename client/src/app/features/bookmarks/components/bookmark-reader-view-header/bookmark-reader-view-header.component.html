@@ -72,11 +72,26 @@
     <button
       type="button"
       aria-label="Display Settings"
+      [matMenuTriggerFor]="menu"
       matTooltipPosition="below"
       matTooltip="Display Settings"
       class="leading-none"
     >
       <mat-icon class="w-full h-full text-4xl">text_format</mat-icon>
     </button>
+    <mat-menu #menu="matMenu" class="dark:bg-dark-mode bg-white">
+      <div
+        mat-menu-item
+        aria-label="Theme picker"
+        class="hover:bg-transparent p-3 h-auto max-w-full"
+        [disableRipple]="true"
+      >
+        <app-theme-picker-control
+          [activeTheme]="selectedTheme$ | async"
+          [themes]="themes"
+          (controlValueChanges)="updateTheme($event)"
+        ></app-theme-picker-control>
+      </div>
+    </mat-menu>
   </div>
 </div>

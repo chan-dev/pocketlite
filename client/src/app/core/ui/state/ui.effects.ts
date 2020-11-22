@@ -13,7 +13,8 @@ export class UiEffects {
         ofType(
           uiActions.updateTheme,
           uiActions.updateThemeFromBrowserStorage,
-          uiActions.updateThemeFromPreferColorSchemeMediaQuery
+          uiActions.updateThemeFromPreferColorSchemeMediaQuery,
+          uiActions.updateThemeFromReaderViewPage
         ),
         tap(({ theme }) => {
           this.uiService.updateTheme(theme);

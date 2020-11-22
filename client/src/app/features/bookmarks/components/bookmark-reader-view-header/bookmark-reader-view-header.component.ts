@@ -6,9 +6,15 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { select, Store } from '@ngrx/store';
 
 import { Bookmark } from '@models/bookmark.model';
 import { BookmarkFavorite } from '@models/bookmark-favorite.model';
+import { ThemeRadioPickerOption } from '../../shared/components/theme-picker-control/theme-radio-picker-option.interface';
+import { AVAILABLE_THEMES, Theme } from '@app/core/ui/state';
+import * as fromUi from '@app/core/ui/state';
 
 @Component({
   selector: 'app-bookmark-reader-view-header',
@@ -28,9 +34,19 @@ export class BookmarkReaderViewHeaderComponent implements OnInit {
   @Input() bookmarkFavorite: BookmarkFavorite;
   @Input() bookmark: Bookmark;
 
-  constructor() {}
+  themePicker = new FormControl({
+    value: null,
+    disabled: false,
+  });
+  themes: ThemeRadioPickerOption[] = AVAILABLE_THEMES;
 
-  ngOnInit() {}
+  selectedTheme$: Observable<Theme>;
+
+  constructor(private store: Store) {}
+
+  ngOnInit() {
+    this.selectedTheme$ = this.store.pipe(select(fromUi.selectTheme));
+  }
 
   toggleFavoriteBookmark() {
     this.toggleFavorite.emit({
@@ -57,5 +73,11 @@ export class BookmarkReaderViewHeaderComponent implements OnInit {
 
   isFavorited() {
     return !!this.bookmarkFavorite;
+  }
+
+  updateTheme(theme: ThemeRadioPickerOption) {
+    this.store.dispatch(
+      fromUi.updateThemeFromReaderViewPage({ theme: theme.value as Theme })
+    );
   }
 }

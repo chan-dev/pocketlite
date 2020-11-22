@@ -6,6 +6,10 @@ export const updateTheme = createAction(
   '[HeaderComponent] Update Theme',
   props<{ theme: Theme }>()
 );
+export const updateThemeFromReaderViewPage = createAction(
+  '[HeaderComponent] Update Theme From Reader View Page',
+  props<{ theme: Theme }>()
+);
 export const updateThemeFromBrowserStorage = createAction(
   '[BrowserStorage] Update Theme From Browser Storage',
   props<{ theme: Theme }>()

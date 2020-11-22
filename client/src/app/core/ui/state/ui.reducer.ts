@@ -19,6 +19,7 @@ const uiReducer = createReducer(
     uiActions.updateTheme,
     uiActions.updateThemeFromBrowserStorage,
     uiActions.updateThemeFromPreferColorSchemeMediaQuery,
+    uiActions.updateThemeFromReaderViewPage,
     (state, { theme }) => {
       return {
         ...state,
