@@ -14,8 +14,8 @@
   },
   "scripts": {
     "start:prod": "export NODE_ENV=production && node build/server/index.js",
-    "start:staging": "export NODE_ENV=staging && nodemon -r tsconfig-paths/register index.ts",
-    "start:dev": "export NODE_ENV=development && nodemon -r tsconfig-paths/register index.ts",
+    "start:staging": "export NODE_ENV=staging && nodemon -r  dotenv/config -r tsconfig-paths/register index.ts dotenv_config_path=.env.staging",
+    "start:dev": "export NODE_ENV=development && nodemon -r dotenv/config -r tsconfig-paths/register index.ts dotenv_config_path=.env.development",
     "build": "tsc -p ./",
     "lint": "eslint . --ext .ts",
     "csrf": "npx http-server -c-1 -d false -o /csrf-test"
