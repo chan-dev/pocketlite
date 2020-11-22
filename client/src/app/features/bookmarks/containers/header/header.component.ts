@@ -14,7 +14,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { ToastrService } from 'ngx-toastr';
 
 import { User } from '@models/user.model';
-import { Theme } from '@app/core/ui/state';
+import { AVAILABLE_THEMES, Theme } from '@app/core/ui/state';
 import * as fromAuth from '@app/core/auth/state';
 import * as fromBookmarks from '@app/features/bookmarks/state/actions/bookmarks.actions';
 import * as fromRoot from '@app/core/core.state';
@@ -42,23 +42,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     disabled: false,
   });
 
-  themes: ThemeRadioPickerOption[] = [
-    {
-      label: 'Light',
-      value: Theme.LIGHT,
-      color: '#fff',
-    },
-    {
-      label: 'Dark',
-      value: Theme.DARK,
-      color: '#000',
-    },
-    {
-      label: 'Sepia',
-      value: Theme.SEPIA,
-      color: '#f5eddd',
-    },
-  ];
+  themes: ThemeRadioPickerOption[] = AVAILABLE_THEMES;
 
   mediaQuery: MediaQueryList;
   searchboxVisible = false;
