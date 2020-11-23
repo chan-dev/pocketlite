@@ -16,8 +16,18 @@
   }
 
   // ngx-skeleton-loader
-  [class*='mode-dark'] ngx-skeleton-loader .loader {
-    opacity: theme('opacity.25');
+  [class*='mode-dark'] {
+    ngx-skeleton-loader .loader {
+      opacity: theme('opacity.25');
+    }
+
+    .mat-dialog-container {
+      @apply bg-dark-mode text-dark-mode-text;
+    }
+
+    .mat-chip-list-wrapper {
+      @apply bg-dark-mode-max;
+    }
   }
 }
 

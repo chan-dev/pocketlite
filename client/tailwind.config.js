@@ -1,6 +1,9 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
+  corePlugins: {
+    float: false
+  },
   important: true,
   purge: [],
   theme: {
