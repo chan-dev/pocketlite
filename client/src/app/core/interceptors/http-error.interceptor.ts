@@ -23,10 +23,16 @@ export class HttpErrorInterceptor implements HttpInterceptor {
       catchError(error => {
         let errorMessage: string;
         if (error instanceof HttpErrorResponse) {
-          errorMessage =
-            error.status === 504
-              ? 'Cannot connect to server'
-              : this.errorService.getServerError(error);
+          if (error.status === 504) {
+            errorMessage = 'Server timeout error';
+          } else if (
+            error.status === 0 &&
+            error.error instanceof ProgressEvent
+          ) {
+            errorMessage = 'Cannot connect to server';
+          } else {
+            errorMessage = this.errorService.getServerError(error);
+          }
         } else {
           errorMessage = this.errorService.getClientError(error);
         }
