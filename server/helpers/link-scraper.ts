@@ -118,11 +118,11 @@ const getTitle = async (page: any) => {
     }
     const h1: HTMLHeadingElement | null = document.querySelector('h1');
     if (h1) {
-      return h1.innerHTML;
+      return h1.innerText;
     }
     const h2: HTMLHeadingElement | null = document.querySelector('h2');
     if (h2) {
-      return h2.innerHTML;
+      return h2.innerText;
     }
     return null;
   });
