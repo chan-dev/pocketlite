@@ -282,7 +282,16 @@ const scrapeLink = async (
 
       const article = new Readability(doc.window.document).parse();
 
-      const turndownService = new TurndownService();
+      const turndownService = new TurndownService({
+        codeBlockStyle: 'fenced',
+        fence: '~~~',
+      });
+      turndownService.addRule('paragraph', {
+        filter: 'p',
+        replacement: function (content) {
+          return '\n\n' + content + '\n\n';
+        },
+      });
       turndownService.use(turndownPluginGfm.gfm);
 
       const cleanMarkup = DOMPurify.sanitize(article.content);
