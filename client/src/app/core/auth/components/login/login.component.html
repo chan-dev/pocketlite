@@ -15,7 +15,7 @@
 
     <a
       data-test="login"
-      href="http://localhost:3000/api/auth/google"
+      [attr.href]="loginEndpoint"
       class="hover:bg-red-500 flex items-center justify-between mb-2 bg-red-600 text-white border-gray-400 py-4 px-5 rounded-md border-0"
     >
       <svg
@@ -34,9 +34,7 @@
 
     <div class="sm:justify-center flex text-sm">
       <p>Already have an account?</p>
-      <a href="http://localhost:3000/api/auth/google" class="underline ml-3">
-        Login
-      </a>
+      <a [attr.href]="loginEndpoint" class="underline ml-3"> Login </a>
     </div>
   </div>
 </div>

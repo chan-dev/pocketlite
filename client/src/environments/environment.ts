@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  oauth2LoginUrl: 'http://localhost:3000/api/auth/google',
   rollbarConfig: {
     accessToken: 'ac097a1ba9f64cafbdaccd58caebd84b',
     captureUncaught: true,
