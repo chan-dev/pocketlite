@@ -37,6 +37,8 @@ db.once('open', () => {
 const PORT = process.env.PORT || 3000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
+const CLIENT_PATH = path.join(__dirname, process.env.CLIENT_PATH as string);
+
 mongoose.connect(config.mongoose.dbUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -73,17 +75,16 @@ app.use(cors(corsConfig));
 googleOauth2Setup();
 jwtSetup();
 
+// Client public assets folder
+app.use(express.static(CLIENT_PATH));
+
 app.use('/api/auth', authRoutes);
 app.use('/api/bookmarks', bookmarkRoutes);
 app.use('/api/tags', tagRoutes);
 
-// app.get('/', express.static(path.join(__dirname, '../client/dist/pocketlite')));
-
-// defer everything else to client-side routing
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, '../client/dist/pocketlite/index.html'));
-// });
-app.get('/', express.static(path.join(__dirname, '../client/dist/pocketlite')));
+app.use('/', (req, res) => {
+  res.sendFile(CLIENT_PATH + '/index.html');
+});
 
 app.use(error.notFound);
 app.use(error.transformUncaughtExceptions);
