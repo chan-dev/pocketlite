@@ -218,11 +218,23 @@ const scrapeLink = async (
 ) => {
   let browser;
 
+  // puppeteer infers the executablePath to PUPPETEER_EXECUTABLE_PATH
+  // value if it exists
   try {
     browser = await puppeteer.launch({
       headless: true,
       ignoreHTTPSErrors: true,
-      args: [...puppeteerArgs],
+      devtools: false,
+      slowMo: 0,
+      args: [
+        '--no-sandbox', // Required
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--incognito',
+        '--single-process',
+        '--no-zygote',
+        ...puppeteerArgs,
+      ],
     });
     const page = await browser.newPage();
     await page.setUserAgent(puppeteerAgent);
