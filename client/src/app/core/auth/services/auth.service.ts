@@ -30,7 +30,7 @@ export class AuthService {
       .append('Pragma', 'no-cache');
 
     return this.http
-      .get<{ user: User }>('http://localhost:3000/api/auth/user', {
+      .get<{ user: User }>('/api/auth/user', {
         withCredentials: true,
         headers,
       })
