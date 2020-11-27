@@ -40,6 +40,23 @@ RUN npm install --only=prod
 FROM node:14-alpine
 WORKDIR /app
 COPY --from=server-production /app/package*.json /app/
+# Installs latest Chromium (85) package.
+RUN apk add --no-cache \
+  chromium \
+  nss \
+  freetype \
+  freetype-dev \
+  harfbuzz \
+  ca-certificates \
+  ttf-freefont
+  # nodejs
+
+# Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
+  PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
+# Puppeteer v5.2.1 works with Chromium 85.
+# RUN npm add puppeteer@5.2.1
 RUN npm install --only prod
 COPY --from=server-production /app/build /app/build/
 COPY --from=client-build-step /app/client/dist/pocketlite /app/build/server/client/dist/pocketlite
