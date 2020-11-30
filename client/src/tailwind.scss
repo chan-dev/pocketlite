@@ -2,69 +2,173 @@
 @tailwind components;
 @tailwind utilities;
 
+.mode-light {
+  --primary: theme('colors.white');
+  --primary-darker: theme('colors.gray.200');
+  --secondary: theme('colors.red.600');
+  --accent1: theme('colors.green.600');
+  --accent1-darker: theme('colors.green.800');
+  --accent2: theme('colors.blue.800');
+  --accent2-darker: theme('colors.blue.600');
+
+  /* Typography */
+  --font-text: theme('colors.gray.700');
+
+  /* Forms */
+  --input-bg: theme('colors.gray.200');
+  --input-placeholder: theme('colors.gray.600');
+
+  /* Sidenav */
+  --sidenav-bg: var(--primary-bg);
+  --sidenav-text: var(--font-text);
+  --sidenav-text-not-active-hover: var(--accent1);
+  --sidenav-text-active: var(--accent1);
+  --sidenav-text-bg-active: theme('colors.gray.200');
+
+  /* Icons */
+  --icon: var(--font-text);
+  --icon-hover: theme('colors.gray.900');
+
+  /* Modals */
+  --modal-bg: var(--primary-bg);
+
+  /* Tags */
+  --tag-bg-active: theme('colors.green.100');
+  --tag: var(--font-text);
+  --tag-text-active: theme('colors.green.700');
+
+  /* Tag chips */
+  --tag-chip-bg: #e0e0e0;
+  --tag-chip-bg-hover: theme('colors.gray.300');
+  --tag-chip-text: #000000de;
+}
+
+.mode-dark {
+  --primary: #1a1a1a;
+  --primary-darker: theme('colors.black');
+  --secondary: theme('colors.red.600');
+  --accent1: theme('colors.green.500');
+  --accent1-darker: theme('colors.green.800');
+  --accent2: theme('colors.blue.600');
+  --accent2-darker: theme('colors.blue.700');
+
+  /* Typography */
+  --font-text: theme('colors.gray.300');
+
+  /* Forms */
+  --input-bg: theme('colors.gray.200');
+  --input-placeholder: theme('colors.gray.600');
+
+  /* Sidenav */
+  --sidenav-bg: var(--primary-bg);
+  --sidenav-text: var(--font-text);
+  --sidenav-text-not-active-hover: theme('colors.green.500');
+  --sidenav-text-active: theme('colors.green.500');
+  --sidenav-text-bg-active: theme('colors.gray.900');
+
+  /* Icons */
+  --icon: var(--font-text);
+  --icon-hover: theme('colors.gray.900');
+
+  /* Modals */
+  --modal-bg: var(--primary-bg);
+
+  /* Tags */
+  --tag-bg-active: theme('colors.green.100');
+  --tag: var(--font-text);
+  --tag-text-active: theme('colors.green.700');
+
+  /* Tag chips */
+  --tag-chip-bg: theme('colors.gray.200');
+  --tag-chip-bg-hover: theme('colors.gray.300');
+  --tag-chip-text: theme('colors.gray.900');
+}
+
+.mode-sepia {
+  --primary: theme('colors.sepia.500');
+  --primary-darker: theme('colors.sepia.600');
+  --secondary: theme('colors.red.600');
+  --accent1: theme('colors.green.500');
+  --accent1-darker: theme('colors.green.800');
+  --accent2: theme('colors.blue.600');
+  --accent2-darker: theme('colors.blue.700');
+
+  /* Typography */
+  --font-text: theme('colors.sepia.900');
+
+  /* Forms */
+  --input-bg: theme('colors.gray.200');
+  --input-placeholder: theme('colors.sepia.700');
+
+  /* Sidenav */
+  --sidenav-bg: var(--primary-bg);
+  --sidenav-text: var(--font-text);
+  --sidenav-text-not-active-hover: var(--accent1-darker);
+  --sidenav-text-active: var(--accent1-darker);
+  --sidenav-text-bg-active: theme('colors.gray.400');
+
+  /* Icons */
+  --icon: var(--font-text);
+  --icon-hover: theme('colors.gray.900');
+
+  /* Modals */
+  --modal-bg: var(--primary-bg);
+
+  /* Tags */
+  --tag-bg-active: theme('colors.green.100');
+  --tag: var(--font-text);
+  --tag-text-active: theme('colors.green.700');
+
+  /* Tag chips */
+  --tag-chip-bg: theme('colors.sepia.800');
+  --tag-chip-bg-hover: theme('colors.sepia.900');
+  --tag-chip-text: theme('colors.sepia.100');
+}
+
 @layer base {
   button:focus {
     outline: none !important;
   }
 
   .mat-chip-list-wrapper {
-    @apply border rounded;
+    @apply border-transparent rounded;
 
     &:focus-within {
-      @apply border-gray-500;
+      @apply border-theme-primary-darker;
     }
   }
 
-  [class*='mode-dark'] {
-    ngx-skeleton-loader .loader {
-      opacity: theme('opacity.25');
-    }
+  .mat-dialog-container {
+    @apply bg-theme-primary text-theme-font-text;
+  }
 
-    .mat-dialog-container {
-      @apply bg-dark-mode text-dark-mode-text;
-    }
-
-    .mat-chip-list-wrapper {
-      @apply bg-dark-mode-max;
-    }
+  .mat-chip-list-wrapper {
+    @apply bg-theme-primary-darker;
   }
 }
 
 @layer components {
   .sidenav {
-    @apply flex flex-col font-medium text-sm capitalize text-gray-700;
-
-    [class*='mode-dark'] & {
-      @apply text-dark-mode-text;
-    }
+    @apply flex flex-col font-medium text-sm capitalize text-theme-font-text;
   }
   .sidenav__items {
     @apply p-3 cursor-pointer rounded-sm;
 
-    > a {
+    a {
       @apply flex items-center;
     }
 
-    > button {
+    button {
       @apply inline-flex items-center capitalize font-medium;
     }
   }
 
   .sidenav__items:not(.active):hover {
-    @apply text-green-700;
-
-    [class*='mode-dark'] & {
-      @apply text-green-300;
-    }
+    @apply text-theme-sidenav-text-not-active-hover;
   }
 
   .sidenav__items.active {
-    @apply bg-gray-200;
-    @apply text-green-700;
-
-    [class*='mode-dark'] & {
-      @apply bg-blue-100 bg-opacity-25 text-dark-mode-text;
-    }
+    @apply text-theme-sidenav-text-active bg-theme-sidenav-text-bg-active;
   }
 
   .bookmark-list {
@@ -97,8 +201,14 @@
   }
 
   .tag {
+    @apply text-theme-sidenav-text;
+
+    &:not(.active):hover {
+      @apply text-theme-sidenav-text-not-active-hover;
+    }
+
     .active {
-      @apply bg-green-100 text-green-700 rounded;
+      @apply bg-theme-sidenav-text-bg-active text-theme-sidenav-text-active rounded;
     }
   }
 

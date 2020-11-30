@@ -1,7 +1,7 @@
-<div class="tag h-6 center-between group hover:text-green-700 cursor-pointer">
+<div class="tag h-6 center-between group cursor-pointer">
   <div data-test="tag-show-view" *ngIf="!isEditing" class="w-full">
     <div
-      class="relative p-2 center-between w-full edit-tag dark:bg-opacity-25 dark:text-dark-mode-text"
+      class="relative p-2 center-between w-full edit-tag bg-opacity-25"
       routerLinkActive="active"
       [routerLinkActiveOptions]="{ exact: true }"
     >
@@ -25,10 +25,10 @@
 
   <div data-test="tag-edit-view" [hidden]="!isEditing" class="w-full">
     <div
-      class="dark:bg-dark-mode-max dark:text-dark-mode-text bg-gray-200 center-between edit-tag"
+      class="text-theme-font-text bg-theme-primary-darker center-between edit-tag"
     >
       <input
-        class="p-2 dark:bg-dark-mode-max dark:text-dark-mode-text bg-gray-200 flex-1 focus:outline-none"
+        class="p-2 bg-theme-primary-darker text-theme-font-text flex-1 focus:outline-none"
         type="text"
         [formControl]="tagControl"
         name="tag"

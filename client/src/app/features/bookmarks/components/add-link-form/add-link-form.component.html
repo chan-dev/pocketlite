@@ -5,7 +5,7 @@
         appAutoFocus
         [formControl]="url"
         type="text"
-        class="add-link-form__input h-full w-full outline-none flex-1 px-2 rounded border dark:border-transparent dark:bg-dark-mode-max dark:text-dark-mode-text bg-gray-200 text-gray-700"
+        class="add-link-form__input h-full w-full outline-none flex-1 px-2 rounded border border-transparent bg-theme-primary-darker text-theme-font-text"
         placeholder="Save a URL https://..."
         (keyup.enter)="saveUrl()"
       />
@@ -14,7 +14,7 @@
       <div class="add-link-form__action inline-flex items-center space-x-2">
         <button
           type="button"
-          class="add-link-form__cancel dark-hover:bg-dark-mode-max dark:text-dark-mode-text dark:bg-transparent dark:border-dark-mode-max hover:bg-gray-200 bg-transparent border rounded-md px-4 py-2 text-gray-900 font-bold"
+          class="add-link-form__cancel hover:bg-theme-primary-darker bg-transparent border border-theme-primary-darker rounded-md px-4 py-2 text-theme-font-text font-bold"
           (click)="cancel.emit()"
         >
           Cancel
@@ -31,7 +31,7 @@
     <ng-template #minimalUi>
       <button
         type="button"
-        class="add-link-form__cancel dark:text-dark-mode-text inline-flex hover:bg-gray-200 bg-transparent rounded-md p-2 text-gray-900 font-bold"
+        class="add-link-form__cancel inline-flex hover:bg-theme-primary-darker bg-transparent rounded-md p-2 text-theme-font-text font-bold"
         (click)="cancel.emit()"
       >
         <mat-icon>close</mat-icon>

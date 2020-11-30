@@ -2,6 +2,7 @@
   <div class="flex-1 mr-2">
     <mat-chip-list #chipList aria-label="Tag selection">
       <mat-chip
+        class="hover:bg-theme-tag-chip-bg-hover bg-theme-tag-chip-bg text-theme-tag-chip-text"
         *ngFor="let tag of selectedTags"
         [selectable]="selectable"
         [removable]="removable"
@@ -11,7 +12,7 @@
         <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
       </mat-chip>
       <input
-        class="dark:bg-dark-mode-max outline-none"
+        class="bg-theme-primary-darker outline-none"
         placeholder="New tag..."
         #tagInput
         [formControl]="tagCtrl"

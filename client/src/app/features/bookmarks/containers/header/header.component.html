@@ -1,4 +1,4 @@
-<header class="dark:border-dark-mode-max border-b border-gray-200 px-5 py-3">
+<header class="border-b border-theme-primary-darker px-5 py-3">
   <div
     class="flex justify-between items-center h-12 max-w-xs md:max-w-screen-md xl:max-w-full mx-auto"
   >
@@ -101,9 +101,9 @@
             aria-hidden="true"
           />
         </button>
-        <mat-menu #menu="matMenu" class="dark:bg-dark-mode bg-white">
+        <mat-menu #menu="matMenu" class="bg-theme-primary">
           <div
-            class="p-5 flex items-center space-between border-b dark:border-dark-mode-max border-gray-200 font-medium"
+            class="p-5 flex items-center space-between border-b border-theme-primary-darker font-medium"
           >
             <img
               class="mr-2 rounded-full w-10 h-10"
@@ -116,7 +116,7 @@
             </span>
           </div>
           <button
-            class="dark:text-dark-mode-text text-gray-700"
+            class="text-theme-font-text"
             mat-menu-item
             type="button"
             (click)="logout()"
