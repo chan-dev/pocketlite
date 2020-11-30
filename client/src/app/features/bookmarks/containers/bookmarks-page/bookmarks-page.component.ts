@@ -1,4 +1,11 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import * as bookmarksSelectors from '@app/features/bookmarks/state/selectors/bookmarks.selectors';
+import { LoadingState } from '../../state/reducers/bookmarks.reducer';
+
 @Component({
   selector: 'app-bookmarks-page',
   templateUrl: './bookmarks-page.component.html',
@@ -22,5 +29,12 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookmarksPageComponent {
-  constructor() {}
+  loading$: Observable<boolean>;
+
+  constructor(private store: Store) {
+    this.loading$ = this.store.pipe(
+      select(bookmarksSelectors.selectBookmarkCallState),
+      map((callState: LoadingState) => callState === LoadingState.LOADING)
+    );
+  }
 }

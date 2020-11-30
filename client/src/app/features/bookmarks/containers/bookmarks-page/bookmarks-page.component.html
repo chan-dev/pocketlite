@@ -1,4 +1,13 @@
 <app-header></app-header>
+
+<!-- NOTE: we serve a space for the progressbar to prevent layout shift -->
+<div class="h-1">
+  <mat-progress-bar
+    mode="indeterminate"
+    *ngIf="loading$ | async"
+  ></mat-progress-bar>
+</div>
+
 <!-- NOTE: it's important that this is set to flex so the ngx-infinite-scroll
 package will work correctly -->
 <app-main-content
