@@ -40,8 +40,7 @@ export class BookmarkFavoritesContainerComponent implements OnInit {
 
   ngOnInit() {
     this.showLoader$ = this.bookmarks$.pipe(
-      showLoaderTime(LOADER_DELAY, TIME_AFTER_LOADER_DELAY),
-      tap(showLoader => console.log({ loaderArchives: showLoader }))
+      showLoaderTime(LOADER_DELAY, TIME_AFTER_LOADER_DELAY)
     );
     this.store.dispatch(bookmarksActions.clearBookmarksOnFavorite());
     this.store.dispatch(bookmarksActions.getFavoritedBookmarks());
