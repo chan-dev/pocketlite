@@ -99,6 +99,8 @@
             src="/assets/avatar.png"
             alt="avatar"
             aria-hidden="true"
+            width="1.5rem"
+            height="1.5rem"
           />
         </button>
         <mat-menu #menu="matMenu" class="bg-theme-primary">
@@ -110,6 +112,8 @@
               src="/assets/avatar.png"
               alt="avatar"
               aria-hidden="true"
+              width="1.5rem"
+              height="1.5rem"
             />
             <span *ngIf="currentUser$ | async as currentUser">
               {{ currentUser.displayName }}
