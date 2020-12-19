@@ -12,6 +12,7 @@ export function handleError(error: ApiError, res: Response): Response<JSON> {
     message: error.message,
     name: error.name,
     errorCode: error.errorCode,
+    payload: error.payload,
     stack: process.env.NODE_ENV === 'production' ? null : error.stack,
   });
 }

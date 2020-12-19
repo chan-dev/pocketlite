@@ -5,12 +5,14 @@ export class ApiError extends Error {
     public message: string,
     public statusCode: HTTP_STATUS_CODES,
     public name: string = 'ApiError',
-    public errorCode: ERROR_CODES | null
+    public errorCode: ERROR_CODES | null,
+    public payload?: any
   ) {
     super(message);
     this.statusCode = statusCode;
     this.name = name;
     this.errorCode = errorCode;
+    this.payload = payload;
 
     Error.captureStackTrace(this, ApiError);
   }
@@ -39,8 +41,8 @@ export class ApiError extends Error {
     return new HttpInternalServerError(message);
   }
 
-  static duplicateData(message: string): DuplicateData {
-    return new DuplicateData(message);
+  static duplicateData(message: string, payload?: any): DuplicateData {
+    return new DuplicateData(message, payload);
   }
 
   static invalidCsrfToken(message: string): InvalidCsrfToken {
@@ -129,13 +131,14 @@ export class HttpInternalServerError extends ApiError {
 }
 
 export class DuplicateData extends ApiError {
-  constructor(
-    public message: string,
-    public statusCode: HTTP_STATUS_CODES = HTTP_STATUS_CODES.INVALID_DATA,
-    public name: string = 'ApiError.DuplicateData',
-    public errorCode: ERROR_CODES = ERROR_CODES.DUPLICATE_DATA
-  ) {
-    super(message, statusCode, name, errorCode);
+  constructor(public message: string, public payload?: any) {
+    super(
+      message,
+      HTTP_STATUS_CODES.INVALID_DATA,
+      'ApiError.DuplicateData',
+      ERROR_CODES.DUPLICATE_DATA,
+      payload
+    );
     Error.captureStackTrace(this, DuplicateData);
   }
 }
