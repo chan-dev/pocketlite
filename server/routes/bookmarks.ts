@@ -51,10 +51,15 @@ router.post(
       // check if URL already exist, we have to do this
       // even though we have set an unique index in URL
       // before proceeding to web-scraping since it's a expensive task
-      const urlExists = await Bookmark.find({ url }).countDocuments();
+      const existingBookmark = await Bookmark.findOne({ url });
 
-      if (urlExists) {
-        return next(ApiError.duplicateData('url is already saved'));
+      if (existingBookmark) {
+        const errorPayload = {
+          id: existingBookmark.id,
+        };
+        return next(
+          ApiError.duplicateData('url is already saved', errorPayload)
+        );
       }
 
       const bookmark = await scrapeLink(url);
@@ -335,6 +340,7 @@ router.put(
       const userId = (req as any).user.id;
       const bookmarkId = req.params.id;
       const { selectedTags }: { selectedTags: string[] } = req.body;
+      const override = req.query?.override === '1' ? true : false;
 
       /* Step 1: Find all existing tags from Tag collection */
       const foundTags = await Tag.find({
@@ -361,11 +367,19 @@ router.put(
       /* Step 4: Merge foundTags and newTags */
       const bookmarkTagIds = [...foundTags, ...newTags].map(tag => tag.id);
 
-      /* Step 5: Update current bookmark tags */
+      /**
+       * Step 5: Choose between $set (override = true) or $addToSet
+       * override - if true, we override all tag entries in a bookmark with the tags in the request body;
+       * otherwise we just append new tags
+       */
+      const updateType = !!override ? '$set' : '$addToSet';
+
+      /* Step 6: Update current bookmark tags */
+
       const bookmark = await Bookmark.findOneAndUpdate(
         { _id: bookmarkId },
         {
-          $set: {
+          [updateType]: {
             tags: bookmarkTagIds,
           },
         },
