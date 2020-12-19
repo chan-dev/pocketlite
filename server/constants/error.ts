@@ -13,3 +13,10 @@ export const enum ERROR_CODES {
   JWT_TOKEN_EXPIRED = 'ERR_JWT_TOKEN_EXPIRED',
   REFRESH_TOKEN_EXPIRED = 'ERR_REFRESH_TOKEN_EXPIRED',
 }
+export interface ApiErrorMetadata {
+  message: string;
+  statusCode: HTTP_STATUS_CODES;
+  name: string;
+  errorCode: ERROR_CODES | null;
+  payload?: any;
+}
