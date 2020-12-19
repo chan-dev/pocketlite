@@ -11,6 +11,13 @@ const csurfHandler = (csurfRequestHandler: RequestHandler) => (
     return next();
   }
 
+  // Tentative solution:
+  // A hacky solution that bypasses
+  // CSRF when requests are from pocketlite chrome extension
+  if (req.headers?.origin?.startsWith('chrome-extension://')) {
+    return next();
+  }
+
   return csurfRequestHandler(req, res, next);
 };
 
