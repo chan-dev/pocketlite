@@ -35,7 +35,11 @@ export class TagsChipsComponent implements OnInit {
   }
   @Input() set bookmarkTags(tags: string[]) {
     // IMPORTANT: clone so we won't mutate the actual arrays
+    // this are basically array of strings so this kind of duplication will do
     this.selectedTags = [...tags];
+    // cache the current bookmark tags so we know if we
+    // unselect or remove a existing tag
+    this.savedBookmarkTags = [...tags];
   }
 
   visible = true;
@@ -46,6 +50,7 @@ export class TagsChipsComponent implements OnInit {
   filteredTags: Observable<string[]>;
   selectedTags: string[] = [];
   allTags: string[] = [];
+  savedBookmarkTags: string[] = [];
 
   constructor() {
     this.filteredTags = this.tagCtrl.valueChanges.pipe(

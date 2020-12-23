@@ -31,9 +31,25 @@
       </mat-option>
     </mat-autocomplete>
   </div>
+  <!-- Enable the buttons when
+    * if savedBookmarks.length !== selectedTags.length OR
+    * (tagCtrl.dirty AND
+    * selectedTags.length)
+  -->
+
+  <!-- Using demorgans law we toggle everything including operators -->
+
+  <!-- Disable the button when
+    * if savedBookmarks.length === selectedTags.length AND
+    * (tagCtrl.pristine OR
+    * !selectedTags.length)
+  -->
   <button
     class="disabled:bg-gray-400 hover:bg-blue-700 focus:bg-blue-700 bg-blue-400 ml-auto px-4 py-1 rounded font-medium text-lg text-white"
-    [disabled]="tagCtrl.pristine || !selectedTags.length"
+    [disabled]="
+      savedBookmarkTags.length === selectedTags.length &&
+      (tagCtrl.pristine || !selectedTags.length)
+    "
     (click)="updateTags()"
   >
     Save
