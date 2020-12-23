@@ -340,7 +340,8 @@ router.put(
       const userId = (req as any).user.id;
       const bookmarkId = req.params.id;
       const { selectedTags }: { selectedTags: string[] } = req.body;
-      const override = req.query?.override === '1' ? true : false;
+      const override =
+        req.query.override && req.query.override === '0' ? false : true;
 
       /* Step 1: Find all existing tags from Tag collection */
       const foundTags = await Tag.find({
