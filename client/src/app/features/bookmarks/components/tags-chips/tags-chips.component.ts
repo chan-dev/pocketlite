@@ -62,21 +62,15 @@ export class TagsChipsComponent implements OnInit {
   ngOnInit() {}
 
   add(event: MatChipInputEvent): void {
-    const input = event.input;
     const value = event.value;
 
-    if (this.isUnique(value)) {
-      if ((value || '').trim()) {
-        this.selectedTags.push(value.trim());
-      }
-    }
+    this.addUniqueTagsToChipList(value);
+  }
 
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
+  selected(event: MatAutocompleteSelectedEvent): void {
+    const { viewValue } = event.option;
 
-    this.tagCtrl.setValue(null);
+    this.addUniqueTagsToChipList(viewValue);
   }
 
   remove(tag: string): void {
@@ -85,16 +79,6 @@ export class TagsChipsComponent implements OnInit {
     if (index >= 0) {
       this.selectedTags.splice(index, 1);
     }
-  }
-
-  selected(event: MatAutocompleteSelectedEvent): void {
-    const { viewValue } = event.option;
-
-    if (this.isUnique(viewValue)) {
-      this.selectedTags.push(event.option.viewValue);
-    }
-    this.tagInput.nativeElement.value = '';
-    this.tagCtrl.setValue(null);
   }
 
   updateTags() {
@@ -116,5 +100,19 @@ export class TagsChipsComponent implements OnInit {
     const tags = tag ? this._filter(tag) : this.allTags.slice();
 
     return tags.filter(t => this.isUnique(t));
+  }
+
+  private addUniqueTagsToChipList(value: string) {
+    if (this.isUnique(value)) {
+      if ((value || '').trim()) {
+        this.selectedTags.push(value.trim());
+      }
+    }
+    this.resetInputField();
+  }
+
+  private resetInputField() {
+    this.tagInput.nativeElement.value = '';
+    this.tagCtrl.setValue(null);
   }
 }
