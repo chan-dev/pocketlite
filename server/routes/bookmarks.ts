@@ -358,12 +358,15 @@ router.put(
       );
 
       /* Step 3: Save all unsaved tags in Tag collection */
-      const newTags = await Tag.insertMany(
-        unsavedTags.map(tag => ({
-          user_id: userId,
-          name: tag,
-        }))
-      );
+
+      const newTags = unsavedTags.length
+        ? await Tag.insertMany(
+            unsavedTags.map(tag => ({
+              user_id: userId,
+              name: tag,
+            }))
+          )
+        : [];
 
       /* Step 4: Merge foundTags and newTags */
       const bookmarkTagIds = [...foundTags, ...newTags].map(tag => tag.id);
