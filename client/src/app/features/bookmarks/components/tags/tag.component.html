@@ -36,12 +36,16 @@
         (blur)="closeEdit()"
         #tagEditInput
       />
-      <!-- TODO: convert to button tag -->
-      <!-- <div data-test="tag-delete-button"> -->
-      <button data-test="tag-delete-button">
-        <mat-icon
-          class="flex-none text-red-600 cursor-pointer"
-          (click)="closeEdit()"
+      <!-- NOTE: this is a workaround for the blur and click event racing issue
+        so we have to replace (click) with (mousedown) because it occurs first before (blur) event
+      -->
+      <!-- Link to relevant issue: https://stackoverflow.com/a/43356000/9732932 -->
+      <button
+        type="button"
+        data-test="tag-delete-button"
+        (mousedown)="delete(tag.id)"
+      >
+        <mat-icon class="flex-none text-red-600 cursor-pointer"
           >delete</mat-icon
         >
       </button>
