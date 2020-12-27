@@ -19,4 +19,8 @@ export class TagsService {
       tags,
     });
   }
+
+  deleteTag(id: string) {
+    return this.http.delete<{ tag: Tag }>(`/api/tags/${id}`);
+  }
 }
