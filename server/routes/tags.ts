@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 
 import Tag from '../models/tag';
+import Bookmark from '../models/bookmark';
 import authJwt from '../middlewares/auth-jwt';
 import { ApiError } from '../classes/error';
 
@@ -45,6 +46,33 @@ router.post(
       return res.json({ tags });
     } catch (err) {
       next(ApiError.internalServerError('Finding tags failed unexpectedly'));
+    }
+  }
+);
+
+router.delete(
+  '/:id',
+  authJwt,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id;
+
+    try {
+      const tag = await Tag.findOneAndDelete({ _id: id });
+      if (tag) {
+        await Bookmark.updateMany(
+          {},
+          {
+            $pull: {
+              tags: id,
+            },
+          }
+        );
+        return res.status(200).json({ tag });
+      } else {
+        return next(ApiError.resourceNotFound('tag does not exist'));
+      }
+    } catch (err) {
+      next(ApiError.internalServerError('Deleting tags failed unexpectedly'));
     }
   }
 );
