@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { map, catchError, mergeMap, exhaustMap, tap } from 'rxjs/operators';
 import { Action, createAction } from '@ngrx/store';
 import { createEffect, ofType, Actions } from '@ngrx/effects';
 
+import { UNTAGGED_ITEMS } from '@constants/tags';
 import * as tagsActions from '../actions/tags.actions';
 import { TagsService } from '../../services/tags.service';
 import { ConfirmDialogService } from '@app/shared/confirm-dialog/confirm-dialog.service';
@@ -71,13 +73,19 @@ export class TagEffects {
     );
   });
 
-  // TODO: navigate to next tag
-  deleteTagSuccess$ = createEffect(
+  deleteTagSuccess$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(tagsActions.deleteTagSuccess),
+      map(_ => tagsActions.navigateToNextTag())
+    );
+  });
+
+  navigateToDefaultTag$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(tagsActions.deleteTagSuccess),
+        ofType(tagsActions.navigateToNextTag),
         tap(_ => {
-          console.log('navigating to next tag');
+          this.router.navigate(['/bookmarks/tags', UNTAGGED_ITEMS]);
         })
       );
     },
@@ -86,6 +94,7 @@ export class TagEffects {
 
   constructor(
     private actions$: Actions,
+    private router: Router,
     private tagssService: TagsService,
     private confirmDialogService: ConfirmDialogService
   ) {}

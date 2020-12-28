@@ -27,3 +27,7 @@ export const deleteTagFailure = createAction(
   '[Tags API] Delete Tag Failure',
   props<{ error: string; tag: Tag }>()
 );
+
+export const navigateToNextTag = createAction(
+  '[TagEffects] Navigate to Next Tag'
+);
