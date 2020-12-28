@@ -11,8 +11,8 @@
         (click)="open()"
         >{{ tag.name }}</a
       >
-      <!-- TODO: convert to button tag mat-button? -->
       <div
+        *ngIf="editable"
         data-test="tag-edit-button"
         class="absolute right-0 action hidden leading-none group-hover:inline-block"
       >
@@ -43,7 +43,7 @@
       <button
         type="button"
         data-test="tag-delete-button"
-        (mousedown)="delete(tag.id)"
+        (mousedown)="delete(tag)"
       >
         <mat-icon class="flex-none text-red-600 cursor-pointer"
           >delete</mat-icon

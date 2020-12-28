@@ -3,8 +3,23 @@
     data-test="tags-list"
     class="normal-case tags space-y-2 py-2 text-theme-font-text font-normal"
   >
+    <!-- Default tag item -->
+    <li>
+      <app-tag
+        class="w-full"
+        [editable]="false"
+        [tag]="untaggedItemsTag"
+        (openTag)="closeSidenav()"
+      ></app-tag>
+    </li>
     <li *ngFor="let tag of tags; trackBy: tagsTrackByFn">
-      <app-tag class="w-full" [tag]="tag" (openTag)="closeSidenav()"></app-tag>
+      <app-tag
+        class="w-full"
+        [editable]="true"
+        [tag]="tag"
+        (openTag)="closeSidenav()"
+        (deleteTag)="deleteTag($event)"
+      ></app-tag>
     </li>
   </ul>
 </div>

@@ -18,7 +18,9 @@ import { Tag } from '@models/tag.model';
 })
 export class TagComponent implements OnInit {
   @Input() tag: Tag;
+  @Input() editable = true;
   @Output() openTag = new EventEmitter<void>();
+  @Output() deleteTag = new EventEmitter<Tag>();
 
   isEditing = false;
   tagControl = new FormControl('', Validators.required);
@@ -46,5 +48,9 @@ export class TagComponent implements OnInit {
 
   open() {
     this.openTag.emit();
+  }
+
+  delete(tag: Tag) {
+    this.deleteTag.emit(tag);
   }
 }

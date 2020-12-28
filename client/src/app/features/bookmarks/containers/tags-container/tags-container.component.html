@@ -1,2 +1,2 @@
 <app-tag-search-input (search)="search($event)"></app-tag-search-input>
-<app-tags-list [tags]="tags$ | async"></app-tags-list>
+<app-tags-list [tags]="tags$ | async" (delete)="delete($event)"></app-tags-list>
