@@ -10,3 +10,20 @@ export const getTagsFailure = createAction(
   '[Tags API] Get Tags Failure',
   props<{ error: string }>()
 );
+export const deleteTag = createAction(
+  '[TagsContainerComponent] Delete Tag',
+  props<{ tag: Tag }>()
+);
+export const deleteTagConfirm = createAction(
+  '[TagEffects] Delete Tag Confirm',
+  props<{ tag: Tag }>()
+);
+export const deleteTagCancel = createAction('[TagEffects] Delete Tag Cancel');
+export const deleteTagSuccess = createAction(
+  '[Tags API] Delete Tag Success',
+  props<{ tag: Tag }>()
+);
+export const deleteTagFailure = createAction(
+  '[Tags API] Delete Tag Failure',
+  props<{ error: string; tag: Tag }>()
+);

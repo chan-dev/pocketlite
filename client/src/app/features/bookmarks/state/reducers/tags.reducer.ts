@@ -45,6 +45,31 @@ const tagsReducer = createReducer(
       loading: false,
       error: null,
     });
+  }),
+  on(tagActions.deleteTagConfirm, (state, { tag }) => {
+    // optimistic delete, instantly remove the state from the store
+    // so the delete tag will immediately be removed from the UI
+    // instead of waiting for the API call to finish
+    return adapter.removeOne(tag.id, {
+      ...state,
+      loading: true,
+      error: null,
+    });
+  }),
+  on(tagActions.deleteTagSuccess, (state, { tag }) => {
+    return {
+      ...state,
+      loading: false,
+      error: null,
+    };
+  }),
+  on(tagActions.deleteTagFailure, (state, { error, tag }) => {
+    // in case of a API error, we restore the one we deleted
+    return adapter.addOne(tag, {
+      ...state,
+      loading: false,
+      error,
+    });
   })
 );
 
