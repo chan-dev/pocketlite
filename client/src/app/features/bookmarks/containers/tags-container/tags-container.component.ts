@@ -38,5 +38,6 @@ export class TagsContainerComponent implements OnInit {
   }
 
   delete(tag: Tag) {
+    this.store.dispatch(tagsActions.deleteTag({ tag }));
   }
 }
